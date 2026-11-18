@@ -2,7 +2,7 @@
 
 Status: **implementado** — este documento fica como registro das decisões da iteração.
 Data: 2026-11-18.
-Deploy: <https://sound-capsule-lastfm.vercel.app>
+Deploy: <https://sound-capsule-fm.vercel.app>
 Escopo: projeto pessoal/**não comercial** (Hobby da Vercel e TOS do Last.fm).
 
 ## Decisões fechadas
@@ -22,7 +22,7 @@ Ordem do topo do card: **foto enviada** → **match Deezer** → **canvas**.
 
 ## 0. Deploy e URLs
 
-- URL pública: <https://sound-capsule-lastfm.vercel.app>
+- URL pública: <https://sound-capsule-fm.vercel.app>
 - Usar essa URL no README, no User-Agent do Last.fm/Deezer e como Application URL no cadastro da API key.
 - `metadataBase`/alternates do Next.js podem usar essa origem.
 - Após implementar, validar um preview de deploy: atribuição, UA, cache e persistência.
@@ -79,7 +79,7 @@ Ajustes necessários:
 ## 3. Last.fm: itens 1–3
 
 1. **User-Agent identificável** no proxy e no Deezer:
-   `SoundCapsule/1.0 (+https://sound-capsule-lastfm.vercel.app)`.
+   `SoundCapsule/1.0 (+https://sound-capsule-fm.vercel.app)`.
 2. **Atribuição**:
    - link/botão “powered by Last.fm” no rodapé do site;
    - links para perfil/artistas/faixas onde fizer sentido;
@@ -183,5 +183,6 @@ Atualizar:
 4. Persistência: apenas idioma (cookie) e tema (`localStorage`); username/resultado/foto em memória.
 5. Limite do período personalizado: 3 meses de calendário.
 6. Cache/rate: CDN + pacer, sem KV/Redis/Blob.
+
 
 

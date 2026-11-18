@@ -4,13 +4,12 @@
 
 Last.fmのスクロブルを、ダウンロードや共有がすぐにできる**縦型1080×1920のサウンドカプセル**（ストーリーズ形式）に変換します。集計はすべてブラウザ内で完結し、ログインもデータベースも不要です。
 
-**デプロイ:** <https://sound-capsule-lastfm.vercel.app>
+**デプロイ:** <https://sound-capsule-fm.vercel.app>
 
 <img src="../screenshots/cards/card-ja.png" alt="日本語のSound Capsuleサンプルカード" width="320" />
 
 > デモデータのサンプルカード（Auroraの写真はDeezerから）、ユーザー名非表示、Emberテーマ、3,708分。
 
-書き出したPNGで日本語・韓国語・中国語の名前を表示した例：[CJKカード](../screenshots/cjk-1080x1920.png)。
 
 ## 機能
 
@@ -78,7 +77,7 @@ Last.fmのスクロブルを、ダウンロードや共有がすぐにできる*
 ### 1. Last.fm APIキーを取得する
 
 1. <https://www.last.fm/api/account/create>にアクセスします。
-2. アプリ名（例：*Sound Capsule*）、URL `https://sound-capsule-lastfm.vercel.app`、説明を入力します。
+2. アプリ名（例：*Sound Capsule*）、URL `https://sound-capsule-fm.vercel.app`、説明を入力します。
 3. 生成された**APIキー**をコピーします（ユーザー認証がないため、*shared secret*は不要です）。
 
 ### 2. 環境を設定する
@@ -113,7 +112,7 @@ pnpm dev
 
 ## Vercelへのデプロイ
 
-現在のデプロイ先は<https://sound-capsule-lastfm.vercel.app>です。
+現在のデプロイ先は<https://sound-capsule-fm.vercel.app>です。
 
 1. プロジェクトをGitHub/GitLab/Bitbucketのリポジトリにプッシュします。
 2. Vercelで**Add New → Project**をクリックし、リポジトリをインポートします。
@@ -322,4 +321,6 @@ Sound Capsuleは独立したプロジェクトであり、Last.fmやいかなる
 ## クレジット
 
 制作: [Ranieeery](https://github.com/Ranieeery).
+
+
 

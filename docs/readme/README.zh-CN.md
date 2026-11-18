@@ -4,13 +4,12 @@
 
 把你的 Last.fm 收听记录变成一张可随时下载或分享的**竖版 1080×1920 声音胶囊**（快拍格式）。所有聚合都在浏览器中完成，无需登录，也没有数据库。
 
-**部署：** <https://sound-capsule-lastfm.vercel.app>
+**部署：** <https://sound-capsule-fm.vercel.app>
 
 <img src="../screenshots/cards/card-zh.png" alt="简体中文 Sound Capsule 示例卡片" width="320" />
 
 > 示例卡片使用演示数据（Aurora 照片来自 Deezer），隐藏用户名，Ember 主题，3,708 分钟。
 
-导出的 PNG 中渲染日文、韩文和中文姓名的示例：[CJK 卡片](../screenshots/cjk-1080x1920.png)。
 
 ## 功能
 
@@ -78,7 +77,7 @@
 ### 1. 获取 Last.fm API 密钥
 
 1. 访问 <https://www.last.fm/api/account/create>。
-2. 填写应用名称（例如 *Sound Capsule*）、URL `https://sound-capsule-lastfm.vercel.app` 和描述。
+2. 填写应用名称（例如 *Sound Capsule*）、URL `https://sound-capsule-fm.vercel.app` 和描述。
 3. 复制生成的 **API 密钥**（不需要 *shared secret*，因为没有用户认证）。
 
 ### 2. 配置环境
@@ -113,7 +112,7 @@ pnpm dev
 
 ## 部署到 Vercel
 
-当前部署位于 <https://sound-capsule-lastfm.vercel.app>。
+当前部署位于 <https://sound-capsule-fm.vercel.app>。
 
 1. 将项目推送到 GitHub/GitLab/Bitbucket 仓库。
 2. 在 Vercel 中点击 **Add New → Project** 并导入仓库。
@@ -322,4 +321,6 @@ Sound Capsule 是一个独立项目，与 Last.fm 或任何流媒体服务无关
 ## 致谢
 
 作者：[Ranieeery](https://github.com/Ranieeery)。
+
+
 

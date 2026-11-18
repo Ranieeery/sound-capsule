@@ -4,13 +4,12 @@
 
 Transforme seus scrobbles do Last.fm em uma **cápsula de som vertical 1080×1920** (formato story) pronta para baixar ou compartilhar. A agregação acontece inteiramente no navegador, sem login e sem banco de dados.
 
-**Deploy:** <https://sound-capsule-lastfm.vercel.app>
+**Deploy:** <https://sound-capsule-fm.vercel.app>
 
 <img src="../screenshots/cards/card-pt.png" alt="Card de exemplo do Sound Capsule em português" width="320" />
 
 > Card de exemplo com dados fictícios (foto da Aurora via Deezer), username oculto, tema Ember e 3.708 minutos.
 
-Exemplo com nomes em japonês, coreano e chinês renderizados no PNG exportado: [card CJK](../screenshots/cjk-1080x1920.png).
 
 ## Recursos
 
@@ -78,7 +77,7 @@ O app não busca dados no carregamento da página; só quando o usuário clica e
 ### 1. Obtenha uma API key do Last.fm
 
 1. Acesse <https://www.last.fm/api/account/create>.
-2. Preencha o nome do app (ex.: *Sound Capsule*), a URL `https://sound-capsule-lastfm.vercel.app` e a descrição.
+2. Preencha o nome do app (ex.: *Sound Capsule*), a URL `https://sound-capsule-fm.vercel.app` e a descrição.
 3. Copie a **API key** gerada (não é necessário o *shared secret*, pois não há autenticação de usuário).
 
 ### 2. Configure o ambiente
@@ -113,7 +112,7 @@ Abra <http://localhost:3000> — o middleware redireciona para o locale detectad
 
 ## Deploy na Vercel
 
-O deploy atual está em <https://sound-capsule-lastfm.vercel.app>.
+O deploy atual está em <https://sound-capsule-fm.vercel.app>.
 
 1. Suba o projeto para um repositório no GitHub/GitLab/Bitbucket.
 2. Na Vercel, clique em **Add New → Project** e importe o repositório.
@@ -317,4 +316,6 @@ Sound Capsule é um projeto independente, sem afiliação com o Last.fm ou qualq
 ## Créditos
 
 Criado por [Ranieeery](https://github.com/Ranieeery).
+
+
 

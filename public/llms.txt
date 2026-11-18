@@ -4,7 +4,7 @@
 > capsule with the user's top artists, top tracks and estimated listening time.
 > The image is rendered in the browser and exported as a 1080×1920 PNG.
 
-- Canonical: https://sound-capsule-lastfm.vercel.app
+- Canonical: https://sound-capsule-fm.vercel.app
 - Languages: pt-BR, en, es, fr, de, it, ja, ko, zh-CN, ru, pl
 - Stack: Next.js App Router, TypeScript, Tailwind CSS, next-intl, html-to-image
 - Deployment: Vercel, serverless and stateless
@@ -24,17 +24,17 @@
 
 ## Pages
 
-- https://sound-capsule-lastfm.vercel.app/pt
-- https://sound-capsule-lastfm.vercel.app/en
-- https://sound-capsule-lastfm.vercel.app/es
-- https://sound-capsule-lastfm.vercel.app/fr
-- https://sound-capsule-lastfm.vercel.app/de
-- https://sound-capsule-lastfm.vercel.app/it
-- https://sound-capsule-lastfm.vercel.app/ja
-- https://sound-capsule-lastfm.vercel.app/ko
-- https://sound-capsule-lastfm.vercel.app/zh
-- https://sound-capsule-lastfm.vercel.app/ru
-- https://sound-capsule-lastfm.vercel.app/pl
+- https://sound-capsule-fm.vercel.app/pt
+- https://sound-capsule-fm.vercel.app/en
+- https://sound-capsule-fm.vercel.app/es
+- https://sound-capsule-fm.vercel.app/fr
+- https://sound-capsule-fm.vercel.app/de
+- https://sound-capsule-fm.vercel.app/it
+- https://sound-capsule-fm.vercel.app/ja
+- https://sound-capsule-fm.vercel.app/ko
+- https://sound-capsule-fm.vercel.app/zh
+- https://sound-capsule-fm.vercel.app/ru
+- https://sound-capsule-fm.vercel.app/pl
 
 ## Data sources and attribution
 
@@ -53,11 +53,12 @@ Uploaded photos never leave the browser.
 
 ## Crawling
 
-- robots.txt: https://sound-capsule-lastfm.vercel.app/robots.txt
-- sitemap: https://sound-capsule-lastfm.vercel.app/sitemap.xml
+- robots.txt: https://sound-capsule-fm.vercel.app/robots.txt
+- sitemap: https://sound-capsule-fm.vercel.app/sitemap.xml
 - API routes under /api/ are intended for the site itself and are disallowed
   to crawlers.
 
 ## Credits
 
 Created by [Ranieeery](https://github.com/Ranieeery).
+

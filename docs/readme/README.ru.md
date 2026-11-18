@@ -4,13 +4,12 @@
 
 Превратите ваши скробблы из Last.fm в **вертикальную звуковую капсулу 1080×1920** (формат сторис), готовую к скачиванию или публикации. Вся агрегация выполняется в браузере — без входа и без базы данных.
 
-**Деплой:** <https://sound-capsule-lastfm.vercel.app>
+**Деплой:** <https://sound-capsule-fm.vercel.app>
 
 <img src="../screenshots/cards/card-ru.png" alt="Пример карточки Sound Capsule на русском" width="320" />
 
 > Пример карточки с демо-данными (фото Aurora из Deezer), скрытым именем пользователя, темой Ember и 3 708 минутами.
 
-Пример с японскими, корейскими и китайскими именами в экспортированном PNG: [карточка CJK](../screenshots/cjk-1080x1920.png).
 
 ## Возможности
 
@@ -78,7 +77,7 @@
 ### 1. Получите ключ API Last.fm
 
 1. Перейдите на <https://www.last.fm/api/account/create>.
-2. Укажите название приложения (например, *Sound Capsule*), URL `https://sound-capsule-lastfm.vercel.app` и описание.
+2. Укажите название приложения (например, *Sound Capsule*), URL `https://sound-capsule-fm.vercel.app` и описание.
 3. Скопируйте сгенерированный **ключ API** (*shared secret* не нужен, так как аутентификации пользователей нет).
 
 ### 2. Настройте окружение
@@ -113,7 +112,7 @@ pnpm dev
 
 ## Развёртывание на Vercel
 
-Текущее развёртывание доступно по адресу <https://sound-capsule-lastfm.vercel.app>.
+Текущее развёртывание доступно по адресу <https://sound-capsule-fm.vercel.app>.
 
 1. Отправьте проект в репозиторий на GitHub/GitLab/Bitbucket.
 2. В Vercel нажмите **Add New → Project** и импортируйте репозиторий.
@@ -322,4 +321,6 @@ Sound Capsule — независимый проект, не связанный �
 ## Авторы
 
 Автор: [Ranieeery](https://github.com/Ranieeery).
+
+
 
