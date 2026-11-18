@@ -144,6 +144,7 @@ export function CapsuleStudio() {
 
   const abortRef = useRef<AbortController | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const previewRef = useRef<HTMLElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const estimateRef = useRef<HTMLDetailsElement>(null);
 
@@ -474,6 +475,17 @@ export function CapsuleStudio() {
       });
       setStatus('ready');
       setPhase(null);
+
+      // On mobile the preview is below the form; bring it into view after the
+      // card has painted instead of leaving the user at the form.
+      if (window.matchMedia('(max-width: 1023px)').matches) {
+        const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 'auto'
+          : 'smooth';
+        window.setTimeout(() => {
+          previewRef.current?.scrollIntoView({ behavior, block: 'start' });
+        }, 120);
+      }
     } catch (caught) {
       if (controller.signal.aborted || (isLastfmError(caught) && caught.code === 'cancelled')) {
         setStatus('idle');
@@ -903,7 +915,8 @@ export function CapsuleStudio() {
 
       {/* Preview + actions */}
       <aside
-        className="flex flex-col items-center gap-4 lg:col-span-5"
+        ref={previewRef}
+        className="flex scroll-mt-6 flex-col items-center gap-4 lg:col-span-5"
         aria-label={t('preview.title')}
       >
         <div className="flex w-full max-w-[320px] items-center justify-between">
