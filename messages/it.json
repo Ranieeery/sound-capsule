@@ -16,7 +16,7 @@
     "subtitle": "Inserisci il tuo nome utente Last.fm e scegli un periodo per generare un riepilogo verticale 1080×1920 pronto da condividere.",
     "usernameLabel": "Nome utente Last.fm",
     "usernamePlaceholder": "il tuo nome utente",
-    "usernameHint": "Il profilo deve essere pubblico e avere scrobble nel periodo selezionato.",
+    "usernameHint": "Incolla il link del profilo o digita il nome utente. Il profilo deve essere pubblico e avere scrobble nel periodo.",
     "periodLabel": "Periodo",
     "period": {
       "week": "Ultimi 7 giorni",
@@ -27,13 +27,13 @@
     "custom": {
       "start": "Data di inizio",
       "end": "Data di fine",
-      "since": "Dalla registrazione a Last.fm ({date}) · max {days} giorni",
-      "maxOnly": "Massimo {days} giorni",
+      "since": "Dal registro su Last.fm ({date}) · max. {months} mesi",
+      "maxOnly": "Massimo {months} mesi",
       "warning": "I periodi lunghi richiedono più pagine e possono richiedere qualche secondo in più."
     },
     "generate": "Genera capsula",
     "generating": "Generazione della capsula...",
-    "privacy": "Nessun login · Nessun database · Calcolo locale nel browser",
+    "privacy": "Nessun login · Nessun database · Solo lingua e tema vengono salvati in questo browser",
     "preview": {
       "title": "Anteprima (9:16)",
       "dimensions": "1080×1920",
@@ -80,7 +80,22 @@
       "invalid_range": "La data di fine deve essere uguale o successiva alla data di inizio.",
       "end_future": "La data di fine non può essere nel futuro.",
       "before_registration": "La data di inizio è precedente alla registrazione di questo utente a Last.fm ({date}).",
-      "range_too_long": "Il periodo massimo è di {days} giorni."
+      "range_too_long": "Il periodo massimo è di {months} mesi."
+    },
+    "themeLabel": "Colore della card",
+    "showUsername": "Mostra il mio utente sulla card",
+    "photo": {
+      "label": "Foto della card",
+      "upload": "Carica foto",
+      "replace": "Cambia foto",
+      "remove": "Rimuovi foto",
+      "privacy": "La tua foto non lascia mai questo browser.",
+      "errors": {
+        "invalid_type": "Usa JPEG, PNG o WebP.",
+        "too_large": "L'immagine deve essere di massimo 10 MB.",
+        "invalid_image": "Impossibile leggere questa immagine.",
+        "unknown": "Impossibile usare questa foto."
+      }
     }
   },
   "Card": {
@@ -91,7 +106,8 @@
     "minutes": "≈ {minutes, number} minuti"
   },
   "Footer": {
-    "note": "Dati pubblici di Last.fm · immagini Deezer · nulla del tuo profilo viene salvato.",
-    "disclaimer": "Sound Capsule non è affiliata a Last.fm."
+    "note": "Dati pubblici di Last.fm · immagini Deezer · solo lingua e tema vengono salvati in questo browser.",
+    "disclaimer": "Sound Capsule non è affiliata a Last.fm.",
+    "poweredBy": "powered by Last.fm"
   }
 }

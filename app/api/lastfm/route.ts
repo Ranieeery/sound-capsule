@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { cdnCacheHeaders, NO_STORE_HEADERS } from '@/lib/httpCache';
+import { APP_USER_AGENT } from '@/lib/site';
 
 /**
  * Thin, stateless proxy for a strict whitelist of Last.fm API methods.
@@ -9,8 +11,6 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const LASTFM_ENDPOINT = 'https://ws.audioscrobbler.com/2.0/';
-const CACHE_CONTROL = 'public, s-maxage=300, stale-while-revalidate=60';
-const NO_STORE = 'no-store';
 const USERNAME_PATTERN = /^[A-Za-z0-9_.-]{1,64}$/;
 const UPSTREAM_TIMEOUT_MS = 10_000;
 
@@ -30,8 +30,18 @@ const INTEGER_BOUNDS: Record<string, readonly [number, number]> = {
 function fail(code: string, message: string, status: number): NextResponse {
   return NextResponse.json(
     { error: code, message },
-    { status, headers: { 'Cache-Control': NO_STORE } },
+    { status, headers: NO_STORE_HEADERS },
   );
+}
+
+/** Stable metadata can be cached much longer than user-specific pages. */
+function cacheHeadersFor(method: string): Record<string, string> {
+  if (method === 'track.getInfo') {
+    return cdnCacheHeaders(86_400, 604_800);
+  }
+  // user.getInfo and user.getRecentTracks; the latter has a changing `to`
+  // parameter, so CDN hits are limited anyway.
+  return cdnCacheHeaders(method === 'user.getRecentTracks' ? 300 : 300, 60);
 }
 
 function sanitizeText(value: string, maxLength: number): string | null {
@@ -129,7 +139,10 @@ export async function GET(request: Request): Promise<NextResponse> {
 
   try {
     const upstream = await fetch(upstreamUrl, {
-      headers: { Accept: 'application/json' },
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': APP_USER_AGENT,
+      },
       cache: 'no-store',
       signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
     });
@@ -150,7 +163,7 @@ export async function GET(request: Request): Promise<NextResponse> {
       // but never cache them on the CDN.
       return NextResponse.json(payload, {
         status: upstream.ok ? 400 : upstream.status,
-        headers: { 'Cache-Control': NO_STORE },
+        headers: NO_STORE_HEADERS,
       });
     }
 
@@ -159,7 +172,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     }
 
     return NextResponse.json(payload, {
-      headers: { 'Cache-Control': CACHE_CONTROL },
+      headers: cacheHeadersFor(method),
     });
   } catch (error) {
     const isTimeout =

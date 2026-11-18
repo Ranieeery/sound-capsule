@@ -16,7 +16,7 @@
     "subtitle": "Enter your Last.fm username and pick a time range to build a vertical 1080×1920 summary card ready to share.",
     "usernameLabel": "Last.fm username",
     "usernamePlaceholder": "your username",
-    "usernameHint": "Your profile must be public and have scrobbles in the selected period.",
+    "usernameHint": "Paste your profile link or type your username. The profile must be public and have scrobbles in the selected period.",
     "periodLabel": "Time range",
     "period": {
       "week": "Last 7 days",
@@ -27,13 +27,13 @@
     "custom": {
       "start": "Start date",
       "end": "End date",
-      "since": "Since Last.fm registration ({date}) · max. {days} days",
-      "maxOnly": "Max. {days} days",
+      "since": "Since Last.fm registration ({date}) · max. {months} months",
+      "maxOnly": "Max. {months} months",
       "warning": "Longer ranges fetch more pages and may take a few extra seconds."
     },
     "generate": "Generate capsule",
     "generating": "Generating capsule...",
-    "privacy": "No login · No database · Computed locally in your browser",
+    "privacy": "No login · No database · Only language and theme are saved in this browser",
     "preview": {
       "title": "Preview (9:16)",
       "dimensions": "1080×1920",
@@ -80,7 +80,22 @@
       "invalid_range": "The end date must be on or after the start date.",
       "end_future": "The end date cannot be in the future.",
       "before_registration": "The start date is before this user's Last.fm registration ({date}).",
-      "range_too_long": "The maximum range is {days} days."
+      "range_too_long": "The maximum range is {months} months."
+    },
+    "themeLabel": "Card color",
+    "showUsername": "Show my username on the card",
+    "photo": {
+      "label": "Card photo",
+      "upload": "Upload photo",
+      "replace": "Change photo",
+      "remove": "Remove photo",
+      "privacy": "Your photo never leaves this browser.",
+      "errors": {
+        "invalid_type": "Use JPEG, PNG or WebP.",
+        "too_large": "The image must be 10 MB or smaller.",
+        "invalid_image": "This image could not be read.",
+        "unknown": "This photo could not be used."
+      }
     }
   },
   "Card": {
@@ -91,7 +106,8 @@
     "minutes": "≈ {minutes, number} minutes"
   },
   "Footer": {
-    "note": "Public Last.fm data · Deezer images · nothing about your profile is stored.",
-    "disclaimer": "Sound Capsule is not affiliated with Last.fm."
+    "note": "Public Last.fm data · Deezer images · only language and theme are saved in this browser.",
+    "disclaimer": "Sound Capsule is not affiliated with Last.fm.",
+    "poweredBy": "powered by Last.fm"
   }
 }

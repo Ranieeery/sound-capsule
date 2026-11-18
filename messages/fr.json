@@ -16,7 +16,7 @@
     "subtitle": "Saisissez votre nom d'utilisateur Last.fm et choisissez une période pour générer un résumé vertical 1080×1920 prêt à partager.",
     "usernameLabel": "Nom d'utilisateur Last.fm",
     "usernamePlaceholder": "votre nom d'utilisateur",
-    "usernameHint": "Le profil doit être public et contenir des scrobbles sur la période sélectionnée.",
+    "usernameHint": "Collez le lien du profil ou saisissez le nom d'utilisateur. Le profil doit être public et avoir des scrobbles sur la période.",
     "periodLabel": "Période",
     "period": {
       "week": "7 derniers jours",
@@ -27,13 +27,13 @@
     "custom": {
       "start": "Date de début",
       "end": "Date de fin",
-      "since": "Depuis l'inscription sur Last.fm ({date}) · max. {days} jours",
-      "maxOnly": "Max. {days} jours",
+      "since": "Depuis l'inscription sur Last.fm ({date}) · max. {months} mois",
+      "maxOnly": "Maximum de {months} mois",
       "warning": "Les périodes longues chargent plus de pages et peuvent prendre quelques secondes de plus."
     },
     "generate": "Générer la capsule",
     "generating": "Génération de la capsule...",
-    "privacy": "Sans connexion · Sans base de données · Calcul local dans le navigateur",
+    "privacy": "Sans connexion · Sans base de données · Seuls la langue et le thème sont enregistrés dans ce navigateur",
     "preview": {
       "title": "Aperçu (9:16)",
       "dimensions": "1080×1920",
@@ -80,7 +80,22 @@
       "invalid_range": "La date de fin doit être égale ou postérieure à la date de début.",
       "end_future": "La date de fin ne peut pas être dans le futur.",
       "before_registration": "La date de début est antérieure à l'inscription de cet utilisateur sur Last.fm ({date}).",
-      "range_too_long": "La période maximale est de {days} jours."
+      "range_too_long": "La période maximale est de {months} mois."
+    },
+    "themeLabel": "Couleur de la carte",
+    "showUsername": "Afficher mon utilisateur sur la carte",
+    "photo": {
+      "label": "Photo de la carte",
+      "upload": "Ajouter une photo",
+      "replace": "Changer la photo",
+      "remove": "Retirer la photo",
+      "privacy": "Votre photo ne quitte jamais ce navigateur.",
+      "errors": {
+        "invalid_type": "Utilisez JPEG, PNG ou WebP.",
+        "too_large": "L'image doit faire 10 Mo maximum.",
+        "invalid_image": "Impossible de lire cette image.",
+        "unknown": "Impossible d'utiliser cette photo."
+      }
     }
   },
   "Card": {
@@ -91,7 +106,8 @@
     "minutes": "≈ {minutes, number} minutes"
   },
   "Footer": {
-    "note": "Données publiques de Last.fm · images Deezer · rien de votre profil n'est stocké.",
-    "disclaimer": "Sound Capsule n'est pas affilié à Last.fm."
+    "note": "Données publiques de Last.fm · images Deezer · seuls la langue et le thème sont enregistrés dans ce navigateur.",
+    "disclaimer": "Sound Capsule n'est pas affilié à Last.fm.",
+    "poweredBy": "powered by Last.fm"
   }
 }

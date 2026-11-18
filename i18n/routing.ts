@@ -6,7 +6,11 @@ export const routing = defineRouting({
   defaultLocale,
   localePrefix: 'always',
   localeDetection: true,
-  // The locale is part of the URL. Keeping the preference out of cookies means
-  // the app stays stateless: nothing about the visitor is persisted.
-  localeCookie: false,
+  // Persist only the chosen language. No user or listening data is stored.
+  localeCookie: {
+    name: 'NEXT_LOCALE',
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: 'lax',
+    path: '/',
+  },
 });

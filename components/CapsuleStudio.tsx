@@ -17,13 +17,27 @@ import {
   fetchUserInfo,
   isLastfmError,
   isValidLastfmUsername,
-  type CapsuleData,
   type FetchProgress,
   type LastfmUser,
 } from '@/lib/lastfmClient';
 import { normalizeLastfmUsernameInput } from '@/lib/username';
 import {
-  MAX_CUSTOM_RANGE_DAYS,
+  CARD_THEMES,
+  getCardTheme,
+  readStoredCardTheme,
+  storeCardTheme,
+  type CardThemeId,
+} from '@/lib/cardThemes';
+import {
+  fileToCardPhoto,
+  PHOTO_ACCEPT_ATTRIBUTE,
+  PhotoError,
+  type PhotoErrorCode,
+} from '@/lib/localPhoto';
+import { SITE_HOST } from '@/lib/site';
+import { getStudioSession, patchStudioSession, type StudioResultState } from '@/lib/studioSession';
+import {
+  MAX_CUSTOM_RANGE_MONTHS,
   addDays,
   formatDateInput,
   formatDateRange,
@@ -35,7 +49,6 @@ import {
   parseDateInput,
   resolvePeriod,
   validateCustomRange,
-  type DateRange,
   type PeriodKind,
   type ResolvedPeriod,
 } from '@/lib/periods';
@@ -43,14 +56,7 @@ import {
 type Status = 'idle' | 'loading' | 'ready' | 'error';
 type UiPhase = FetchProgress | { phase: 'preparing' };
 type ExportState = 'idle' | 'downloading' | 'sharing';
-
-interface ResultState {
-  data: CapsuleData;
-  periodKind: PeriodKind;
-  range: DateRange;
-  periodLabel: string;
-  heroImageUrl: string | null;
-}
+type ResultState = StudioResultState;
 
 interface ErrorState {
   code: string;
@@ -111,23 +117,33 @@ export function CapsuleStudio() {
   const t = useTranslations('Home');
   const locale = useLocale();
 
+  const initialSession = getStudioSession();
+
   const [mounted, setMounted] = useState(false);
   const [now, setNow] = useState<Date | null>(null);
-  const [username, setUsername] = useState('');
-  const [periodKind, setPeriodKind] = useState<PeriodKind>('month');
-  const [customStart, setCustomStart] = useState('');
-  const [customEnd, setCustomEnd] = useState('');
-  const [status, setStatus] = useState<Status>('idle');
+  const [username, setUsername] = useState(initialSession.username);
+  const [periodKind, setPeriodKind] = useState<PeriodKind>(initialSession.periodKind);
+  const [customStart, setCustomStart] = useState(initialSession.customStart);
+  const [customEnd, setCustomEnd] = useState(initialSession.customEnd);
+  const [status, setStatus] = useState<Status>(initialSession.result ? 'ready' : 'idle');
   const [phase, setPhase] = useState<UiPhase | null>(null);
   const [error, setError] = useState<ErrorState | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
-  const [result, setResult] = useState<ResultState | null>(null);
+  const [result, setResult] = useState<ResultState | null>(initialSession.result);
   const [exportState, setExportState] = useState<ExportState>('idle');
   const [userInfo, setUserInfo] = useState<LastfmUser | null>(null);
+  const [themeId, setThemeId] = useState<CardThemeId>(initialSession.themeId);
+  const [showUsername, setShowUsername] = useState(initialSession.showUsername);
+  const [uploadedPhoto, setUploadedPhoto] = useState<string | null>(
+    initialSession.uploadedPhoto,
+  );
+  const [photoBusy, setPhotoBusy] = useState(false);
+  const [photoError, setPhotoError] = useState<PhotoErrorCode | null>(null);
 
   const abortRef = useRef<AbortController | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
   // Dates must be calculated in the visitor's timezone, which only exists after
   // hydration. Rendering them on the server would also bake the build date into
@@ -136,20 +152,51 @@ export function CapsuleStudio() {
     const current = new Date();
     setNow(current);
     setMounted(true);
-    setCustomStart(formatDateInput(addDays(current, -30)));
-    setCustomEnd(formatDateInput(current));
+
+    const session = getStudioSession();
+    if (!session.customStart) setCustomStart(formatDateInput(addDays(current, -30)));
+    if (!session.customEnd) setCustomEnd(formatDateInput(current));
+
+    // localStorage only holds the chosen card accent.
+    const storedTheme = readStoredCardTheme();
+    if (storedTheme !== getStudioSession().themeId) setThemeId(storedTheme);
   }, []);
+
+  // Keep the in-memory session in sync so a locale switch (which remounts this
+  // component) can restore the card without any new Last.fm requests.
+  useEffect(() => {
+    patchStudioSession({
+      username,
+      periodKind,
+      customStart,
+      customEnd,
+      result,
+      themeId,
+      showUsername,
+      uploadedPhoto,
+    });
+  }, [username, periodKind, customStart, customEnd, result, themeId, showUsername, uploadedPhoto]);
+
+  // Abort any in-flight fetch if the component unmounts (e.g. locale change).
+  useEffect(
+    () => () => {
+      abortRef.current?.abort();
+    },
+    [],
+  );
 
   // While a custom range is selected, resolve the registration date so the UI
   // can validate and explain the minimum date before the user hits Generate.
   useEffect(() => {
-    if (!mounted || periodKind !== 'custom') return;
+    if (!mounted || periodKind !== 'custom' || result) return;
 
     const trimmed = normalizeLastfmUsernameInput(username);
     if (!isValidLastfmUsername(trimmed)) {
       setUserInfo(null);
       return;
     }
+
+    if (userInfo?.username.toLowerCase() === trimmed.toLowerCase()) return;
 
     const controller = new AbortController();
     const timer = window.setTimeout(() => {
@@ -166,7 +213,7 @@ export function CapsuleStudio() {
       window.clearTimeout(timer);
       controller.abort();
     };
-  }, [mounted, periodKind, username]);
+  }, [mounted, periodKind, username, result, userInfo]);
 
   const translateError = useCallback(
     (state: ErrorState): string => {
@@ -210,15 +257,26 @@ export function CapsuleStudio() {
         code: liveIssue.code,
         params: {
           date: liveIssue.registered ? formatFullDate(liveIssue.registered, locale) : '',
-          days: liveIssue.maxDays ?? MAX_CUSTOM_RANGE_DAYS,
+          months: liveIssue.maxMonths ?? MAX_CUSTOM_RANGE_MONTHS,
         },
       })
     : null;
 
   const registeredLabel = userInfo ? formatFullDate(userInfo.registered, locale) : null;
   const sinceText = registeredLabel
-    ? t('custom.since', { date: registeredLabel, days: MAX_CUSTOM_RANGE_DAYS })
-    : t('custom.maxOnly', { days: MAX_CUSTOM_RANGE_DAYS });
+    ? t('custom.since', { date: registeredLabel, months: MAX_CUSTOM_RANGE_MONTHS })
+    : t('custom.maxOnly', { months: MAX_CUSTOM_RANGE_MONTHS });
+
+  const resultPeriodLabel = result
+    ? formatPeriodLabel(result.periodKind, result.range, locale)
+    : '';
+  const cardTheme = getCardTheme(themeId);
+  const cardHeroImageUrl = uploadedPhoto ?? result?.heroImageUrl ?? null;
+  const photoErrorText = photoError
+    ? t.has(`photo.errors.${photoError}` as never)
+      ? t(`photo.errors.${photoError}` as never)
+      : t('photo.errors.unknown')
+    : null;
 
   function resetErrorOnEdit() {
     if (status === 'error') {
@@ -231,6 +289,7 @@ export function CapsuleStudio() {
 
   function onUsernameChange(event: React.ChangeEvent<HTMLInputElement>) {
     setUsername(event.target.value);
+    setUserInfo(null);
     resetErrorOnEdit();
   }
 
@@ -243,6 +302,7 @@ export function CapsuleStudio() {
     if (normalized && normalized !== pasted.trim()) {
       event.preventDefault();
       setUsername(normalized);
+      setUserInfo(null);
       resetErrorOnEdit();
     }
   }
@@ -251,13 +311,44 @@ export function CapsuleStudio() {
     const normalized = normalizeLastfmUsernameInput(username);
     if (normalized !== username) {
       setUsername(normalized);
+      setUserInfo(null);
       resetErrorOnEdit();
     }
   }
 
   function onPeriodChange(kind: PeriodKind) {
     setPeriodKind(kind);
+    setUserInfo(null);
     resetErrorOnEdit();
+  }
+
+  function onThemeChange(nextTheme: CardThemeId) {
+    setThemeId(nextTheme);
+    storeCardTheme(nextTheme);
+  }
+
+  async function onPhotoSelected(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    // Allow choosing the same file again later.
+    event.target.value = '';
+    if (!file) return;
+
+    setPhotoBusy(true);
+    setPhotoError(null);
+
+    try {
+      const dataUrl = await fileToCardPhoto(file);
+      setUploadedPhoto(dataUrl);
+    } catch (error) {
+      setPhotoError(error instanceof PhotoError ? error.code : 'unknown');
+    } finally {
+      setPhotoBusy(false);
+    }
+  }
+
+  function removeUploadedPhoto() {
+    setUploadedPhoto(null);
+    setPhotoError(null);
   }
 
   function onCancel() {
@@ -320,7 +411,7 @@ export function CapsuleStudio() {
         if (issue) {
           throw new ValidationUiError(issue.code, {
             date: issue.registered ? formatFullDate(issue.registered, locale) : '',
-            days: issue.maxDays ?? MAX_CUSTOM_RANGE_DAYS,
+            months: issue.maxMonths ?? MAX_CUSTOM_RANGE_MONTHS,
           });
         }
 
@@ -339,6 +430,7 @@ export function CapsuleStudio() {
         to: resolved.toUnix,
         signal: controller.signal,
         onProgress: setPhase,
+        minRequestIntervalMs: 150,
       });
 
       setPhase({ phase: 'preparing' });
@@ -352,7 +444,6 @@ export function CapsuleStudio() {
         data,
         periodKind,
         range: { from: resolved.from, to: resolved.to },
-        periodLabel: formatPeriodLabel(periodKind, resolved, locale),
         heroImageUrl,
       });
       setStatus('ready');
@@ -712,7 +803,7 @@ export function CapsuleStudio() {
 
         {result && status === 'ready' && (
           <p className="w-full max-w-[320px] truncate font-mono text-[11px] text-subtle">
-            @{result.data.user.username} · {result.periodLabel}
+            @{result.data.user.username} · {resultPeriodLabel}
           </p>
         )}
 
@@ -734,12 +825,16 @@ export function CapsuleStudio() {
               >
                 <CapsuleCard
                   cardRef={cardRef}
-                  periodLabel={result.periodLabel}
+                  periodLabel={resultPeriodLabel}
                   topArtists={result.data.topArtists}
                   topTracks={result.data.topTracks}
                   minutes={result.data.estimate.minutes}
-                  heroImageUrl={result.heroImageUrl}
+                  heroImageUrl={cardHeroImageUrl}
                   coverArtist={result.data.coverArtist}
+                  username={result.data.user.username}
+                  theme={cardTheme}
+                  showUsername={showUsername}
+                  siteHost={SITE_HOST}
                 />
               </div>
             ) : (
@@ -781,6 +876,89 @@ export function CapsuleStudio() {
             {actionError}
           </p>
         )}
+
+        <div className="w-full max-w-[320px] space-y-2 rounded-lg border border-line bg-surface p-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="text-[11px] font-medium uppercase tracking-wider text-muted">
+              {t('photo.label')}
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => photoInputRef.current?.click()}
+                disabled={photoBusy || isBusy}
+                className="rounded-md border border-line-strong bg-field px-2.5 py-1.5 text-[11px] font-medium text-fg transition-colors hover:border-subtle disabled:cursor-wait disabled:opacity-50"
+              >
+                {uploadedPhoto ? t('photo.replace') : t('photo.upload')}
+              </button>
+              {uploadedPhoto && (
+                <button
+                  type="button"
+                  onClick={removeUploadedPhoto}
+                  className="rounded-md border border-line bg-transparent px-2.5 py-1.5 text-[11px] text-muted transition-colors hover:text-fg"
+                >
+                  {t('photo.remove')}
+                </button>
+              )}
+            </div>
+          </div>
+          <input
+            ref={photoInputRef}
+            type="file"
+            accept={PHOTO_ACCEPT_ATTRIBUTE}
+            onChange={onPhotoSelected}
+            className="sr-only"
+            aria-label={t('photo.upload')}
+          />
+          <p className="text-[11px] leading-relaxed text-subtle">{t('photo.privacy')}</p>
+          {photoErrorText && (
+            <p role="alert" className="text-[11px] text-accent">
+              {photoErrorText}
+            </p>
+          )}
+        </div>
+
+        <div className="w-full max-w-[320px] space-y-2">
+          <span className="block text-[11px] font-medium uppercase tracking-wider text-muted">
+            {t('themeLabel')}
+          </span>
+          <div className="flex items-center gap-2.5">
+            {CARD_THEMES.map((theme) => {
+              const selected = theme.id === themeId;
+              return (
+                <button
+                  key={theme.id}
+                  type="button"
+                  onClick={() => onThemeChange(theme.id)}
+                  aria-label={theme.name}
+                  aria-pressed={selected}
+                  title={theme.name}
+                  className={`flex h-8 w-8 items-center justify-center rounded-full border transition-transform ${
+                    selected
+                      ? 'border-fg scale-110'
+                      : 'border-line-strong hover:scale-105'
+                  }`}
+                >
+                  <span
+                    className="h-5 w-5 rounded-full"
+                    style={{ backgroundColor: theme.accent }}
+                  />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <label className="flex w-full max-w-[320px] items-center gap-2 text-xs text-muted">
+          <input
+            type="checkbox"
+            checked={showUsername}
+            onChange={(event) => setShowUsername(event.target.checked)}
+            className="h-4 w-4 rounded border-line-strong bg-field"
+            style={{ accentColor: '#F06848' }}
+          />
+          <span>{t('showUsername')}</span>
+        </label>
 
         <details className="group relative w-full max-w-[320px] text-xs text-muted">
           <summary className="flex cursor-pointer list-none items-start gap-2 rounded-md text-left transition-colors hover:text-fg [&::-webkit-details-marker]:hidden">

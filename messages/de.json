@@ -16,7 +16,7 @@
     "subtitle": "Gib deinen Last.fm-Benutzernamen ein und wähle einen Zeitraum, um eine vertikale 1080×1920-Karte zum Teilen zu erstellen.",
     "usernameLabel": "Last.fm-Benutzername",
     "usernamePlaceholder": "dein Benutzername",
-    "usernameHint": "Das Profil muss öffentlich sein und im gewählten Zeitraum Scrobbles enthalten.",
+    "usernameHint": "Füge den Profil-Link ein oder gib den Benutzernamen ein. Das Profil muss öffentlich sein und Scrobbles im Zeitraum haben.",
     "periodLabel": "Zeitraum",
     "period": {
       "week": "Letzte 7 Tage",
@@ -27,13 +27,13 @@
     "custom": {
       "start": "Startdatum",
       "end": "Enddatum",
-      "since": "Seit der Last.fm-Registrierung ({date}) · max. {days} Tage",
-      "maxOnly": "Max. {days} Tage",
+      "since": "Seit der Last.fm-Registrierung ({date}) · max. {months} Monate",
+      "maxOnly": "Maximal {months} Monate",
       "warning": "Längere Zeiträume laden mehr Seiten und können ein paar Sekunden länger dauern."
     },
     "generate": "Kapsel erstellen",
     "generating": "Kapsel wird erstellt...",
-    "privacy": "Kein Login · Keine Datenbank · Lokale Berechnung im Browser",
+    "privacy": "Kein Login · Keine Datenbank · Nur Sprache und Theme werden in diesem Browser gespeichert",
     "preview": {
       "title": "Vorschau (9:16)",
       "dimensions": "1080×1920",
@@ -80,7 +80,22 @@
       "invalid_range": "Das Enddatum muss gleich oder nach dem Startdatum liegen.",
       "end_future": "Das Enddatum darf nicht in der Zukunft liegen.",
       "before_registration": "Das Startdatum liegt vor der Last.fm-Registrierung dieses Benutzers ({date}).",
-      "range_too_long": "Der maximale Zeitraum beträgt {days} Tage."
+      "range_too_long": "Der maximale Zeitraum beträgt {months} Monate."
+    },
+    "themeLabel": "Kartenfarbe",
+    "showUsername": "Meinen Benutzernamen auf der Karte anzeigen",
+    "photo": {
+      "label": "Kartenfoto",
+      "upload": "Foto hochladen",
+      "replace": "Foto ändern",
+      "remove": "Foto entfernen",
+      "privacy": "Dein Foto verlässt diesen Browser nie.",
+      "errors": {
+        "invalid_type": "Verwende JPEG, PNG oder WebP.",
+        "too_large": "Das Bild darf höchstens 10 MB groß sein.",
+        "invalid_image": "Dieses Bild konnte nicht gelesen werden.",
+        "unknown": "Dieses Foto konnte nicht verwendet werden."
+      }
     }
   },
   "Card": {
@@ -91,7 +106,8 @@
     "minutes": "≈ {minutes, number} Minuten"
   },
   "Footer": {
-    "note": "Öffentliche Last.fm-Daten · Deezer-Bilder · nichts aus deinem Profil wird gespeichert.",
-    "disclaimer": "Sound Capsule ist nicht mit Last.fm verbunden."
+    "note": "Öffentliche Last.fm-Daten · Deezer-Bilder · nur Sprache und Theme werden in diesem Browser gespeichert.",
+    "disclaimer": "Sound Capsule ist nicht mit Last.fm verbunden.",
+    "poweredBy": "powered by Last.fm"
   }
 }

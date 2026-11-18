@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { cdnCacheHeaders, NO_STORE_HEADERS } from '@/lib/httpCache';
+import { APP_USER_AGENT } from '@/lib/site';
 
 /**
  * Same-origin image proxy for Deezer's CDN. Serving the hero image from our
@@ -8,20 +10,20 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-const CACHE_CONTROL = 'public, s-maxage=300, stale-while-revalidate=60';
+const CACHE_HEADERS = cdnCacheHeaders(86_400, 604_800);
 const DEEZER_HOST_PATTERN = /(^|\.)dzcdn\.net$/i;
 const UPSTREAM_TIMEOUT_MS = 10_000;
 const MAX_IMAGE_BYTES = 12 * 1024 * 1024;
 
 function fail(code: string, message: string, status: number): NextResponse {
-  return NextResponse.json({ error: code, message }, { status, headers: { 'Cache-Control': 'no-store' } });
+  return NextResponse.json({ error: code, message }, { status, headers: NO_STORE_HEADERS });
 }
 
 function isAllowedImageUrl(value: URL): boolean {
   return value.protocol === 'https:' && DEEZER_HOST_PATTERN.test(value.hostname);
 }
 
-export async function GET(request: Request): Promise<NextResponse> {
+export async function GET(request: Request): Promise<Response> {
   let requestUrl: URL;
   try {
     requestUrl = new URL(request.url);
@@ -47,7 +49,10 @@ export async function GET(request: Request): Promise<NextResponse> {
 
   try {
     const upstream = await fetch(target, {
-      headers: { Accept: 'image/*' },
+      headers: {
+        Accept: 'image/*',
+        'User-Agent': APP_USER_AGENT,
+      },
       cache: 'no-store',
       signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
       redirect: 'follow',
@@ -72,20 +77,23 @@ export async function GET(request: Request): Promise<NextResponse> {
       return fail('payload_too_large', 'The image is too large.', 413);
     }
 
-    const buffer = await upstream.arrayBuffer();
-    if (buffer.byteLength > MAX_IMAGE_BYTES) {
-      return fail('payload_too_large', 'The image is too large.', 413);
+    if (!upstream.body) {
+      return fail('upstream_error', 'The image host returned an empty body.', 502);
     }
 
-    return new NextResponse(buffer, {
-      status: 200,
-      headers: {
-        'Cache-Control': CACHE_CONTROL,
-        'Content-Type': contentType,
-        'Content-Length': String(buffer.byteLength),
-        'X-Content-Type-Options': 'nosniff',
-      },
-    });
+    // Stream the image instead of buffering it: Vercel's 4.5 MB non-streamed
+    // response limit does not apply to streamed responses, and it keeps memory
+    // usage low.
+    const headers: Record<string, string> = {
+      ...CACHE_HEADERS,
+      'Content-Type': contentType,
+      'X-Content-Type-Options': 'nosniff',
+    };
+    if (declaredLength > 0) {
+      headers['Content-Length'] = String(declaredLength);
+    }
+
+    return new Response(upstream.body, { status: 200, headers });
   } catch (error) {
     const isTimeout =
       error instanceof DOMException &&

@@ -5,6 +5,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { locales, type Locale } from '@/lib/locales';
+import { SITE_URL } from '@/lib/site';
 import '../globals.css';
 
 const geistSans = Geist({
@@ -78,6 +79,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: 'Metadata' });
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: t('title'),
     description: t('description'),
     applicationName: 'Sound Capsule',
@@ -87,6 +89,7 @@ export async function generateMetadata({
       type: 'website',
       locale: openGraphLocales[locale as Locale],
       siteName: 'Sound Capsule',
+      url: `${SITE_URL}/${locale}`,
     },
     twitter: {
       card: 'summary_large_image',

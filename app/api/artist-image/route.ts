@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { pickBestArtistMatch, type DeezerArtistLike } from '@/lib/artistMatch';
+import { cdnCacheHeaders, NO_STORE_HEADERS } from '@/lib/httpCache';
+import { APP_USER_AGENT } from '@/lib/site';
 
 /**
  * Resolves the best Deezer artist for a Last.fm artist name and returns its
@@ -12,7 +14,7 @@ import { pickBestArtistMatch, type DeezerArtistLike } from '@/lib/artistMatch';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-const CACHE_CONTROL = 'public, s-maxage=300, stale-while-revalidate=60';
+const CACHE_HEADERS = cdnCacheHeaders(86_400, 604_800);
 const DEEZER_TIMEOUT_MS = 8_000;
 const MAX_NAME_LENGTH = 256;
 
@@ -26,7 +28,7 @@ interface DeezerSearchResponse {
 }
 
 function fail(code: string, message: string, status: number): NextResponse {
-  return NextResponse.json({ error: code, message }, { status, headers: { 'Cache-Control': 'no-store' } });
+  return NextResponse.json({ error: code, message }, { status, headers: NO_STORE_HEADERS });
 }
 
 export async function GET(request: Request): Promise<NextResponse> {
@@ -54,7 +56,10 @@ export async function GET(request: Request): Promise<NextResponse> {
 
   try {
     const upstream = await fetch(searchUrl, {
-      headers: { Accept: 'application/json' },
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': APP_USER_AGENT,
+      },
       cache: 'no-store',
       signal: AbortSignal.timeout(DEEZER_TIMEOUT_MS),
     });
@@ -90,7 +95,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         matchScore: Number(best.score.toFixed(3)),
         source: 'deezer',
       },
-      { headers: { 'Cache-Control': CACHE_CONTROL } },
+      { headers: CACHE_HEADERS },
     );
   } catch (error) {
     const isTimeout =

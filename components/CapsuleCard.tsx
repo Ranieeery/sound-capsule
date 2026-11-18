@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import type { ArtistCount, TrackCount } from '@/lib/aggregate';
+import type { CardTheme } from '@/lib/cardThemes';
 import { BrandMark } from './BrandMark';
 import { CardHero } from './CardHero';
 
@@ -19,6 +20,10 @@ interface CapsuleCardProps {
   minutes: number;
   heroImageUrl: string | null;
   coverArtist: string;
+  username: string;
+  theme: CardTheme;
+  showUsername: boolean;
+  siteHost: string;
   cardRef?: React.Ref<HTMLDivElement>;
 }
 
@@ -29,6 +34,10 @@ export function CapsuleCard({
   minutes,
   heroImageUrl,
   coverArtist,
+  username,
+  theme,
+  showUsername,
+  siteHost,
   cardRef,
 }: CapsuleCardProps) {
   const t = useTranslations('Card');
@@ -82,7 +91,7 @@ export function CapsuleCard({
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-            <BrandMark size={22} surface="#171719" border="#343438" />
+            <BrandMark size={22} surface="#171719" border="#343438" accent={theme.accent} />
             <span
               style={{
                 fontSize: 15.5,
@@ -174,12 +183,40 @@ export function CapsuleCard({
               lineHeight: 1.12,
               fontWeight: 700,
               letterSpacing: '-0.025em',
-              color: '#F06848',
+              color: theme.accent,
               fontVariantNumeric: 'tabular-nums',
             }}
           >
             {t('minutes', { minutes })}
           </span>
+
+          {/* Attribution + site URL (required by the Last.fm API TOS). */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'space-between',
+              gap: 10,
+              marginTop: 8,
+              fontFamily: 'var(--font-mono)',
+              fontSize: 9.5,
+              lineHeight: 1.3,
+              color: '#71717a',
+            }}
+          >
+            <span
+              style={{
+                minWidth: 0,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Data from Last.fm
+              {showUsername ? ` · last.fm/user/${username}` : ''}
+            </span>
+            <span style={{ flexShrink: 0 }}>{siteHost}</span>
+          </div>
         </div>
       </div>
     </div>

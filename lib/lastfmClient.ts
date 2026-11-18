@@ -15,8 +15,8 @@ import {
 
 const API_PROXY = '/api/lastfm';
 export const PAGE_SIZE = 200;
-export const PAGE_CONCURRENCY = 4;
-export const DURATION_CONCURRENCY = 4;
+export const PAGE_CONCURRENCY = 3;
+export const DURATION_CONCURRENCY = 3;
 const MAX_ATTEMPTS = 4;
 const RETRY_BASE_DELAY_MS = 700;
 const USER_INFO_TTL_MS = 5 * 60 * 1000;
@@ -80,6 +80,8 @@ export interface FetchCapsuleOptions {
   onProgress?: (progress: FetchProgress) => void;
   fetcher?: typeof fetch;
   retryBaseDelayMs?: number;
+  /** Minimum gap between Last.fm proxy requests; 0 in tests. */
+  minRequestIntervalMs?: number;
   pageConcurrency?: number;
   durationConcurrency?: number;
   fallbackDurationSeconds?: number;
@@ -90,6 +92,7 @@ interface UserInfoOptions {
   signal?: AbortSignal;
   fetcher?: typeof fetch;
   retryBaseDelayMs?: number;
+  pacer?: RequestPacer;
 }
 
 interface RawRecentTrack {
@@ -117,7 +120,11 @@ interface UserInfoPayload {
     name?: string;
     realname?: string;
     playcount?: string | number;
-    registered?: { uts?: string | number };
+    registered?: {
+      uts?: string | number;
+      unixtime?: string | number;
+      '#text'?: string | number;
+    };
   };
   error?: number | string;
   message?: string;
@@ -253,14 +260,38 @@ async function withRetries<T>(
   }
 }
 
+/**
+ * Simple client-side pacer shared by all Last.fm calls of one capsule. The
+ * Last.fm guidelines ask apps to avoid sustained bursts; concurrency alone does
+ * not bound the request rate, so each worker reserves the next time slot.
+ */
+class RequestPacer {
+  private nextAt = 0;
+
+  constructor(private readonly intervalMs: number) {}
+
+  async wait(signal?: AbortSignal): Promise<void> {
+    if (this.intervalMs <= 0) return;
+    if (signal?.aborted) throw cancelledError();
+
+    const now = Date.now();
+    const delay = Math.max(0, this.nextAt - now);
+    this.nextAt = Math.max(now, this.nextAt) + this.intervalMs;
+
+    if (delay > 0) await abortableDelay(delay, signal);
+  }
+}
+
 async function callProxy<T>(
   params: Record<string, string | number>,
-  options: { signal?: AbortSignal; fetcher?: typeof fetch },
+  options: { signal?: AbortSignal; fetcher?: typeof fetch; pacer?: RequestPacer },
 ): Promise<T> {
   const search = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
     search.set(key, String(value));
   }
+
+  await options.pacer?.wait(options.signal);
 
   const fetcher = options.fetcher ?? fetch;
   let response: Response;
@@ -326,7 +357,7 @@ export async function fetchUserInfo(
     () =>
       callProxy<UserInfoPayload>(
         { method: 'user.getInfo', user: trimmed },
-        { signal: options.signal, fetcher: options.fetcher },
+        { signal: options.signal, fetcher: options.fetcher, pacer: options.pacer },
       ),
     {
       signal: options.signal,
@@ -340,7 +371,11 @@ export async function fetchUserInfo(
     throw new LastfmError('invalid_user', 'Last.fm did not return a user.');
   }
 
-  const registeredUnix = asNumber(user.registered?.uts);
+  // The REST API returns `registered.unixtime` (plus a `#text` duplicate),
+  // while XML-RPC-style payloads use `registered.uts`.
+  const registeredUnix = asNumber(
+    user.registered?.unixtime ?? user.registered?.uts ?? user.registered?.['#text'],
+  );
   const result: LastfmUser = {
     username: asText(user.name) || trimmed,
     realname: asText(user.realname) || undefined,
@@ -382,7 +417,12 @@ async function fetchRecentTracksPage(
   page: number,
   from: number,
   to: number,
-  options: { signal?: AbortSignal; fetcher?: typeof fetch; retryBaseDelayMs?: number },
+  options: {
+    signal?: AbortSignal;
+    fetcher?: typeof fetch;
+    retryBaseDelayMs?: number;
+    pacer?: RequestPacer;
+  },
 ): Promise<RecentTracksPage> {
   const payload = await withRetries(
     () =>
@@ -395,7 +435,7 @@ async function fetchRecentTracksPage(
           page,
           limit: PAGE_SIZE,
         },
-        { signal: options.signal, fetcher: options.fetcher },
+        { signal: options.signal, fetcher: options.fetcher, pacer: options.pacer },
       ),
     { signal: options.signal, baseDelayMs: options.retryBaseDelayMs },
   );
@@ -427,6 +467,7 @@ async function fetchAllScrobbles(
     onProgress?: (progress: FetchProgress) => void;
     retryBaseDelayMs?: number;
     concurrency?: number;
+    pacer?: RequestPacer;
   },
 ): Promise<Scrobble[]> {
   const concurrency = options.concurrency ?? PAGE_CONCURRENCY;
@@ -509,6 +550,7 @@ async function fetchTrackDurations(
     retryBaseDelayMs?: number;
     concurrency?: number;
     maxLookups: number;
+    pacer?: RequestPacer;
   },
 ): Promise<Map<string, number | null>> {
   const candidates = tracks.slice(0, options.maxLookups);
@@ -529,7 +571,7 @@ async function fetchTrackDurations(
               track: track.name,
               autocorrect: 1,
             },
-            { signal: options.signal, fetcher: options.fetcher },
+            { signal: options.signal, fetcher: options.fetcher, pacer: options.pacer },
           ),
         { signal: options.signal, baseDelayMs: options.retryBaseDelayMs, attempts: 3 },
       );
@@ -565,10 +607,13 @@ export async function fetchCapsule(options: FetchCapsuleOptions): Promise<Capsul
   }
 
   onProgress?.({ phase: 'user' });
+  const pacer = new RequestPacer(options.minRequestIntervalMs ?? 0);
+
   const user = await fetchUserInfo(username, {
     signal,
     fetcher,
     retryBaseDelayMs: options.retryBaseDelayMs,
+    pacer,
   });
 
   const scrobbles = await fetchAllScrobbles(username, from, to, {
@@ -577,6 +622,7 @@ export async function fetchCapsule(options: FetchCapsuleOptions): Promise<Capsul
     onProgress,
     retryBaseDelayMs: options.retryBaseDelayMs,
     concurrency: options.pageConcurrency,
+    pacer,
   });
 
   const aggregate = aggregateScrobbles(scrobbles);
@@ -591,6 +637,7 @@ export async function fetchCapsule(options: FetchCapsuleOptions): Promise<Capsul
     retryBaseDelayMs: options.retryBaseDelayMs,
     concurrency: options.durationConcurrency,
     maxLookups: options.maxDurationLookups ?? MAX_DURATION_LOOKUPS,
+    pacer,
   });
 
   const estimate = estimateListeningTime(

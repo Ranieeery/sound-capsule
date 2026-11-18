@@ -1,7 +1,11 @@
 import { getIntlLocale } from '@/lib/locales';
 
-/** Maximum length allowed for a custom date range. */
-export const MAX_CUSTOM_RANGE_DAYS = 365;
+/**
+ * Maximum duration for a custom date range, measured in calendar months.
+ * "90 days" is only an approximate label; the range is validated against the
+ * same calendar day three months after the start.
+ */
+export const MAX_CUSTOM_RANGE_MONTHS = 3;
 
 /** Last.fm does not return listening time; 3.5 min is the documented fallback. */
 export const DEFAULT_TRACK_DURATION_SECONDS = 210;
@@ -34,7 +38,7 @@ export type RangeValidationCode =
 export interface RangeValidationIssue {
   code: RangeValidationCode;
   /** Present for `range_too_long`. */
-  maxDays?: number;
+  maxMonths?: number;
   /** Present for `before_registration`. */
   registered?: Date;
 }
@@ -58,6 +62,24 @@ export function startOfMonth(date: Date): Date {
 export function addDays(date: Date, days: number): Date {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
+  return result;
+}
+
+/**
+ * Adds calendar months, clamping the day to the last valid day of the target
+ * month (Jan 31 + 1 month = Feb 28/29). The time of day is preserved.
+ */
+export function addMonths(date: Date, months: number): Date {
+  const result = new Date(date);
+  const day = result.getDate();
+  result.setDate(1);
+  result.setMonth(result.getMonth() + months);
+  const lastDayOfTargetMonth = new Date(
+    result.getFullYear(),
+    result.getMonth() + 1,
+    0,
+  ).getDate();
+  result.setDate(Math.min(day, lastDayOfTargetMonth));
   return result;
 }
 
@@ -130,9 +152,15 @@ export function validateCustomRange(options: {
   end: Date;
   registered?: Date | null;
   now?: Date;
-  maxDays?: number;
+  maxMonths?: number;
 }): RangeValidationIssue | null {
-  const { start, end, registered, now = new Date(), maxDays = MAX_CUSTOM_RANGE_DAYS } = options;
+  const {
+    start,
+    end,
+    registered,
+    now = new Date(),
+    maxMonths = MAX_CUSTOM_RANGE_MONTHS,
+  } = options;
 
   if (startOfDay(start).getTime() > startOfDay(end).getTime()) {
     return { code: 'invalid_range' };
@@ -146,8 +174,9 @@ export function validateCustomRange(options: {
     return { code: 'before_registration', registered };
   }
 
-  if (daysBetweenInclusive(start, end) > maxDays) {
-    return { code: 'range_too_long', maxDays };
+  const maxEnd = addMonths(startOfDay(start), maxMonths);
+  if (startOfDay(end).getTime() > maxEnd.getTime()) {
+    return { code: 'range_too_long', maxMonths };
   }
 
   return null;

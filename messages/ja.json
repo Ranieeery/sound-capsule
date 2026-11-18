@@ -16,7 +16,7 @@
     "subtitle": "Last.fmのユーザー名と期間を入力すると、共有用の縦型カード（1080×1920）をブラウザ上で生成します。",
     "usernameLabel": "Last.fm ユーザー名",
     "usernamePlaceholder": "ユーザー名",
-    "usernameHint": "プロフィールが公開されていて、選択した期間にスクロブルがある必要があります。",
+    "usernameHint": "プロフィールのリンクを貼るか、ユーザー名を入力してください。プロフィールは公開され、期間内にスクロブルが必要です。",
     "periodLabel": "期間",
     "period": {
       "week": "過去7日間",
@@ -27,13 +27,13 @@
     "custom": {
       "start": "開始日",
       "end": "終了日",
-      "since": "Last.fm登録日（{date}）以降 · 最大{days}日",
-      "maxOnly": "最大{days}日",
+      "since": "Last.fm登録日（{date}）以降 · 最大{months}か月",
+      "maxOnly": "最大{months}か月",
       "warning": "期間が長いほどページ数が増え、取得に数秒余計にかかる場合があります。"
     },
     "generate": "カプセルを作成",
     "generating": "カプセルを作成中...",
-    "privacy": "ログイン不要 · DB保存なし · ブラウザ内でローカル集計",
+    "privacy": "ログイン不要 · DB保存なし · このブラウザには言語とテーマのみ保存されます",
     "preview": {
       "title": "プレビュー (9:16)",
       "dimensions": "1080×1920",
@@ -80,7 +80,22 @@
       "invalid_range": "終了日は開始日以降にしてください。",
       "end_future": "終了日を未来に設定することはできません。",
       "before_registration": "開始日がこのユーザーのLast.fm登録日（{date}）より前です。",
-      "range_too_long": "期間の上限は{days}日です。"
+      "range_too_long": "期間の上限は{months}か月です。"
+    },
+    "themeLabel": "カードの色",
+    "showUsername": "カードにユーザー名を表示",
+    "photo": {
+      "label": "カードの写真",
+      "upload": "写真をアップロード",
+      "replace": "写真を変更",
+      "remove": "写真を削除",
+      "privacy": "写真がこのブラウザの外に送信されることはありません。",
+      "errors": {
+        "invalid_type": "JPEG、PNG、WebPを使用してください。",
+        "too_large": "画像は最大10 MBです。",
+        "invalid_image": "この画像を読み込めませんでした。",
+        "unknown": "この写真を使用できませんでした。"
+      }
     }
   },
   "Card": {
@@ -91,7 +106,8 @@
     "minutes": "約 {minutes, number} 分"
   },
   "Footer": {
-    "note": "Last.fmの公開データ · Deezerの画像 · プロフィールは保存されません。",
-    "disclaimer": "Sound CapsuleはLast.fmと提携していません。"
+    "note": "Last.fmの公開データ · Deezerの画像 · このブラウザには言語とテーマのみ保存されます。",
+    "disclaimer": "Sound CapsuleはLast.fmと提携していません。",
+    "poweredBy": "powered by Last.fm"
   }
 }

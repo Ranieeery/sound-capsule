@@ -13,6 +13,10 @@ export function SiteHeader() {
 
   function onLocaleChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const nextLocale = event.target.value as Locale;
+    // Persist only the language preference. next-intl also handles this via its
+    // locale cookie, but setting it explicitly keeps the behavior independent
+    // of navigation timing.
+    document.cookie = `NEXT_LOCALE=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
     router.replace(pathname, { locale: nextLocale });
   }
 

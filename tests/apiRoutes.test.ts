@@ -92,10 +92,12 @@ describe('GET /api/lastfm', () => {
 
   it('forwards valid requests with the server key and caches on the CDN', async () => {
     let upstreamUrl = '';
+    let upstreamHeaders: HeadersInit | undefined;
     vi.stubGlobal(
       'fetch',
-      vi.fn(async (input: RequestInfo | URL) => {
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
         upstreamUrl = String(input);
+        upstreamHeaders = init?.headers;
         return jsonResponse({ user: { name: 'ranieri' } });
       }),
     );
@@ -105,8 +107,9 @@ describe('GET /api/lastfm', () => {
     );
 
     expect(response.status).toBe(200);
-    expect(response.headers.get('cache-control')).toContain('s-maxage=300');
-    expect(response.headers.get('cache-control')).toContain('stale-while-revalidate');
+    expect(response.headers.get('cache-control')).toBe('public, max-age=0, must-revalidate');
+    expect(response.headers.get('vercel-cdn-cache-control')).toContain('s-maxage=300');
+    expect(response.headers.get('vercel-cdn-cache-control')).toContain('stale-while-revalidate');
 
     const url = new URL(upstreamUrl);
     expect(url.origin + url.pathname).toBe('https://ws.audioscrobbler.com/2.0/');
@@ -114,6 +117,21 @@ describe('GET /api/lastfm', () => {
     expect(url.searchParams.get('user')).toBe('ranieri');
     expect(url.searchParams.get('api_key')).toBe('test-key');
     expect(url.searchParams.get('format')).toBe('json');
+    expect(new Headers(upstreamHeaders).get('user-agent')).toContain('SoundCapsule/');
+  });
+
+  it('caches stable track metadata for 24 hours on the CDN', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => jsonResponse({ track: { duration: '200000' } })),
+    );
+
+    const response = await lastfmRoute(
+      request('/api/lastfm?method=track.getInfo&artist=Radiohead&track=Creep'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('vercel-cdn-cache-control')).toContain('s-maxage=86400');
   });
 
   it('passes API errors through without caching them', async () => {
@@ -160,7 +178,7 @@ describe('GET /api/artist-image', () => {
     expect(response.status).toBe(200);
     expect(payload.name).toBe('Radiohead');
     expect(payload.imageUrl).toBe('https://cdn-images.dzcdn.net/radiohead.jpg');
-    expect(response.headers.get('cache-control')).toContain('s-maxage=300');
+    expect(response.headers.get('vercel-cdn-cache-control')).toContain('s-maxage=86400');
   });
 
   it('returns 404 when no candidate matches', async () => {
@@ -230,7 +248,8 @@ describe('GET /api/image-proxy', () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get('content-type')).toBe('image/jpeg');
-    expect(response.headers.get('cache-control')).toContain('s-maxage=300');
+    expect(response.headers.get('vercel-cdn-cache-control')).toContain('s-maxage=86400');
+    expect(response.headers.get('x-content-type-options')).toBe('nosniff');
     expect((await response.arrayBuffer()).byteLength).toBe(3);
   });
 

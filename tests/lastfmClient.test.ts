@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
   clearUserInfoCache,
   fetchCapsule,
+  fetchUserInfo,
   type FetchProgress,
 } from '@/lib/lastfmClient';
 
@@ -79,6 +80,24 @@ beforeEach(() => {
 });
 
 describe('fetchCapsule', () => {
+  it('reads the registered.unixtime shape returned by the REST API', async () => {
+    const fetcher = makeFetcher((url) => {
+      if (url.searchParams.get('method') === 'user.getInfo') {
+        return json({
+          user: {
+            name: 'ranieri',
+            playcount: '1',
+            registered: { unixtime: '1552601400', '#text': 1552601400 },
+          },
+        });
+      }
+      return json({ error: 6, message: 'Not used' });
+    });
+
+    const user = await fetchUserInfo('ranieri', { fetcher });
+    expect(user.registered.getTime()).toBe(1_552_601_400_000);
+  });
+
   it('paginates every page, ignores now-playing and aggregates locally', async () => {
     const calls: string[] = [];
     const progress: FetchProgress[] = [];

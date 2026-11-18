@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
-  MAX_CUSTOM_RANGE_DAYS,
+  MAX_CUSTOM_RANGE_MONTHS,
   addDays,
+  addMonths,
   daysBetweenInclusive,
   formatDateInput,
   formatMonth,
@@ -120,11 +121,12 @@ describe('custom range validation', () => {
     ).toBeNull();
   });
 
-  it('caps the range at one year', () => {
+  it('caps the range at three calendar months', () => {
+    // Aug 18 -> Nov 19 is one day past three calendar months.
     expect(
       validateCustomRange({
-        start: new Date(2024, 0, 1),
-        end: new Date(2025, 5, 1),
+        start: new Date(2025, 7, 18),
+        end: new Date(2025, 10, 19),
         registered: REGISTERED,
         now: NOW,
       })?.code,
@@ -132,19 +134,58 @@ describe('custom range validation', () => {
 
     const issue = validateCustomRange({
       start: new Date(2025, 0, 1),
-      end: new Date(2026, 1, 1),
+      end: new Date(2025, 5, 1),
       now: NOW,
     });
     expect(issue?.code).toBe('range_too_long');
-    expect(issue?.maxDays).toBe(MAX_CUSTOM_RANGE_DAYS);
+    expect(issue?.maxMonths).toBe(MAX_CUSTOM_RANGE_MONTHS);
 
+    // Exactly three calendar months is allowed.
     expect(
       validateCustomRange({
-        start: new Date(2025, 10, 19),
-        end: new Date(2026, 10, 18),
+        start: new Date(2025, 7, 18),
+        end: new Date(2025, 10, 18),
         now: NOW,
       }),
     ).toBeNull();
+  });
+
+  it('clamps month arithmetic at the end of shorter months', () => {
+    expect(addMonths(new Date(2026, 0, 31), 1)).toEqual(new Date(2026, 1, 28));
+    expect(addMonths(new Date(2024, 0, 31), 1)).toEqual(new Date(2024, 1, 29));
+    expect(addMonths(new Date(2026, 4, 31), 3)).toEqual(new Date(2026, 7, 31));
+
+    // Jan 31 + 3 months = Apr 30; May 1 is out of range.
+    expect(
+      validateCustomRange({
+        start: new Date(2025, 0, 31),
+        end: new Date(2025, 3, 30),
+        now: NOW,
+      }),
+    ).toBeNull();
+    expect(
+      validateCustomRange({
+        start: new Date(2025, 0, 31),
+        end: new Date(2025, 4, 1),
+        now: NOW,
+      })?.code,
+    ).toBe('range_too_long');
+
+    // Nov 30 + 3 months = Feb 28; Mar 1 is out of range.
+    expect(
+      validateCustomRange({
+        start: new Date(2025, 10, 30),
+        end: new Date(2026, 1, 28),
+        now: NOW,
+      }),
+    ).toBeNull();
+    expect(
+      validateCustomRange({
+        start: new Date(2025, 10, 30),
+        end: new Date(2026, 2, 1),
+        now: NOW,
+      })?.code,
+    ).toBe('range_too_long');
   });
 });
 
