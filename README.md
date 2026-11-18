@@ -20,7 +20,7 @@ Exemplo com nomes em japonês, coreano e chinês renderizados no PNG exportado: 
 - **Duas colunas numeradas** (Top artistas e Top músicas, 1–5) com truncamento por reticências e suporte a CJK (japonês, coreano e chinês).
 - **Minutagem estimada** com destaque sólido na cor do tema, tooltip explicando o cálculo e formatação via `Intl`.
 - **Progresso real** de paginação ("Página 12 de 40"), skeleton na prévia e cancelamento com `AbortController`.
-- **i18n** em `pt`, `en`, `es`, `fr`, `de`, `it` e `ja`, com detecção por `Accept-Language`, seletor manual no header, rotas prefixadas e textos/datas/números formatados com `Intl`.
+- **i18n** em `pt`, `en`, `es`, `fr`, `de`, `it`, `ja`, `ko`, `zh`, `ru` e `pl`, com detecção por `Accept-Language`, seletor manual no header, rotas prefixadas e textos/datas/números formatados com `Intl`.
 - **Créditos no card** (“Data from Last.fm”, link do perfil e URL do site), com opção de ocultar o username do card.
 - **Fundo em `<canvas>`** com linhas de onda discretas que reagem ao mouse, pausam com a aba oculta e desligam com `prefers-reduced-motion`.
 - **Acessível**: navegação por teclado, labels, `role="progressbar"`, alerts, contraste AA e respeito a movimento reduzido.
@@ -149,6 +149,7 @@ components/
   CardHero.tsx            # foto do artista/upload ou fallback canvas
   BackgroundCanvas.tsx    # ondas de fundo (mouse, reduced motion, hidden)
   SiteHeader.tsx / SiteFooter.tsx / BrandMark.tsx
+  LocaleSwitcher.tsx      # dropdown customizado e acessível de idioma
 i18n/                     # routing/request/navigation do next-intl
 lib/
   lastfmClient.ts         # paginação, concorrência, pacer, retry/backoff, abort
@@ -238,15 +239,16 @@ Tipografia: Geist (sans) + Geist Mono (números/detalhes) + Noto Sans JP/KR/SC p
 
 ## i18n
 
-- Locales: `pt` (padrão, conteúdo pt-BR), `en`, `es`, `fr`, `de`, `it`, `ja`.
-- Detecção por `Accept-Language` no middleware (o cookie `NEXT_LOCALE` tem prioridade); troca manual no header preserva a rota e o card em memória.
-- Datas e números usam `Intl` com o locale regional correto (`pt-BR`, `en-US`, `es-ES`, `fr-FR`, `de-DE`, `it-IT`, `ja-JP`).
+- Locales: `pt` (padrão, conteúdo pt-BR), `en`, `es`, `fr`, `de`, `it`, `ja`, `ko`, `zh` (chinês simplificado), `ru` e `pl`.
+- Detecção por `Accept-Language` no middleware (o cookie `NEXT_LOCALE` tem prioridade); troca manual no header preserva a rota e o card em memória. O seletor é um dropdown customizado, não o `<select>` nativo.
+- Datas e números usam `Intl` com o locale regional correto (`pt-BR`, `en-US`, `es-ES`, `fr-FR`, `de-DE`, `it-IT`, `ja-JP`, `ko-KR`, `zh-CN`, `ru-RU`, `pl-PL`).
 - O texto do card é traduzido junto com a interface; a imagem exportada já usa o idioma ativo.
+- Fontes: Geist carrega latin/latin-ext/cirílico; Noto Sans JP/KR/SC cobre os caracteres CJK no card.
 
 ## Testes
 
 ```bash
-pnpm test        # 85 testes unitários
+pnpm test        # 108 testes unitários
 pnpm typecheck
 pnpm build
 ```
@@ -262,7 +264,7 @@ Cobertura atual:
 - temas e store de sessão;
 - validação do upload local (tipo/tamanho).
 
-Além disso, o fluxo foi verificado em Chromium com Last.fm/Deezer simulados: tema, upload, créditos, username oculto, troca de idioma sem novas requisições, apenas cookie/localStorage permitidos, F5, validação de 3 meses, export **1080×1920** e mobile — **31 verificações, todas passando**. O fluxo real também foi executado contra a API do Last.fm/Deezer com um perfil ativo, gerando e exportando o PNG 1080×1920.
+Além disso, o fluxo foi verificado em Chromium com Last.fm/Deezer simulados: tema, upload, créditos, username oculto, troca de idioma sem novas requisições, dropdown customizado (mouse, teclado e clique fora), rotas `ko`/`ru`/`zh`/`pl`, scroll automático para a prévia no mobile, apenas cookie/localStorage permitidos, F5, validação de 3 meses e export **1080×1920**. O fluxo real também foi executado contra a API do Last.fm/Deezer com um perfil ativo.
 
 ## Limitações conhecidas
 
