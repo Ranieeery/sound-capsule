@@ -1,0 +1,114 @@
+{
+  "Metadata": {
+    "title": "Sound Capsule — 你的 Last.fm 声音胶囊",
+    "description": "把你的 Last.fm 收听记录变成一张可直接分享的 1080×1920 竖版卡片。无需登录、无需数据库，也不会存储你的个人资料。",
+    "ogTitle": "适用于 Last.fm 的 Sound Capsule",
+    "ogDescription": "你的音乐回顾，一张 1080×1920 卡片，随时分享到快拍。"
+  },
+  "Header": {
+    "skip": "跳到表单",
+    "brand": "Sound Capsule",
+    "forLastfm": "适用于 Last.fm",
+    "language": "语言"
+  },
+  "Home": {
+    "title": "你的声音胶囊",
+    "subtitle": "输入你的 Last.fm 用户名并选择时间范围，即可生成一张可直接分享的 1080×1920 竖版摘要卡片。",
+    "usernameLabel": "Last.fm 用户名",
+    "usernamePlaceholder": "你的用户名",
+    "usernameHint": "粘贴个人主页链接或直接输入用户名。该主页必须公开，并在所选时间段内有收听记录。",
+    "periodLabel": "时间范围",
+    "period": {
+      "week": "最近 7 天",
+      "month": "本月",
+      "custom": "自定义",
+      "customHint": "自定义日期范围"
+    },
+    "custom": {
+      "start": "开始日期",
+      "end": "结束日期",
+      "since": "自 Last.fm 注册起（{date}） · 最多 {months} 个月",
+      "maxOnly": "最多 {months} 个月",
+      "warning": "时间范围越长，需要获取的页数越多，可能多花几秒钟。"
+    },
+    "generate": "生成胶囊",
+    "generating": "正在生成胶囊...",
+    "privacy": "无需登录 · 无需数据库 · 仅在本浏览器保存语言和主题",
+    "preview": {
+      "title": "预览（9:16）",
+      "dimensions": "1080×1920",
+      "emptyTitle": "你的胶囊会显示在这里",
+      "emptyHint": "填写用户名和时间范围后即可生成。",
+      "ready": "胶囊已生成"
+    },
+    "actions": {
+      "download": "下载 PNG",
+      "share": "分享",
+      "exporting": "正在生成 PNG...",
+      "downloaded": "PNG 已下载。",
+      "shareFallback": "当前无法分享，已为你下载 PNG。",
+      "exportError": "无法生成 PNG，请重试。"
+    },
+    "estimate": {
+      "label": "预计用时（≈）",
+      "short": "前 50 首取真实时长 + 其余按 3.5 分钟估算。",
+      "tooltip": "Last.fm 不提供总收听时长。我们通过 track.getInfo 查询约 50 首播放最多的歌曲，其余歌曲或没有时长的歌曲按 3.5 分钟估算。显示的数值为近似值。",
+      "details": "真实时长 {known} 首 · 估算 {fallback} 首。"
+    },
+    "progress": {
+      "user": "正在检查用户...",
+      "pages": "正在获取收听记录...",
+      "pageCounter": "第 {page} 页，共 {totalPages} 页",
+      "tracksCounter": "{count, plural, =0 {暂无歌曲} other {# 首歌曲}}",
+      "durations": "正在估算收听时长...",
+      "durationsCounter": "{done} / {total} 首歌曲",
+      "preparing": "正在准备预览...",
+      "concurrency": "并发 4 · 自动重试已启用",
+      "cancel": "取消",
+      "cancelled": "已取消获取。"
+    },
+    "errors": {
+      "invalid_username": "请输入有效的 Last.fm 用户名（字母、数字、点、连字符和下划线）。",
+      "invalid_user": "在 Last.fm 上找不到该用户。",
+      "private": "该用户的收听记录已设为私密。请在 Last.fm 开启“显示最近收听”后重试。",
+      "no_scrobbles": "该时间段内没有收听记录。",
+      "rate_limit": "Last.fm 请求过于频繁，请稍候片刻再试。",
+      "network": "网络连接失败，请检查网络后重试。",
+      "missing_api_key": "服务器缺少 Last.fm API 密钥（LASTFM_API_KEY）。",
+      "server_error": "Last.fm 暂时不可用，请稍后再试。",
+      "unknown": "无法生成胶囊，请重试。",
+      "invalid_range": "结束日期必须等于或晚于开始日期。",
+      "end_future": "结束日期不能是未来日期。",
+      "before_registration": "开始日期早于该用户在 Last.fm 的注册时间（{date}）。",
+      "range_too_long": "时间范围最长为 {months} 个月。"
+    },
+    "themeLabel": "卡片配色",
+    "showUsername": "在卡片上显示我的用户名",
+    "photo": {
+      "label": "卡片照片",
+      "upload": "上传照片",
+      "replace": "更换照片",
+      "remove": "移除照片",
+      "privacy": "照片不会离开此浏览器。",
+      "errors": {
+        "invalid_type": "请使用 JPEG、PNG 或 WebP 格式。",
+        "too_large": "图片大小不能超过 10 MB。",
+        "invalid_image": "无法读取该图片。",
+        "unknown": "无法使用该照片。"
+      }
+    },
+    "customizeTitle": "个性化你的卡片"
+  },
+  "Card": {
+    "title": "{period} 的声音胶囊",
+    "topArtists": "最常听歌手",
+    "topTracks": "最常听歌曲",
+    "timeListened": "收听时长",
+    "minutes": "约 {minutes, number} 分钟"
+  },
+  "Footer": {
+    "note": "Last.fm 公开数据 · Deezer 图片 · 仅在本浏览器保存语言和主题。",
+    "disclaimer": "Sound Capsule 与 Last.fm 无关联。",
+    "poweredBy": "powered by Last.fm"
+  }
+}

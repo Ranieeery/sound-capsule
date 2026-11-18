@@ -1,0 +1,114 @@
+{
+  "Metadata": {
+    "title": "Sound Capsule — Last.fm 사운드 캡슐",
+    "description": "Last.fm 스크로블을 바로 공유할 수 있는 세로형 1080×1920 카드로 변환합니다. 로그인과 데이터베이스가 필요 없고, 프로필을 저장하지 않습니다.",
+    "ogTitle": "Last.fm을 위한 Sound Capsule",
+    "ogDescription": "나의 음악 요약을 담아 스토리에 공유할 수 있는 1080×1920 카드."
+  },
+  "Header": {
+    "skip": "양식으로 건너뛰기",
+    "brand": "Sound Capsule",
+    "forLastfm": "Last.fm용",
+    "language": "언어"
+  },
+  "Home": {
+    "title": "나의 사운드 캡슐",
+    "subtitle": "Last.fm 사용자 이름을 입력하고 기간을 선택하면 바로 공유할 수 있는 세로형 1080×1920 요약 카드가 만들어집니다.",
+    "usernameLabel": "Last.fm 사용자 이름",
+    "usernamePlaceholder": "사용자 이름",
+    "usernameHint": "프로필 링크를 붙여넣거나 사용자 이름을 입력하세요. 프로필은 공개 상태여야 하며, 선택한 기간에 스크로블이 있어야 합니다.",
+    "periodLabel": "기간",
+    "period": {
+      "week": "지난 7일",
+      "month": "이번 달",
+      "custom": "직접 설정",
+      "customHint": "원하는 기간"
+    },
+    "custom": {
+      "start": "시작일",
+      "end": "종료일",
+      "since": "Last.fm 가입일({date}) 이후 · 최대 {months}개월",
+      "maxOnly": "최대 {months}개월",
+      "warning": "기간이 길수록 더 많은 페이지를 불러오므로 몇 초 더 걸릴 수 있습니다."
+    },
+    "generate": "캡슐 만들기",
+    "generating": "캡슐 만드는 중...",
+    "privacy": "로그인 없음 · 데이터베이스 없음 · 언어와 테마만 이 브라우저에 저장됩니다",
+    "preview": {
+      "title": "미리보기 (9:16)",
+      "dimensions": "1080×1920",
+      "emptyTitle": "여기에 캡슐이 표시됩니다",
+      "emptyHint": "사용자 이름과 기간을 입력하면 캡슐이 만들어집니다.",
+      "ready": "캡슐 완성"
+    },
+    "actions": {
+      "download": "PNG 다운로드",
+      "share": "공유하기",
+      "exporting": "PNG 생성 중...",
+      "downloaded": "PNG 다운로드 완료.",
+      "shareFallback": "공유를 사용할 수 없어 PNG를 다운로드했습니다.",
+      "exportError": "PNG를 생성하지 못했습니다. 다시 시도해 주세요."
+    },
+    "estimate": {
+      "label": "예상 시간 (≈)",
+      "short": "상위 50곡 실제 재생 시간 + 3.5분 추정",
+      "tooltip": "Last.fm은 총 청취 시간을 제공하지 않습니다. 가장 많이 들은 약 50곡은 track.getInfo로 실제 재생 시간을 조회하고, 나머지 곡과 재생 시간 정보가 없는 곡은 3.5분으로 계산합니다. 표시되는 값은 근사치입니다.",
+      "details": "실제 재생 시간이 있는 {known}곡 · 추정 {fallback}곡"
+    },
+    "progress": {
+      "user": "사용자 확인 중...",
+      "pages": "스크로블 불러오는 중...",
+      "pageCounter": "{page} / {totalPages} 페이지",
+      "tracksCounter": "{count, plural, =0 {곡 없음} other {#곡}}",
+      "durations": "청취 시간 추정 중...",
+      "durationsCounter": "{total}곡 중 {done}곡",
+      "preparing": "미리보기 준비 중...",
+      "concurrency": "동시 요청 4 · 자동 재시도 사용",
+      "cancel": "취소",
+      "cancelled": "불러오기를 취소했습니다."
+    },
+    "errors": {
+      "invalid_username": "올바른 Last.fm 사용자 이름을 입력하세요(영문, 숫자, 마침표, 하이픈, 밑줄).",
+      "invalid_user": "Last.fm에서 사용자를 찾을 수 없습니다.",
+      "private": "이 사용자의 스크로블이 비공개로 설정되어 있습니다. Last.fm에서 \"최근 청취 표시\"를 켜고 다시 시도해 주세요.",
+      "no_scrobbles": "이 기간에 스크로블이 없습니다.",
+      "rate_limit": "Last.fm 요청 한도를 초과했습니다. 잠시 후 다시 시도해 주세요.",
+      "network": "연결에 실패했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.",
+      "missing_api_key": "서버에 Last.fm API 키(LASTFM_API_KEY)가 없습니다.",
+      "server_error": "현재 Last.fm에 접속할 수 없습니다. 잠시 후 다시 시도해 주세요.",
+      "unknown": "캡슐을 만들지 못했습니다. 다시 시도해 주세요.",
+      "invalid_range": "종료일은 시작일과 같거나 이후여야 합니다.",
+      "end_future": "종료일을 미래로 설정할 수 없습니다.",
+      "before_registration": "시작일이 이 사용자의 Last.fm 가입일({date})보다 앞섭니다.",
+      "range_too_long": "최대 기간은 {months}개월입니다."
+    },
+    "themeLabel": "카드 색상",
+    "showUsername": "카드에 내 사용자 이름 표시",
+    "photo": {
+      "label": "카드 사진",
+      "upload": "사진 업로드",
+      "replace": "사진 변경",
+      "remove": "사진 삭제",
+      "privacy": "사진은 이 브라우저 밖으로 전송되지 않습니다.",
+      "errors": {
+        "invalid_type": "JPEG, PNG, WebP 파일을 사용해 주세요.",
+        "too_large": "이미지는 최대 10MB까지 업로드할 수 있습니다.",
+        "invalid_image": "이 이미지를 읽을 수 없습니다.",
+        "unknown": "이 사진을 사용할 수 없습니다."
+      }
+    },
+    "customizeTitle": "카드 꾸미기"
+  },
+  "Card": {
+    "title": "{period} 사운드 캡슐",
+    "topArtists": "많이 들은 아티스트",
+    "topTracks": "많이 들은 곡",
+    "timeListened": "청취 시간",
+    "minutes": "약 {minutes, number}분"
+  },
+  "Footer": {
+    "note": "Last.fm 공개 데이터 · Deezer 이미지 · 언어와 테마만 이 브라우저에 저장됩니다.",
+    "disclaimer": "Sound Capsule은 Last.fm과 제휴 관계가 없습니다.",
+    "poweredBy": "powered by Last.fm"
+  }
+}

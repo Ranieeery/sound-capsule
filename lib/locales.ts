@@ -7,7 +7,7 @@
  * regional conventions the product promises (e.g. "4.231" in pt-BR vs
  * "4,231" in en-US).
  */
-export const locales = ['pt', 'en', 'es', 'fr', 'de', 'it', 'ja'] as const;
+export const locales = ['pt', 'en', 'es', 'fr', 'de', 'it', 'ja', 'ko', 'zh', 'ru', 'pl'] as const;
 
 export type Locale = (typeof locales)[number];
 
@@ -21,6 +21,10 @@ export const localeLabels: Record<Locale, string> = {
   de: 'Deutsch',
   it: 'Italiano',
   ja: '日本語',
+  ko: '한국어',
+  zh: '简体中文',
+  ru: 'Русский',
+  pl: 'Polski',
 };
 
 export const localeShorts: Record<Locale, string> = {
@@ -31,6 +35,10 @@ export const localeShorts: Record<Locale, string> = {
   de: 'DE',
   it: 'IT',
   ja: 'JA',
+  ko: 'KO',
+  zh: 'ZH',
+  ru: 'RU',
+  pl: 'PL',
 };
 
 export const intlLocales: Record<Locale, string> = {
@@ -41,6 +49,10 @@ export const intlLocales: Record<Locale, string> = {
   de: 'de-DE',
   it: 'it-IT',
   ja: 'ja-JP',
+  ko: 'ko-KR',
+  zh: 'zh-CN',
+  ru: 'ru-RU',
+  pl: 'pl-PL',
 };
 
 export function getIntlLocale(locale: string): string {

@@ -15,7 +15,8 @@
   --color-warn-bg: #1c1917;
   --color-warn-line: #3a2a24;
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, "Hiragino Sans",
+  --font-sans: var(--font-geist-sans), var(--font-noto-jp), var(--font-noto-kr),
+    var(--font-noto-sc), ui-sans-serif, system-ui, "Hiragino Sans",
     "Yu Gothic UI", "Noto Sans JP", "Noto Sans KR", "Noto Sans SC",
     "Malgun Gothic", "Microsoft YaHei", sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,

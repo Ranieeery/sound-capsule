@@ -9,13 +9,13 @@ import { SITE_URL } from '@/lib/site';
 import '../globals.css';
 
 const geistSans = Geist({
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext', 'cyrillic'],
   display: 'swap',
   variable: '--font-geist-sans',
 });
 
 const geistMono = Geist_Mono({
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext', 'cyrillic'],
   display: 'swap',
   variable: '--font-geist-mono',
 });
@@ -52,6 +52,10 @@ const htmlLang: Record<Locale, string> = {
   de: 'de',
   it: 'it',
   ja: 'ja',
+  ko: 'ko',
+  zh: 'zh-CN',
+  ru: 'ru',
+  pl: 'pl',
 };
 
 const openGraphLocales: Record<Locale, string> = {
@@ -62,6 +66,10 @@ const openGraphLocales: Record<Locale, string> = {
   de: 'de_DE',
   it: 'it_IT',
   ja: 'ja_JP',
+  ko: 'ko_KR',
+  zh: 'zh_CN',
+  ru: 'ru_RU',
+  pl: 'pl_PL',
 };
 
 export function generateStaticParams() {
@@ -105,6 +113,10 @@ export async function generateMetadata({
         de: '/de',
         it: '/it',
         ja: '/ja',
+        ko: '/ko',
+        'zh-CN': '/zh',
+        ru: '/ru',
+        pl: '/pl',
         'x-default': '/pt',
       },
     },
