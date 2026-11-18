@@ -47,7 +47,12 @@
       "exporting": "PNG wird erstellt...",
       "downloaded": "PNG heruntergeladen.",
       "shareFallback": "Teilen ist nicht verfügbar. Das PNG wurde heruntergeladen.",
-      "exportError": "Das PNG konnte nicht erstellt werden. Bitte versuche es erneut."
+      "exportError": "Das PNG konnte nicht erstellt werden. Bitte versuche es erneut.",
+      "embed": "Embed-Code kopieren",
+      "embedding": "Embed wird erstellt...",
+      "embedCopied": "Embed-Code kopiert.",
+      "embedError": "Embed-Code konnte nicht erstellt werden.",
+      "embedHelp": "Eigenständiges HTML mit eingebettetem Bild (~0,5 MB)."
     },
     "estimate": {
       "label": "Geschätzte Zeit (≈)",

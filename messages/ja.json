@@ -47,7 +47,12 @@
       "exporting": "PNGを生成中...",
       "downloaded": "PNGを保存しました。",
       "shareFallback": "共有を利用できないため、PNGを保存しました。",
-      "exportError": "PNGを生成できませんでした。もう一度お試しください。"
+      "exportError": "PNGを生成できませんでした。もう一度お試しください。",
+      "embed": "埋め込みコードをコピー",
+      "embedding": "埋め込みコードを生成中...",
+      "embedCopied": "埋め込みコードをコピーしました。",
+      "embedError": "埋め込みコードを生成できませんでした。",
+      "embedHelp": "画像を埋め込んだ自己完結型HTML（約0.5 MB）。"
     },
     "estimate": {
       "label": "推定再生時間（約）",

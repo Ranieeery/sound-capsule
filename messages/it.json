@@ -47,7 +47,12 @@
       "exporting": "Generazione del PNG...",
       "downloaded": "PNG scaricato.",
       "shareFallback": "Condivisione non disponibile. Il PNG è stato scaricato.",
-      "exportError": "Impossibile generare il PNG. Riprova."
+      "exportError": "Impossibile generare il PNG. Riprova.",
+      "embed": "Copia embed",
+      "embedding": "Generazione embed...",
+      "embedCopied": "Codice embed copiato.",
+      "embedError": "Impossibile generare il codice embed.",
+      "embedHelp": "HTML autonomo con immagine incorporata (~0,5 MB)."
     },
     "estimate": {
       "label": "Tempo stimato (≈)",

@@ -47,7 +47,12 @@
       "exporting": "Generowanie PNG...",
       "downloaded": "Pobrano PNG.",
       "shareFallback": "Udostępnianie jest niedostępne. Pobrano PNG.",
-      "exportError": "Nie udało się wygenerować PNG. Spróbuj ponownie."
+      "exportError": "Nie udało się wygenerować PNG. Spróbuj ponownie.",
+      "embed": "Kopiuj kod embed",
+      "embedding": "Generowanie kodu embed...",
+      "embedCopied": "Kod embed skopiowany.",
+      "embedError": "Nie udało się wygenerować kodu embed.",
+      "embedHelp": "Samodzielny HTML z osadzonym obrazem (~0,5 MB)."
     },
     "estimate": {
       "label": "Szacowany czas (≈)",

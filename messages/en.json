@@ -47,7 +47,12 @@
       "exporting": "Rendering PNG...",
       "downloaded": "PNG downloaded.",
       "shareFallback": "Sharing is unavailable. The PNG was downloaded instead.",
-      "exportError": "Could not render the PNG. Please try again."
+      "exportError": "Could not render the PNG. Please try again.",
+      "embed": "Copy embed code",
+      "embedding": "Building embed...",
+      "embedCopied": "Embed code copied.",
+      "embedError": "Could not build the embed code.",
+      "embedHelp": "Self-contained HTML with the embedded image (~0.5 MB)."
     },
     "estimate": {
       "label": "Estimated time (≈)",

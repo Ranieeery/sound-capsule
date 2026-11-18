@@ -47,7 +47,12 @@
       "exporting": "正在生成 PNG...",
       "downloaded": "PNG 已下载。",
       "shareFallback": "当前无法分享，已为你下载 PNG。",
-      "exportError": "无法生成 PNG，请重试。"
+      "exportError": "无法生成 PNG，请重试。",
+      "embed": "复制嵌入代码",
+      "embedding": "正在生成嵌入代码...",
+      "embedCopied": "嵌入代码已复制。",
+      "embedError": "无法生成嵌入代码。",
+      "embedHelp": "包含图片的自包含 HTML（约 0.5 MB）。"
     },
     "estimate": {
       "label": "预计用时（≈）",

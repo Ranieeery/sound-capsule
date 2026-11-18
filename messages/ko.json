@@ -47,7 +47,12 @@
       "exporting": "PNG 생성 중...",
       "downloaded": "PNG 다운로드 완료.",
       "shareFallback": "공유를 사용할 수 없어 PNG를 다운로드했습니다.",
-      "exportError": "PNG를 생성하지 못했습니다. 다시 시도해 주세요."
+      "exportError": "PNG를 생성하지 못했습니다. 다시 시도해 주세요.",
+      "embed": "임베드 코드 복사",
+      "embedding": "임베드 생성 중...",
+      "embedCopied": "임베드 코드를 복사했습니다.",
+      "embedError": "임베드 코드를 생성하지 못했습니다.",
+      "embedHelp": "이미지가 포함된 독립형 HTML(~0.5MB)."
     },
     "estimate": {
       "label": "예상 시간 (≈)",

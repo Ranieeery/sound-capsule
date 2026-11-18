@@ -34,7 +34,7 @@ import {
   PhotoError,
   type PhotoErrorCode,
 } from '@/lib/localPhoto';
-import { SITE_HOST } from '@/lib/site';
+import { SITE_HOST, SITE_URL } from '@/lib/site';
 import { getStudioSession, patchStudioSession, type StudioResultState } from '@/lib/studioSession';
 import {
   MAX_CUSTOM_RANGE_MONTHS,
@@ -55,7 +55,7 @@ import {
 
 type Status = 'idle' | 'loading' | 'ready' | 'error';
 type UiPhase = FetchProgress | { phase: 'preparing' };
-type ExportState = 'idle' | 'downloading' | 'sharing';
+type ExportState = 'idle' | 'downloading' | 'sharing' | 'embedding';
 type ResultState = StudioResultState;
 
 interface ErrorState {
@@ -111,6 +111,40 @@ function triggerDownload(file: File): void {
   anchor.click();
   anchor.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function fileToDataUrl(file: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+async function copyText(text: string): Promise<void> {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand('copy');
+  textarea.remove();
+  if (!copied) throw new Error('Clipboard is unavailable.');
 }
 
 export function CapsuleStudio() {
@@ -577,6 +611,28 @@ export function CapsuleStudio() {
     }
   }
 
+  async function handleEmbed() {
+    if (!result || exportState !== 'idle') return;
+
+    setExportState('embedding');
+    setActionError(null);
+    setNotice(null);
+
+    try {
+      const file = await buildFile();
+      const dataUrl = await fileToDataUrl(file);
+      const alt = escapeHtml(`Sound Capsule — ${resultPeriodLabel}`);
+      const snippet = `<a href="${SITE_URL}/${locale}" target="_blank" rel="noopener"><img src="${dataUrl}" width="1080" height="1920" alt="${alt}" style="max-width:100%;height:auto" /></a>`;
+
+      await copyText(snippet);
+      setNotice(t('actions.embedCopied'));
+    } catch {
+      setActionError(t('actions.embedError'));
+    } finally {
+      setExportState('idle');
+    }
+  }
+
   const progress = phase ? describeProgress(phase, t) : null;
   const isBusy = status === 'loading';
   const canExport = Boolean(result) && status === 'ready' && exportState === 'idle';
@@ -996,6 +1052,21 @@ export function CapsuleStudio() {
           </button>
         </div>
 
+        <button
+          type="button"
+          onClick={handleEmbed}
+          disabled={!canExport}
+          className="flex w-full max-w-[320px] items-center justify-center gap-1.5 rounded-lg border border-line bg-transparent px-3 py-2 text-xs font-medium text-muted transition-colors hover:border-line-strong hover:text-fg disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          {exportState === 'embedding' ? <Spinner /> : <CodeIcon />}
+          <span>
+            {exportState === 'embedding' ? t('actions.embedding') : t('actions.embed')}
+          </span>
+        </button>
+        <p className="w-full max-w-[320px] text-[11px] leading-relaxed text-subtle">
+          {t('actions.embedHelp')}
+        </p>
+
         {actionError && (
           <p role="alert" className="w-full max-w-[320px] text-xs text-accent">
             {actionError}
@@ -1267,6 +1338,25 @@ function ShareIcon() {
       <circle cx="18" cy="19" r="3" />
       <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
       <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+    </svg>
+  );
+}
+
+function CodeIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <polyline points="16 18 22 12 16 6" />
+      <polyline points="8 6 2 12 8 18" />
     </svg>
   );
 }

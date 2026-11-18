@@ -47,7 +47,12 @@
       "exporting": "Создаём PNG...",
       "downloaded": "PNG скачан.",
       "shareFallback": "Поделиться не получилось — PNG скачан.",
-      "exportError": "Не удалось создать PNG. Попробуйте ещё раз."
+      "exportError": "Не удалось создать PNG. Попробуйте ещё раз.",
+      "embed": "Скопировать embed-код",
+      "embedding": "Создаём embed-код...",
+      "embedCopied": "Embed-код скопирован.",
+      "embedError": "Не удалось создать embed-код.",
+      "embedHelp": "Автономный HTML со встроенным изображением (~0,5 МБ)."
     },
     "estimate": {
       "label": "Примерное время (≈)",
