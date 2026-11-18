@@ -1,27 +1,14 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
-import { usePathname, useRouter } from '@/i18n/navigation';
-import { localeLabels, locales, type Locale } from '@/lib/locales';
+import { useTranslations } from 'next-intl';
+import { LocaleSwitcher } from './LocaleSwitcher';
 import { BrandMark } from './BrandMark';
 
 export function SiteHeader() {
   const t = useTranslations('Header');
-  const locale = useLocale();
-  const pathname = usePathname();
-  const router = useRouter();
-
-  function onLocaleChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    const nextLocale = event.target.value as Locale;
-    // Persist only the language preference. next-intl also handles this via its
-    // locale cookie, but setting it explicitly keeps the behavior independent
-    // of navigation timing.
-    document.cookie = `NEXT_LOCALE=${nextLocale}; path=/; max-age=31536000; samesite=lax`;
-    router.replace(pathname, { locale: nextLocale });
-  }
 
   return (
-    <header className="border-b border-line/80">
+    <header className="relative z-30 border-b border-line/80">
       <a
         href="#capsule-form"
         className="sr-only rounded-md bg-surface px-3 py-2 text-sm text-fg focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50"
@@ -37,23 +24,7 @@ export function SiteHeader() {
           </span>
         </div>
 
-        <div className="flex shrink-0 items-center gap-2">
-          <label htmlFor="locale-select" className="sr-only">
-            {t('language')}
-          </label>
-          <select
-            id="locale-select"
-            value={locale}
-            onChange={onLocaleChange}
-            className="cursor-pointer rounded-lg border border-line bg-surface px-2.5 py-1.5 text-xs font-medium text-fg transition-colors hover:border-line-strong focus:border-accent"
-          >
-            {locales.map((item) => (
-              <option key={item} value={item}>
-                {localeLabels[item]}
-              </option>
-            ))}
-          </select>
-        </div>
+        <LocaleSwitcher />
       </div>
     </header>
   );
