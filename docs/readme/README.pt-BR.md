@@ -2,7 +2,7 @@
 
 # Sound Capsule for Last.fm
 
-Transforme seus scrobbles do Last.fm em uma **cápsula de som vertical 1080×1920** (formato story) pronta para baixar ou compartilhar. A agregação acontece inteiramente no navegador, sem login e sem banco de dados.
+Transforme seus scrobbles do Last.fm em uma **cápsula sonora vertical 1080×1920** (formato story) pronta para baixar ou compartilhar. A agregação acontece inteiramente no navegador, sem login e sem banco de dados.
 
 **Deploy:** <https://sound-capsule-fm.vercel.app>
 
@@ -316,6 +316,7 @@ Sound Capsule é um projeto independente, sem afiliação com o Last.fm ou qualq
 ## Créditos
 
 Criado por [Ranieeery](https://github.com/Ranieeery).
+
 
 
 

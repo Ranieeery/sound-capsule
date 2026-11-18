@@ -1,6 +1,6 @@
 {
   "Metadata": {
-    "title": "Sound Capsule — sua cápsula de som do Last.fm",
+    "title": "Sound Capsule — sua cápsula sonora do Last.fm",
     "description": "Transforme seus scrobbles do Last.fm em um card vertical 1080×1920 pronto para compartilhar. Sem login, sem banco de dados e sem armazenar seu perfil.",
     "ogTitle": "Sound Capsule para Last.fm",
     "ogDescription": "Seu resumo musical em um card 1080×1920 pronto para os stories."
@@ -12,7 +12,7 @@
     "language": "Idioma"
   },
   "Home": {
-    "title": "Sua cápsula de som",
+    "title": "Sua cápsula sonora",
     "subtitle": "Digite seu usuário do Last.fm e escolha um período para gerar um resumo vertical 1080×1920 pronto para compartilhar.",
     "usernameLabel": "Usuário do Last.fm",
     "usernamePlaceholder": "seu usuário",
@@ -105,7 +105,7 @@
     "customizeTitle": "Personalize seu card"
   },
   "Card": {
-    "title": "Minha cápsula de som de {period}",
+    "title": "Minha cápsula sonora de {period}",
     "topArtists": "Top artistas",
     "topTracks": "Top músicas",
     "timeListened": "Tempo ouvido",
@@ -118,3 +118,4 @@
     "creditPrefix": "Criado por"
   }
 }
+
