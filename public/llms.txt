@@ -1,0 +1,59 @@
+# Sound Capsule
+
+> Sound Capsule turns a public Last.fm profile into a shareable 9:16 listening
+> capsule with the user's top artists, top tracks and estimated listening time.
+> The image is rendered in the browser and exported as a 1080×1920 PNG.
+
+- Canonical: https://sound-capsule-lastfm.vercel.app
+- Languages: pt-BR, en, es, fr, de, it, ja, ko, zh-CN, ru, pl
+- Stack: Next.js App Router, TypeScript, Tailwind CSS, next-intl, html-to-image
+- Deployment: Vercel, serverless and stateless
+- No login, no database, no stored scrobble data
+
+## What it does
+
+1. Accepts a Last.fm username or profile URL.
+2. Lets the user pick a recent period (last week, current month or a custom
+   range of up to three calendar months).
+3. Fetches public scrobbles through the Last.fm API and aggregates the top
+   artists, top tracks and estimated minutes.
+4. Resolves artist images from Deezer, with a client-side upload and a canvas
+   fallback as alternatives.
+5. Renders a customizable card (five fixed accent themes) and exports it as a
+   PNG or a self-contained HTML embed snippet.
+
+## Pages
+
+- https://sound-capsule-lastfm.vercel.app/pt
+- https://sound-capsule-lastfm.vercel.app/en
+- https://sound-capsule-lastfm.vercel.app/es
+- https://sound-capsule-lastfm.vercel.app/fr
+- https://sound-capsule-lastfm.vercel.app/de
+- https://sound-capsule-lastfm.vercel.app/it
+- https://sound-capsule-lastfm.vercel.app/ja
+- https://sound-capsule-lastfm.vercel.app/ko
+- https://sound-capsule-lastfm.vercel.app/zh
+- https://sound-capsule-lastfm.vercel.app/ru
+- https://sound-capsule-lastfm.vercel.app/pl
+
+## Data sources and attribution
+
+- Last.fm public API: user info, recent tracks and track metadata.
+  See https://www.last.fm/api.
+- Deezer public API for artist images.
+- The site is non-commercial, is not affiliated with Last.fm and shows
+  "powered by Last.fm", "Data from Last.fm" and the profile attribution.
+
+## Privacy
+
+Only the selected language (cookie `NEXT_LOCALE`) and the card accent theme
+(localStorage `sound-capsule:theme`) are persisted. Username, date range,
+results and an uploaded photo stay in memory only and are lost on reload.
+Uploaded photos never leave the browser.
+
+## Crawling
+
+- robots.txt: https://sound-capsule-lastfm.vercel.app/robots.txt
+- sitemap: https://sound-capsule-lastfm.vercel.app/sitemap.xml
+- API routes under /api/ are intended for the site itself and are disallowed
+  to crawlers.

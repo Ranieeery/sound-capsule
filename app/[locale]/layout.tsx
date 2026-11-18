@@ -85,6 +85,12 @@ export async function generateMetadata({
   if (!hasLocale(routing.locales, locale)) return {};
 
   const t = await getTranslations({ locale, namespace: 'Metadata' });
+  const ogImage = {
+    url: '/og.png',
+    width: 1200,
+    height: 630,
+    alt: t('ogTitle'),
+  };
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -98,13 +104,16 @@ export async function generateMetadata({
       locale: openGraphLocales[locale as Locale],
       siteName: 'Sound Capsule',
       url: `${SITE_URL}/${locale}`,
+      images: [ogImage],
     },
     twitter: {
       card: 'summary_large_image',
       title: t('ogTitle'),
       description: t('ogDescription'),
+      images: ['/og.png'],
     },
     alternates: {
+      canonical: `/${locale}`,
       languages: {
         'pt-BR': '/pt',
         en: '/en',

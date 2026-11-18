@@ -2,7 +2,7 @@
 
 Transforme seus scrobbles do Last.fm em uma **cápsula de som vertical 1080×1920** (formato story) pronta para baixar ou compartilhar. A agregação acontece inteiramente no navegador, sem login e sem banco de dados.
 
-**Deploy:** <https://semaninha-sigma.vercel.app>
+**Deploy:** <https://sound-capsule-lastfm.vercel.app>
 
 ![Card gerado](docs/screenshots/capsule-1080x1920.png)
 
@@ -20,6 +20,7 @@ Exemplo com nomes em japonês, coreano e chinês renderizados no PNG exportado: 
 - **Duas colunas numeradas** (Top artistas e Top músicas, 1–5) com truncamento por reticências e suporte a CJK (japonês, coreano e chinês).
 - **Minutagem estimada** com destaque sólido na cor do tema, tooltip explicando o cálculo e formatação via `Intl`.
 - **Embed autocontido**: o botão “Copiar embed” gera um bloco HTML `<a><img></a>` com a PNG em base64 — sem upload, sem storage e sem depender de URL de imagem hospedada (~0,5–0,8 MB). Funciona onde HTML bruto é permitido.
+- **Preview de link**: ao colar a URL do site no WhatsApp, Discord, Twitter/X, Telegram etc., aparecem título, descrição localizados e uma imagem Open Graph 1200×630 da marca.
 - **Progresso real** de paginação ("Página 12 de 40"), skeleton na prévia e cancelamento com `AbortController`.
 - **i18n** em `pt`, `en`, `es`, `fr`, `de`, `it`, `ja`, `ko`, `zh`, `ru` e `pl`, com detecção por `Accept-Language`, rotas prefixadas, textos/datas/números formatados com `Intl` e dropdown de idioma customizado e acessível.
 - **Créditos no card** (“Data from Last.fm”, link do perfil e URL do site), com opção de ocultar o username do card.
@@ -74,7 +75,7 @@ O app não busca dados no carregamento da página; só quando o usuário clica e
 ### 1. Obtenha uma API key do Last.fm
 
 1. Acesse <https://www.last.fm/api/account/create>.
-2. Preencha o nome do app (ex.: *Sound Capsule*), a URL `https://semaninha-sigma.vercel.app` e a descrição.
+2. Preencha o nome do app (ex.: *Sound Capsule*), a URL `https://sound-capsule-lastfm.vercel.app` e a descrição.
 3. Copie a **API key** gerada (não é necessário o *shared secret*, pois não há autenticação de usuário).
 
 ### 2. Configure o ambiente
@@ -109,7 +110,7 @@ Abra <http://localhost:3000> — o middleware redireciona para o locale detectad
 
 ## Deploy na Vercel
 
-O deploy atual está em <https://semaninha-sigma.vercel.app>.
+O deploy atual está em <https://sound-capsule-lastfm.vercel.app>.
 
 1. Suba o projeto para um repositório no GitHub/GitLab/Bitbucket.
 2. Na Vercel, clique em **Add New → Project** e importe o repositório.
@@ -142,10 +143,12 @@ app/
     lastfm/route.ts       # proxy com whitelist de métodos e params
     artist-image/route.ts # busca no Deezer + matching normalizado
     image-proxy/route.ts  # proxy de imagem (whitelist + streaming)
+  robots.ts               # robots.txt (bloqueia /api/, aponta o sitemap)
+  sitemap.ts              # sitemap das 11 rotas com alternates
   globals.css             # tokens de design (Tailwind 4)
   icon.svg                # marca/favicon
 components/
-  CapsuleStudio.tsx       # formulário, tema, upload, progresso, export/share
+  CapsuleStudio.tsx       # formulário, tema, upload, progresso, export/share/embed
   CapsuleCard.tsx         # card 432×768 com créditos e tema
   CardHero.tsx            # foto do artista/upload ou fallback canvas
   BackgroundCanvas.tsx    # ondas de fundo (mouse, reduced motion, hidden)
@@ -164,10 +167,21 @@ lib/
   site.ts / httpCache.ts  # URL/User-Agent e headers de cache
   exportCard.ts           # embed de fontes + html-to-image → PNG 1080×1920
   initials.ts / locales.ts
-messages/                 # pt, en, es, fr, de, it, ja
+public/
+  og.png                  # preview Open Graph/Twitter 1200×630
+  llms.txt                # resumo do projeto para agentes/LLMs
+messages/                 # pt, en, es, fr, de, it, ja, ko, zh, ru, pl
 tests/                    # Vitest
 docs/screenshots/         # capturas de referência
 ```
+
+## Preview de link, SEO e descoberta
+
+- `metadataBase` + Open Graph/Twitter Card em todas as 11 rotas, com título e descrição localizados.
+- Imagem `public/og.png` (1200×630) usada em `og:image` e `twitter:image`; é o preview exibido ao colar o link no WhatsApp, Discord, Telegram, Twitter/X etc.
+- `/robots.txt` gerado por `app/robots.ts`, liberando o site, bloqueando `/api/` e apontando para o sitemap.
+- `/sitemap.xml` gerado por `app/sitemap.ts`, com as 11 rotas e `hreflang` alternates.
+- `/llms.txt` com um resumo factual do produto, fontes de dados e política de privacidade para agentes de IA.
 
 ## Decisões técnicas
 
@@ -295,3 +309,4 @@ Além disso, o fluxo foi verificado em Chromium com Last.fm/Deezer simulados: te
 ## Aviso
 
 Sound Capsule é um projeto independente, sem afiliação com o Last.fm ou qualquer serviço de streaming. Os dados musicais são públicos e fornecidos pela API do Last.fm; as fotos de artistas vêm do Deezer ou do usuário. O uso do plano Hobby da Vercel é pessoal e não comercial.
+
