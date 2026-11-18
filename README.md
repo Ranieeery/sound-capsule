@@ -19,8 +19,9 @@ Exemplo com nomes em japonês, coreano e chinês renderizados no PNG exportado: 
 - **Foto do artista** em três camadas: match automático no Deezer → upload local opcional (nunca enviado ao servidor) → fallback canvas com iniciais.
 - **Duas colunas numeradas** (Top artistas e Top músicas, 1–5) com truncamento por reticências e suporte a CJK (japonês, coreano e chinês).
 - **Minutagem estimada** com destaque sólido na cor do tema, tooltip explicando o cálculo e formatação via `Intl`.
+- **Embed autocontido**: o botão “Copiar embed” gera um bloco HTML `<a><img></a>` com a PNG em base64 — sem upload, sem storage e sem depender de URL de imagem hospedada (~0,5–0,8 MB). Funciona onde HTML bruto é permitido.
 - **Progresso real** de paginação ("Página 12 de 40"), skeleton na prévia e cancelamento com `AbortController`.
-- **i18n** em `pt`, `en`, `es`, `fr`, `de`, `it`, `ja`, `ko`, `zh`, `ru` e `pl`, com detecção por `Accept-Language`, seletor manual no header, rotas prefixadas e textos/datas/números formatados com `Intl`.
+- **i18n** em `pt`, `en`, `es`, `fr`, `de`, `it`, `ja`, `ko`, `zh`, `ru` e `pl`, com detecção por `Accept-Language`, rotas prefixadas, textos/datas/números formatados com `Intl` e dropdown de idioma customizado e acessível.
 - **Créditos no card** (“Data from Last.fm”, link do perfil e URL do site), com opção de ocultar o username do card.
 - **Fundo em `<canvas>`** com linhas de onda discretas que reagem ao mouse, pausam com a aba oculta e desligam com `prefers-reduced-motion`.
 - **Acessível**: navegação por teclado, labels, `role="progressbar"`, alerts, contraste AA e respeito a movimento reduzido.
@@ -264,7 +265,7 @@ Cobertura atual:
 - temas e store de sessão;
 - validação do upload local (tipo/tamanho).
 
-Além disso, o fluxo foi verificado em Chromium com Last.fm/Deezer simulados: tema, upload, créditos, username oculto, troca de idioma sem novas requisições, dropdown customizado (mouse, teclado e clique fora), rotas `ko`/`ru`/`zh`/`pl`, scroll automático para a prévia no mobile, apenas cookie/localStorage permitidos, F5, validação de 3 meses e export **1080×1920**. O fluxo real também foi executado contra a API do Last.fm/Deezer com um perfil ativo.
+Além disso, o fluxo foi verificado em Chromium com Last.fm/Deezer simulados: tema, upload, créditos, username oculto, embed autocontido (clipboard), troca de idioma sem novas requisições, dropdown customizado (mouse, teclado e clique fora), rotas `ko`/`ru`/`zh`/`pl`, scroll automático para a prévia no mobile, apenas cookie/localStorage permitidos, F5, validação de 3 meses e export **1080×1920**. O fluxo real também foi executado contra a API do Last.fm/Deezer com um perfil ativo.
 
 ## Limitações conhecidas
 
