@@ -183,6 +183,10 @@ export async function renderCardToBlob(node: HTMLElement): Promise<Blob> {
     pixelRatio: PIXEL_RATIO,
     backgroundColor: '#212121',
     cacheBust: false,
+    // html-to-image caches fetched resources by URL without the query string by
+    // default. Our image-proxy URLs differ only in ?url=..., so without this the
+    // second capsule could reuse the previous artist photo.
+    includeQueryParams: true,
     ...(fontEmbedCSS ? { fontEmbedCSS } : { skipFonts: true }),
   });
 
