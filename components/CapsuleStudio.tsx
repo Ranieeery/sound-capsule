@@ -140,10 +140,12 @@ export function CapsuleStudio() {
   );
   const [photoBusy, setPhotoBusy] = useState(false);
   const [photoError, setPhotoError] = useState<PhotoErrorCode | null>(null);
+  const [estimateOpen, setEstimateOpen] = useState(false);
 
   const abortRef = useRef<AbortController | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
+  const estimateRef = useRef<HTMLDetailsElement>(null);
 
   // Dates must be calculated in the visitor's timezone, which only exists after
   // hydration. Rendering them on the server would also bake the build date into
@@ -184,6 +186,30 @@ export function CapsuleStudio() {
     },
     [],
   );
+
+  // The estimate explanation is a <details> element; close it when the user
+  // clicks elsewhere or presses Escape.
+  useEffect(() => {
+    if (!estimateOpen) return;
+
+    function onPointerDown(event: PointerEvent) {
+      if (!estimateRef.current?.contains(event.target as Node)) {
+        setEstimateOpen(false);
+      }
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') setEstimateOpen(false);
+    }
+
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [estimateOpen]);
 
   // While a custom range is selected, resolve the registration date so the UI
   // can validate and explain the minimum date before the user hits Generate.
@@ -710,6 +736,92 @@ export function CapsuleStudio() {
             </div>
           )}
 
+          {/* Card customization */}
+          <div className="space-y-4 rounded-lg border border-line bg-field p-4">
+            <span className="block text-[11px] font-medium uppercase tracking-wider text-muted">
+              {t('customizeTitle')}
+            </span>
+
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-xs font-medium text-fg">{t('photo.label')}</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => photoInputRef.current?.click()}
+                    disabled={photoBusy || isBusy}
+                    className="rounded-md border border-line-strong bg-surface px-2.5 py-1.5 text-[11px] font-medium text-fg transition-colors hover:border-subtle disabled:cursor-wait disabled:opacity-50"
+                  >
+                    {uploadedPhoto ? t('photo.replace') : t('photo.upload')}
+                  </button>
+                  {uploadedPhoto && (
+                    <button
+                      type="button"
+                      onClick={removeUploadedPhoto}
+                      className="rounded-md border border-line bg-transparent px-2.5 py-1.5 text-[11px] text-muted transition-colors hover:text-fg"
+                    >
+                      {t('photo.remove')}
+                    </button>
+                  )}
+                </div>
+              </div>
+              <input
+                ref={photoInputRef}
+                type="file"
+                accept={PHOTO_ACCEPT_ATTRIBUTE}
+                onChange={onPhotoSelected}
+                className="sr-only"
+                aria-label={t('photo.upload')}
+              />
+              <p className="text-[11px] leading-relaxed text-subtle">{t('photo.privacy')}</p>
+              {photoErrorText && (
+                <p role="alert" className="text-[11px] text-accent">
+                  {photoErrorText}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <span className="block text-xs font-medium text-fg">{t('themeLabel')}</span>
+              <div className="flex items-center gap-2.5">
+                {CARD_THEMES.map((theme) => {
+                  const selected = theme.id === themeId;
+                  return (
+                    <button
+                      key={theme.id}
+                      type="button"
+                      onClick={() => onThemeChange(theme.id)}
+                      aria-label={theme.name}
+                      aria-pressed={selected}
+                      title={theme.name}
+                      className={`flex h-8 w-8 items-center justify-center rounded-full border transition-transform ${
+                        selected
+                          ? 'border-fg scale-110'
+                          : 'border-line-strong hover:scale-105'
+                      }`}
+                    >
+                      <span
+                        className="h-5 w-5 rounded-full"
+                        style={{ backgroundColor: theme.accent }}
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <label className="flex items-center gap-2 text-xs text-muted">
+              <input
+                type="checkbox"
+                checked={showUsername}
+                onChange={(event) => setShowUsername(event.target.checked)}
+                className="h-4 w-4 rounded border-line-strong bg-field"
+                style={{ accentColor: '#F06848' }}
+              />
+              <span>{t('showUsername')}</span>
+            </label>
+          </div>
+
           {/* Submit + progress + feedback */}
           <div className="space-y-3">
             <button
@@ -877,90 +989,12 @@ export function CapsuleStudio() {
           </p>
         )}
 
-        <div className="w-full max-w-[320px] space-y-2 rounded-lg border border-line bg-surface p-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="text-[11px] font-medium uppercase tracking-wider text-muted">
-              {t('photo.label')}
-            </span>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => photoInputRef.current?.click()}
-                disabled={photoBusy || isBusy}
-                className="rounded-md border border-line-strong bg-field px-2.5 py-1.5 text-[11px] font-medium text-fg transition-colors hover:border-subtle disabled:cursor-wait disabled:opacity-50"
-              >
-                {uploadedPhoto ? t('photo.replace') : t('photo.upload')}
-              </button>
-              {uploadedPhoto && (
-                <button
-                  type="button"
-                  onClick={removeUploadedPhoto}
-                  className="rounded-md border border-line bg-transparent px-2.5 py-1.5 text-[11px] text-muted transition-colors hover:text-fg"
-                >
-                  {t('photo.remove')}
-                </button>
-              )}
-            </div>
-          </div>
-          <input
-            ref={photoInputRef}
-            type="file"
-            accept={PHOTO_ACCEPT_ATTRIBUTE}
-            onChange={onPhotoSelected}
-            className="sr-only"
-            aria-label={t('photo.upload')}
-          />
-          <p className="text-[11px] leading-relaxed text-subtle">{t('photo.privacy')}</p>
-          {photoErrorText && (
-            <p role="alert" className="text-[11px] text-accent">
-              {photoErrorText}
-            </p>
-          )}
-        </div>
-
-        <div className="w-full max-w-[320px] space-y-2">
-          <span className="block text-[11px] font-medium uppercase tracking-wider text-muted">
-            {t('themeLabel')}
-          </span>
-          <div className="flex items-center gap-2.5">
-            {CARD_THEMES.map((theme) => {
-              const selected = theme.id === themeId;
-              return (
-                <button
-                  key={theme.id}
-                  type="button"
-                  onClick={() => onThemeChange(theme.id)}
-                  aria-label={theme.name}
-                  aria-pressed={selected}
-                  title={theme.name}
-                  className={`flex h-8 w-8 items-center justify-center rounded-full border transition-transform ${
-                    selected
-                      ? 'border-fg scale-110'
-                      : 'border-line-strong hover:scale-105'
-                  }`}
-                >
-                  <span
-                    className="h-5 w-5 rounded-full"
-                    style={{ backgroundColor: theme.accent }}
-                  />
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <label className="flex w-full max-w-[320px] items-center gap-2 text-xs text-muted">
-          <input
-            type="checkbox"
-            checked={showUsername}
-            onChange={(event) => setShowUsername(event.target.checked)}
-            className="h-4 w-4 rounded border-line-strong bg-field"
-            style={{ accentColor: '#F06848' }}
-          />
-          <span>{t('showUsername')}</span>
-        </label>
-
-        <details className="group relative w-full max-w-[320px] text-xs text-muted">
+        <details
+          ref={estimateRef}
+          open={estimateOpen}
+          onToggle={(event) => setEstimateOpen(event.currentTarget.open)}
+          className="group relative w-full max-w-[320px] text-xs text-muted"
+        >
           <summary className="flex cursor-pointer list-none items-start gap-2 rounded-md text-left transition-colors hover:text-fg [&::-webkit-details-marker]:hidden">
             <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-line-strong font-mono text-[10px] leading-none text-muted">
               i

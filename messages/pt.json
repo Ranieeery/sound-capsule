@@ -96,7 +96,8 @@
         "invalid_image": "Não foi possível ler essa imagem.",
         "unknown": "Não foi possível usar essa foto."
       }
-    }
+    },
+    "customizeTitle": "Personalize seu card"
   },
   "Card": {
     "title": "Minha cápsula de som de {period}",

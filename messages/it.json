@@ -96,7 +96,8 @@
         "invalid_image": "Impossibile leggere questa immagine.",
         "unknown": "Impossibile usare questa foto."
       }
-    }
+    },
+    "customizeTitle": "Personalizza la card"
   },
   "Card": {
     "title": "La mia capsula sonora di {period}",

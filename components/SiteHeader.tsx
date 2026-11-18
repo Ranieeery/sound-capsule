@@ -32,14 +32,9 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
         <div className="flex min-w-0 items-center gap-3">
           <BrandMark size={28} />
-          <div className="flex min-w-0 items-center gap-2">
-            <span className="truncate text-sm font-semibold tracking-tight text-fg">
-              {t('brand')}
-            </span>
-            <span className="hidden shrink-0 rounded border border-line bg-surface px-2 py-0.5 font-mono text-[11px] text-muted sm:inline">
-              {t('forLastfm')}
-            </span>
-          </div>
+          <span className="truncate text-sm font-semibold tracking-tight text-fg">
+            {t('brand')}
+          </span>
         </div>
 
         <div className="flex shrink-0 items-center gap-2">

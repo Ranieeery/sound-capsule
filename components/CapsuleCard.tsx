@@ -90,13 +90,13 @@ export function CapsuleCard({
             gap: 12,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-            <BrandMark size={22} surface="#171719" border="#343438" accent={theme.accent} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+            <BrandMark size={28} surface="#171719" border="#343438" accent={theme.accent} />
             <span
               style={{
-                fontSize: 15.5,
+                fontSize: 19,
                 fontWeight: 600,
-                letterSpacing: '-0.01em',
+                letterSpacing: '-0.02em',
                 color: '#f4f4f5',
               }}
             >
@@ -194,28 +194,37 @@ export function CapsuleCard({
           <div
             style={{
               display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-              gap: 10,
-              marginTop: 8,
+              flexDirection: 'column',
+              gap: 3,
+              marginTop: 10,
               fontFamily: 'var(--font-mono)',
               fontSize: 9.5,
-              lineHeight: 1.3,
+              lineHeight: 1.35,
               color: '#71717a',
             }}
           >
-            <span
+            <div
               style={{
-                minWidth: 0,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
+                display: 'flex',
+                alignItems: 'baseline',
+                justifyContent: 'space-between',
+                gap: 16,
               }}
             >
-              Data from Last.fm
-              {showUsername ? ` · last.fm/user/${username}` : ''}
-            </span>
-            <span style={{ flexShrink: 0 }}>{siteHost}</span>
+              <span>Data from Last.fm</span>
+              <span style={{ flexShrink: 0 }}>{siteHost}</span>
+            </div>
+            {showUsername && (
+              <span
+                style={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                last.fm/user/{username}
+              </span>
+            )}
           </div>
         </div>
       </div>

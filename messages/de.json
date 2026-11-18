@@ -96,7 +96,8 @@
         "invalid_image": "Dieses Bild konnte nicht gelesen werden.",
         "unknown": "Dieses Foto konnte nicht verwendet werden."
       }
-    }
+    },
+    "customizeTitle": "Karte personalisieren"
   },
   "Card": {
     "title": "Meine Sound-Kapsel für {period}",

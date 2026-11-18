@@ -96,7 +96,8 @@
         "invalid_image": "この画像を読み込めませんでした。",
         "unknown": "この写真を使用できませんでした。"
       }
-    }
+    },
+    "customizeTitle": "カードをカスタマイズ"
   },
   "Card": {
     "title": "{period}のサウンドカプセル",
