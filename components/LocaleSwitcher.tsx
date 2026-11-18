@@ -121,7 +121,7 @@ export function LocaleSwitcher() {
         aria-label={`${t('language')}: ${localeLabels[locale]}`}
         onClick={() => (open ? setOpen(false) : openMenu())}
         onKeyDown={onTriggerKeyDown}
-        className="flex items-center gap-2 rounded-lg border border-line bg-surface px-2.5 py-1.5 text-xs font-medium text-fg transition-colors hover:border-line-strong focus:border-accent"
+        className="flex cursor-pointer items-center gap-2 rounded-lg border border-line bg-surface px-2.5 py-1.5 text-xs font-medium text-fg hover:border-line-strong focus:border-accent"
       >
         <span className="font-mono text-[10px] tracking-wide text-muted">
           {localeShorts[locale]}
@@ -150,7 +150,7 @@ export function LocaleSwitcher() {
                 tabIndex={-1}
                 onClick={() => selectLocale(item)}
                 onKeyDown={(event) => onOptionKeyDown(event, index)}
-                className={`flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-2 text-left text-xs transition-colors ${
+                className={`flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2.5 py-2 text-left text-xs ${
                   selected
                     ? 'bg-field text-fg'
                     : 'text-muted hover:bg-field hover:text-fg'
@@ -182,7 +182,7 @@ function ChevronIcon({ open }: { open: boolean }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
-      className={`text-muted transition-transform ${open ? 'rotate-180' : ''}`}
+      className={`text-muted ${open ? 'rotate-180' : ''}`}
     >
       <polyline points="6 9 12 15 18 9" />
     </svg>
