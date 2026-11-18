@@ -1,0 +1,97 @@
+{
+  "Metadata": {
+    "title": "Sound Capsule — deine Sound-Kapsel für Last.fm",
+    "description": "Verwandle deine Last.fm-Scrobbles in eine vertikale 1080×1920-Karte zum Teilen. Kein Login, keine Datenbank und dein Profil wird nicht gespeichert.",
+    "ogTitle": "Sound Capsule für Last.fm",
+    "ogDescription": "Dein Musik-Rückblick als 1080×1920-Karte, bereit für Stories."
+  },
+  "Header": {
+    "skip": "Zum Formular springen",
+    "brand": "Sound Capsule",
+    "forLastfm": "für Last.fm",
+    "language": "Sprache"
+  },
+  "Home": {
+    "title": "Deine Sound-Kapsel",
+    "subtitle": "Gib deinen Last.fm-Benutzernamen ein und wähle einen Zeitraum, um eine vertikale 1080×1920-Karte zum Teilen zu erstellen.",
+    "usernameLabel": "Last.fm-Benutzername",
+    "usernamePlaceholder": "dein Benutzername",
+    "usernameHint": "Das Profil muss öffentlich sein und im gewählten Zeitraum Scrobbles enthalten.",
+    "periodLabel": "Zeitraum",
+    "period": {
+      "week": "Letzte 7 Tage",
+      "month": "Aktueller Monat",
+      "custom": "Benutzerdefiniert",
+      "customHint": "Datumsbereich"
+    },
+    "custom": {
+      "start": "Startdatum",
+      "end": "Enddatum",
+      "since": "Seit der Last.fm-Registrierung ({date}) · max. {days} Tage",
+      "maxOnly": "Max. {days} Tage",
+      "warning": "Längere Zeiträume laden mehr Seiten und können ein paar Sekunden länger dauern."
+    },
+    "generate": "Kapsel erstellen",
+    "generating": "Kapsel wird erstellt...",
+    "privacy": "Kein Login · Keine Datenbank · Lokale Berechnung im Browser",
+    "preview": {
+      "title": "Vorschau (9:16)",
+      "dimensions": "1080×1920",
+      "emptyTitle": "Deine Kapsel erscheint hier",
+      "emptyHint": "Gib Benutzernamen und Zeitraum ein, um sie zu erstellen.",
+      "ready": "Kapsel bereit"
+    },
+    "actions": {
+      "download": "PNG herunterladen",
+      "share": "Teilen",
+      "exporting": "PNG wird erstellt...",
+      "downloaded": "PNG heruntergeladen.",
+      "shareFallback": "Teilen ist nicht verfügbar. Das PNG wurde heruntergeladen.",
+      "exportError": "Das PNG konnte nicht erstellt werden. Bitte versuche es erneut."
+    },
+    "estimate": {
+      "label": "Geschätzte Zeit (≈)",
+      "short": "Echte Dauer der Top 50 + 3,5 Min. Schätzung.",
+      "tooltip": "Last.fm meldet die gesamte Hörzeit nicht. Wir fragen track.getInfo für deine ~50 meistgehörten Titel ab und nutzen 3,5 Min. für die übrigen oder für Titel ohne Laufzeit. Der angezeigte Wert ist eine Näherung.",
+      "details": "{known} Titel mit echter Dauer · {fallback} geschätzt."
+    },
+    "progress": {
+      "user": "Benutzer wird geprüft...",
+      "pages": "Scrobbles werden geladen...",
+      "pageCounter": "Seite {page} von {totalPages}",
+      "tracksCounter": "{count, plural, =0 {keine Titel} one {# Titel} other {# Titel}}",
+      "durations": "Hörzeit wird geschätzt...",
+      "durationsCounter": "{done} von {total} Titeln",
+      "preparing": "Vorschau wird vorbereitet...",
+      "concurrency": "Parallelität 4 · automatische Wiederholung aktiv",
+      "cancel": "Abbrechen",
+      "cancelled": "Suche abgebrochen."
+    },
+    "errors": {
+      "invalid_username": "Gib einen gültigen Last.fm-Benutzernamen ein (Buchstaben, Zahlen, Punkt, Bindestrich und Unterstrich).",
+      "invalid_user": "Dieser Last.fm-Benutzer wurde nicht gefunden.",
+      "private": "Die Scrobbles dieses Benutzers sind privat. Aktiviere \"Kürzlich gehörte Titel anzeigen\" auf Last.fm und versuche es erneut.",
+      "no_scrobbles": "In diesem Zeitraum wurden keine Scrobbles gefunden.",
+      "rate_limit": "Last.fm hat die Anfragen begrenzt. Warte einen Moment und versuche es erneut.",
+      "network": "Verbindung fehlgeschlagen. Prüfe deine Internetverbindung und versuche es erneut.",
+      "missing_api_key": "Dem Server fehlt der Last.fm-API-Schlüssel (LASTFM_API_KEY).",
+      "server_error": "Last.fm ist derzeit nicht verfügbar. Versuche es gleich noch einmal.",
+      "unknown": "Die Kapsel konnte nicht erstellt werden. Bitte versuche es erneut.",
+      "invalid_range": "Das Enddatum muss gleich oder nach dem Startdatum liegen.",
+      "end_future": "Das Enddatum darf nicht in der Zukunft liegen.",
+      "before_registration": "Das Startdatum liegt vor der Last.fm-Registrierung dieses Benutzers ({date}).",
+      "range_too_long": "Der maximale Zeitraum beträgt {days} Tage."
+    }
+  },
+  "Card": {
+    "title": "Meine Sound-Kapsel für {period}",
+    "topArtists": "Top-Künstler",
+    "topTracks": "Top-Titel",
+    "timeListened": "Hörzeit",
+    "minutes": "≈ {minutes, number} Minuten"
+  },
+  "Footer": {
+    "note": "Öffentliche Last.fm-Daten · Deezer-Bilder · nichts aus deinem Profil wird gespeichert.",
+    "disclaimer": "Sound Capsule ist nicht mit Last.fm verbunden."
+  }
+}

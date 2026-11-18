@@ -1,0 +1,97 @@
+{
+  "Metadata": {
+    "title": "Sound Capsule — votre capsule sonore de Last.fm",
+    "description": "Transformez vos scrobbles Last.fm en une carte verticale 1080×1920 prête à être partagée. Sans connexion, sans base de données et sans stockage de votre profil.",
+    "ogTitle": "Sound Capsule pour Last.fm",
+    "ogDescription": "Votre récap musical dans une carte 1080×1920 prête pour les stories."
+  },
+  "Header": {
+    "skip": "Aller au formulaire",
+    "brand": "Sound Capsule",
+    "forLastfm": "pour Last.fm",
+    "language": "Langue"
+  },
+  "Home": {
+    "title": "Votre capsule sonore",
+    "subtitle": "Saisissez votre nom d'utilisateur Last.fm et choisissez une période pour générer un résumé vertical 1080×1920 prêt à partager.",
+    "usernameLabel": "Nom d'utilisateur Last.fm",
+    "usernamePlaceholder": "votre nom d'utilisateur",
+    "usernameHint": "Le profil doit être public et contenir des scrobbles sur la période sélectionnée.",
+    "periodLabel": "Période",
+    "period": {
+      "week": "7 derniers jours",
+      "month": "Mois en cours",
+      "custom": "Personnalisé",
+      "customHint": "Plage de dates"
+    },
+    "custom": {
+      "start": "Date de début",
+      "end": "Date de fin",
+      "since": "Depuis l'inscription sur Last.fm ({date}) · max. {days} jours",
+      "maxOnly": "Max. {days} jours",
+      "warning": "Les périodes longues chargent plus de pages et peuvent prendre quelques secondes de plus."
+    },
+    "generate": "Générer la capsule",
+    "generating": "Génération de la capsule...",
+    "privacy": "Sans connexion · Sans base de données · Calcul local dans le navigateur",
+    "preview": {
+      "title": "Aperçu (9:16)",
+      "dimensions": "1080×1920",
+      "emptyTitle": "Votre capsule apparaîtra ici",
+      "emptyHint": "Renseignez le nom d'utilisateur et la période pour la générer.",
+      "ready": "Capsule prête"
+    },
+    "actions": {
+      "download": "Télécharger le PNG",
+      "share": "Partager",
+      "exporting": "Génération du PNG...",
+      "downloaded": "PNG téléchargé.",
+      "shareFallback": "Le partage n'est pas disponible. Le PNG a été téléchargé.",
+      "exportError": "Impossible de générer le PNG. Réessayez."
+    },
+    "estimate": {
+      "label": "Temps estimé (≈)",
+      "short": "Durée réelle du top 50 + 3,5 min estimées.",
+      "tooltip": "Last.fm ne fournit pas le temps d'écoute total. Nous interrogeons track.getInfo pour vos ~50 titres les plus écoutés et utilisons 3,5 min pour les autres ou pour les titres sans durée. La valeur affichée est une approximation.",
+      "details": "{known} titres avec durée réelle · {fallback} estimés."
+    },
+    "progress": {
+      "user": "Vérification de l'utilisateur...",
+      "pages": "Récupération des scrobbles...",
+      "pageCounter": "Page {page} sur {totalPages}",
+      "tracksCounter": "{count, plural, =0 {aucun titre} one {# titre} other {# titres}}",
+      "durations": "Estimation du temps d'écoute...",
+      "durationsCounter": "{done} sur {total} titres",
+      "preparing": "Préparation de l'aperçu...",
+      "concurrency": "concurrence 4 · nouvelle tentative automatique activée",
+      "cancel": "Annuler",
+      "cancelled": "Recherche annulée."
+    },
+    "errors": {
+      "invalid_username": "Saisissez un nom d'utilisateur Last.fm valide (lettres, chiffres, point, tiret et tiret bas).",
+      "invalid_user": "Cet utilisateur Last.fm est introuvable.",
+      "private": "Les scrobbles de cet utilisateur sont privés. Activez « Afficher l'écoute récente » sur Last.fm et réessayez.",
+      "no_scrobbles": "Aucun scrobble trouvé sur cette période.",
+      "rate_limit": "Last.fm a limité les requêtes. Patientez quelques instants et réessayez.",
+      "network": "Échec de la connexion. Vérifiez votre connexion internet et réessayez.",
+      "missing_api_key": "Le serveur n'a pas la clé d'API Last.fm (LASTFM_API_KEY).",
+      "server_error": "Last.fm est indisponible pour le moment. Réessayez dans un instant.",
+      "unknown": "Impossible de générer la capsule. Réessayez.",
+      "invalid_range": "La date de fin doit être égale ou postérieure à la date de début.",
+      "end_future": "La date de fin ne peut pas être dans le futur.",
+      "before_registration": "La date de début est antérieure à l'inscription de cet utilisateur sur Last.fm ({date}).",
+      "range_too_long": "La période maximale est de {days} jours."
+    }
+  },
+  "Card": {
+    "title": "Ma capsule sonore de {period}",
+    "topArtists": "Top artistes",
+    "topTracks": "Top titres",
+    "timeListened": "Temps d'écoute",
+    "minutes": "≈ {minutes, number} minutes"
+  },
+  "Footer": {
+    "note": "Données publiques de Last.fm · images Deezer · rien de votre profil n'est stocké.",
+    "disclaimer": "Sound Capsule n'est pas affilié à Last.fm."
+  }
+}

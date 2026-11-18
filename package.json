@@ -1,0 +1,34 @@
+{
+  "name": "sound-capsule",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sound Capsule for Last.fm — turn your scrobbles into a 1080×1920 story card.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "html-to-image": "1.11.13",
+    "next": "15.5.29",
+    "next-intl": "4.15.1",
+    "react": "19.1.10",
+    "react-dom": "19.1.10"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.5",
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "tailwindcss": "4.3.5",
+    "typescript": "5.9.3",
+    "vitest": "3.2.4"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}
+

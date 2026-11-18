@@ -1,0 +1,97 @@
+{
+  "Metadata": {
+    "title": "Sound Capsule — Last.fmのサウンドカプセル",
+    "description": "Last.fmのスクロブルを、共有できる縦型1080×1920カードに。ログイン不要・データベース不要・プロフィールは保存しません。",
+    "ogTitle": "Last.fmのためのSound Capsule",
+    "ogDescription": "あなたの音楽まとめを、ストーリーズ用の1080×1920カードに。"
+  },
+  "Header": {
+    "skip": "フォームへスキップ",
+    "brand": "Sound Capsule",
+    "forLastfm": "for Last.fm",
+    "language": "言語"
+  },
+  "Home": {
+    "title": "あなたのサウンドカプセル",
+    "subtitle": "Last.fmのユーザー名と期間を入力すると、共有用の縦型カード（1080×1920）をブラウザ上で生成します。",
+    "usernameLabel": "Last.fm ユーザー名",
+    "usernamePlaceholder": "ユーザー名",
+    "usernameHint": "プロフィールが公開されていて、選択した期間にスクロブルがある必要があります。",
+    "periodLabel": "期間",
+    "period": {
+      "week": "過去7日間",
+      "month": "今月",
+      "custom": "カスタム",
+      "customHint": "任意の日付範囲"
+    },
+    "custom": {
+      "start": "開始日",
+      "end": "終了日",
+      "since": "Last.fm登録日（{date}）以降 · 最大{days}日",
+      "maxOnly": "最大{days}日",
+      "warning": "期間が長いほどページ数が増え、取得に数秒余計にかかる場合があります。"
+    },
+    "generate": "カプセルを作成",
+    "generating": "カプセルを作成中...",
+    "privacy": "ログイン不要 · DB保存なし · ブラウザ内でローカル集計",
+    "preview": {
+      "title": "プレビュー (9:16)",
+      "dimensions": "1080×1920",
+      "emptyTitle": "ここにカプセルが表示されます",
+      "emptyHint": "ユーザー名と期間を入力して作成してください。",
+      "ready": "カプセル完成"
+    },
+    "actions": {
+      "download": "PNGを保存",
+      "share": "共有する",
+      "exporting": "PNGを生成中...",
+      "downloaded": "PNGを保存しました。",
+      "shareFallback": "共有を利用できないため、PNGを保存しました。",
+      "exportError": "PNGを生成できませんでした。もう一度お試しください。"
+    },
+    "estimate": {
+      "label": "推定再生時間（約）",
+      "short": "上位50曲の実測値＋その他3.5分換算。",
+      "tooltip": "Last.fm APIは合計再生時間を返しません。上位約50曲はtrack.getInfoで実際の長さを取得し、それ以外や長さが不明な曲は3.5分として概算しています。表示される値は目安です。",
+      "details": "実測{known}曲 · 推定{fallback}曲。"
+    },
+    "progress": {
+      "user": "ユーザーを確認中...",
+      "pages": "スクロブルを取得中...",
+      "pageCounter": "{totalPages}ページ中{page}ページ",
+      "tracksCounter": "{count, plural, other {#曲}}",
+      "durations": "再生時間を推定中...",
+      "durationsCounter": "{total}曲中{done}曲",
+      "preparing": "プレビューを準備中...",
+      "concurrency": "同時接続4 · 自動リトライ有効",
+      "cancel": "キャンセル",
+      "cancelled": "取得をキャンセルしました。"
+    },
+    "errors": {
+      "invalid_username": "有効なLast.fmユーザー名を入力してください（英数字・ピリオド・ハイフン・アンダースコア）。",
+      "invalid_user": "Last.fmでユーザーが見つかりません。",
+      "private": "このユーザーのスクロブルは非公開です。Last.fmで「最近の再生を公開」を有効にしてから再試行してください。",
+      "no_scrobbles": "この期間のスクロブルが見つかりません。",
+      "rate_limit": "Last.fmのリクエスト制限に達しました。しばらく待ってから再試行してください。",
+      "network": "接続に失敗しました。インターネット接続を確認して再試行してください。",
+      "missing_api_key": "サーバーにLast.fm APIキー（LASTFM_API_KEY）が設定されていません。",
+      "server_error": "Last.fmが現在利用できません。しばらくしてから再試行してください。",
+      "unknown": "カプセルを生成できませんでした。もう一度お試しください。",
+      "invalid_range": "終了日は開始日以降にしてください。",
+      "end_future": "終了日を未来に設定することはできません。",
+      "before_registration": "開始日がこのユーザーのLast.fm登録日（{date}）より前です。",
+      "range_too_long": "期間の上限は{days}日です。"
+    }
+  },
+  "Card": {
+    "title": "{period}のサウンドカプセル",
+    "topArtists": "トップアーティスト",
+    "topTracks": "トップ楽曲",
+    "timeListened": "再生時間",
+    "minutes": "約 {minutes, number} 分"
+  },
+  "Footer": {
+    "note": "Last.fmの公開データ · Deezerの画像 · プロフィールは保存されません。",
+    "disclaimer": "Sound CapsuleはLast.fmと提携していません。"
+  }
+}

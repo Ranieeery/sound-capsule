@@ -1,0 +1,97 @@
+{
+  "Metadata": {
+    "title": "Sound Capsule — your Last.fm sound capsule",
+    "description": "Turn your Last.fm scrobbles into a vertical 1080×1920 card ready to share. No login, no database, and nothing about your profile is stored.",
+    "ogTitle": "Sound Capsule for Last.fm",
+    "ogDescription": "Your music recap as a 1080×1920 card ready for stories."
+  },
+  "Header": {
+    "skip": "Skip to the form",
+    "brand": "Sound Capsule",
+    "forLastfm": "for Last.fm",
+    "language": "Language"
+  },
+  "Home": {
+    "title": "Your sound capsule",
+    "subtitle": "Enter your Last.fm username and pick a time range to build a vertical 1080×1920 summary card ready to share.",
+    "usernameLabel": "Last.fm username",
+    "usernamePlaceholder": "your username",
+    "usernameHint": "Your profile must be public and have scrobbles in the selected period.",
+    "periodLabel": "Time range",
+    "period": {
+      "week": "Last 7 days",
+      "month": "Current month",
+      "custom": "Custom",
+      "customHint": "Date range"
+    },
+    "custom": {
+      "start": "Start date",
+      "end": "End date",
+      "since": "Since Last.fm registration ({date}) · max. {days} days",
+      "maxOnly": "Max. {days} days",
+      "warning": "Longer ranges fetch more pages and may take a few extra seconds."
+    },
+    "generate": "Generate capsule",
+    "generating": "Generating capsule...",
+    "privacy": "No login · No database · Computed locally in your browser",
+    "preview": {
+      "title": "Preview (9:16)",
+      "dimensions": "1080×1920",
+      "emptyTitle": "Your capsule shows up here",
+      "emptyHint": "Fill in the username and time range to generate it.",
+      "ready": "Capsule ready"
+    },
+    "actions": {
+      "download": "Download PNG",
+      "share": "Share",
+      "exporting": "Rendering PNG...",
+      "downloaded": "PNG downloaded.",
+      "shareFallback": "Sharing is unavailable. The PNG was downloaded instead.",
+      "exportError": "Could not render the PNG. Please try again."
+    },
+    "estimate": {
+      "label": "Estimated time (≈)",
+      "short": "Top 50 real durations + 3.5 min fallback.",
+      "tooltip": "Last.fm does not report total listening time. We query track.getInfo for your ~50 most played tracks and use 3.5 min for the rest or for tracks without a duration. The number shown is an approximation.",
+      "details": "{known} tracks with real duration · {fallback} estimated."
+    },
+    "progress": {
+      "user": "Checking the user...",
+      "pages": "Fetching scrobbles...",
+      "pageCounter": "Page {page} of {totalPages}",
+      "tracksCounter": "{count, plural, =0 {no tracks} one {# track} other {# tracks}}",
+      "durations": "Estimating listening time...",
+      "durationsCounter": "{done} of {total} tracks",
+      "preparing": "Preparing the preview...",
+      "concurrency": "concurrency 4 · automatic retry enabled",
+      "cancel": "Cancel",
+      "cancelled": "Fetch cancelled."
+    },
+    "errors": {
+      "invalid_username": "Enter a valid Last.fm username (letters, numbers, dot, hyphen and underscore).",
+      "invalid_user": "This Last.fm user was not found.",
+      "private": "This user's scrobbles are private. Enable \"Show recent listening\" on Last.fm and try again.",
+      "no_scrobbles": "No scrobbles found in this period.",
+      "rate_limit": "Last.fm rate-limited the requests. Wait a moment and try again.",
+      "network": "Connection failed. Check your internet and try again.",
+      "missing_api_key": "The server is missing the Last.fm API key (LASTFM_API_KEY).",
+      "server_error": "Last.fm is unavailable right now. Please try again shortly.",
+      "unknown": "Could not generate the capsule. Please try again.",
+      "invalid_range": "The end date must be on or after the start date.",
+      "end_future": "The end date cannot be in the future.",
+      "before_registration": "The start date is before this user's Last.fm registration ({date}).",
+      "range_too_long": "The maximum range is {days} days."
+    }
+  },
+  "Card": {
+    "title": "My sound capsule for {period}",
+    "topArtists": "Top artists",
+    "topTracks": "Top tracks",
+    "timeListened": "Time listened",
+    "minutes": "≈ {minutes, number} minutes"
+  },
+  "Footer": {
+    "note": "Public Last.fm data · Deezer images · nothing about your profile is stored.",
+    "disclaimer": "Sound Capsule is not affiliated with Last.fm."
+  }
+}

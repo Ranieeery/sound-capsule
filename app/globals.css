@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: #0f0f10;
+  --color-surface: #171719;
+  --color-field: #111113;
+  --color-panel: #212121;
+  --color-line: #27272a;
+  --color-line-strong: #2e2e32;
+  --color-fg: #f4f4f5;
+  --color-muted: #a1a1aa;
+  --color-subtle: #71717a;
+  --color-accent: #f06848;
+  --color-accent-soft: #1f1918;
+  --color-warn-bg: #1c1917;
+  --color-warn-line: #3a2a24;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, "Hiragino Sans",
+    "Yu Gothic UI", "Noto Sans JP", "Noto Sans KR", "Noto Sans SC",
+    "Malgun Gothic", "Microsoft YaHei", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background-color: #0f0f10;
+}
+
+body {
+  color: #f4f4f5;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: #f06848;
+  color: #111113;
+}
+
+:focus-visible {
+  outline: 2px solid #f06848;
+  outline-offset: 2px;
+}
+
+/* Date inputs: keep the native picker legible on the dark theme. */
+input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Radio cards are the visible control; the native radio stays accessible. */
+.period-card:has(input:focus-visible) {
+  outline: 2px solid #f06848;
+  outline-offset: 2px;
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.skeleton-pulse {
+  animation: skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-pulse {
+    animation: none;
+  }
+}
