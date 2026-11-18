@@ -88,7 +88,7 @@ export async function generateMetadata({
 
   const t = await getTranslations({ locale, namespace: 'Metadata' });
   const ogImage = {
-    url: '/og.png',
+    url: `/og/${locale}.png`,
     width: 1200,
     height: 630,
     alt: t('ogTitle'),
@@ -112,7 +112,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: t('ogTitle'),
       description: t('ogDescription'),
-      images: ['/og.png'],
+      images: [ogImage.url],
     },
     alternates: {
       canonical: `/${locale}`,
