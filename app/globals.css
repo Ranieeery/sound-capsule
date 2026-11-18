@@ -48,6 +48,16 @@ body {
   outline-offset: 2px;
 }
 
+/*
+ * The username field is a composite (static "last.fm/user/" prefix + input).
+ * Its container already draws the focus ring, so the input must not draw its
+ * own outline — clipping would leave a stray vertical line right after the
+ * prefix.
+ */
+.username-field input:focus-visible {
+  outline: none;
+}
+
 /* Date inputs: keep the native picker legible on the dark theme. */
 input[type="date"] {
   color-scheme: dark;

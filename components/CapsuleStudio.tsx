@@ -21,6 +21,7 @@ import {
   type FetchProgress,
   type LastfmUser,
 } from '@/lib/lastfmClient';
+import { normalizeLastfmUsernameInput } from '@/lib/username';
 import {
   MAX_CUSTOM_RANGE_DAYS,
   addDays,
@@ -144,7 +145,7 @@ export function CapsuleStudio() {
   useEffect(() => {
     if (!mounted || periodKind !== 'custom') return;
 
-    const trimmed = username.trim();
+    const trimmed = normalizeLastfmUsernameInput(username);
     if (!isValidLastfmUsername(trimmed)) {
       setUserInfo(null);
       return;
@@ -233,6 +234,27 @@ export function CapsuleStudio() {
     resetErrorOnEdit();
   }
 
+  function onUsernamePaste(event: React.ClipboardEvent<HTMLInputElement>) {
+    const pasted = event.clipboardData.getData('text');
+    const normalized = normalizeLastfmUsernameInput(pasted);
+
+    // Pasting a profile URL should only fill the username, not duplicate the
+    // static `last.fm/user/` prefix already shown in the field.
+    if (normalized && normalized !== pasted.trim()) {
+      event.preventDefault();
+      setUsername(normalized);
+      resetErrorOnEdit();
+    }
+  }
+
+  function onUsernameBlur() {
+    const normalized = normalizeLastfmUsernameInput(username);
+    if (normalized !== username) {
+      setUsername(normalized);
+      resetErrorOnEdit();
+    }
+  }
+
   function onPeriodChange(kind: PeriodKind) {
     setPeriodKind(kind);
     resetErrorOnEdit();
@@ -249,7 +271,11 @@ export function CapsuleStudio() {
     setNotice(null);
     setActionError(null);
 
-    const trimmed = username.trim();
+    const trimmed = normalizeLastfmUsernameInput(username);
+    if (trimmed !== username) {
+      setUsername(trimmed);
+    }
+
     if (!isValidLastfmUsername(trimmed)) {
       setResult(null);
       setStatus('error');
@@ -454,7 +480,7 @@ export function CapsuleStudio() {
             >
               {t('usernameLabel')}
             </label>
-            <div className="mt-2 flex items-center overflow-hidden rounded-lg border border-line-strong bg-field transition-colors focus-within:border-accent focus-within:ring-1 focus-within:ring-accent/40">
+            <div className="username-field mt-2 flex items-center overflow-hidden rounded-lg border border-line-strong bg-field transition-colors focus-within:border-accent focus-within:ring-1 focus-within:ring-accent/40">
               <span className="select-none pl-3.5 pr-1 font-mono text-xs text-subtle">
                 last.fm/user/
               </span>
@@ -469,10 +495,12 @@ export function CapsuleStudio() {
                 spellCheck={false}
                 value={username}
                 onChange={onUsernameChange}
+                onPaste={onUsernamePaste}
+                onBlur={onUsernameBlur}
                 placeholder={t('usernamePlaceholder')}
                 aria-describedby="username-hint"
                 aria-invalid={error?.code === 'invalid_username' || undefined}
-                className="w-full bg-transparent py-2.5 pr-3.5 text-sm font-medium text-fg placeholder:text-subtle focus:outline-none"
+                className="w-full bg-transparent py-2.5 pr-3.5 text-sm font-medium text-fg placeholder:text-subtle focus:outline-none focus-visible:outline-none"
                 disabled={isBusy}
               />
             </div>
@@ -675,7 +703,7 @@ export function CapsuleStudio() {
         className="flex flex-col items-center gap-4 lg:col-span-5"
         aria-label={t('preview.title')}
       >
-        <div className="flex w-full max-w-[280px] items-center justify-between">
+        <div className="flex w-full max-w-[320px] items-center justify-between">
           <span className="text-[11px] font-medium uppercase tracking-wider text-muted">
             {t('preview.title')}
           </span>
@@ -683,7 +711,7 @@ export function CapsuleStudio() {
         </div>
 
         {result && status === 'ready' && (
-          <p className="w-full max-w-[280px] truncate font-mono text-[11px] text-subtle">
+          <p className="w-full max-w-[320px] truncate font-mono text-[11px] text-subtle">
             @{result.data.user.username} · {result.periodLabel}
           </p>
         )}
@@ -720,7 +748,7 @@ export function CapsuleStudio() {
           }
         </PreviewShell>
 
-        <div className="grid w-full max-w-[280px] grid-cols-2 gap-2.5">
+        <div className="grid w-full max-w-[320px] grid-cols-2 gap-2.5">
           <button
             type="button"
             onClick={handleDownload}
@@ -749,12 +777,12 @@ export function CapsuleStudio() {
         </div>
 
         {actionError && (
-          <p role="alert" className="w-full max-w-[280px] text-xs text-accent">
+          <p role="alert" className="w-full max-w-[320px] text-xs text-accent">
             {actionError}
           </p>
         )}
 
-        <details className="group relative w-full max-w-[280px] text-xs text-muted">
+        <details className="group relative w-full max-w-[320px] text-xs text-muted">
           <summary className="flex cursor-pointer list-none items-start gap-2 rounded-md text-left transition-colors hover:text-fg [&::-webkit-details-marker]:hidden">
             <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-line-strong font-mono text-[10px] leading-none text-muted">
               i
@@ -775,7 +803,7 @@ export function CapsuleStudio() {
           </div>
         </details>
 
-        <p className="w-full max-w-[280px] font-mono text-[10px] text-subtle">
+        <p className="w-full max-w-[320px] font-mono text-[10px] text-subtle">
           {CARD_EXPORT_WIDTH}×{CARD_EXPORT_HEIGHT} px PNG
         </p>
       </aside>
@@ -806,7 +834,7 @@ function PreviewShell({ children }: { children: (scale: number) => React.ReactNo
   return (
     <div
       ref={shellRef}
-      className="relative w-full max-w-[280px] overflow-hidden rounded-xl border border-line bg-surface"
+      className="relative w-full max-w-[320px] overflow-hidden rounded-xl border border-line bg-surface"
       style={{ aspectRatio: '9 / 16' }}
     >
       {children(scale)}
@@ -1017,3 +1045,4 @@ function ShareIcon() {
     </svg>
   );
 }
+
