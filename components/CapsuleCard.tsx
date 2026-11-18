@@ -68,7 +68,7 @@ export function CapsuleCard({
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '22px 28px 24px',
+          padding: '22px 26px 24px',
           backgroundColor: '#212121',
         }}
       >
@@ -82,10 +82,10 @@ export function CapsuleCard({
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-            <BrandMark size={20} surface="#171719" border="#343438" />
+            <BrandMark size={22} surface="#171719" border="#343438" />
             <span
               style={{
-                fontSize: 14,
+                fontSize: 15.5,
                 fontWeight: 600,
                 letterSpacing: '-0.01em',
                 color: '#f4f4f5',
@@ -98,8 +98,8 @@ export function CapsuleCard({
           <span
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: 11,
-              lineHeight: 1.3,
+              fontSize: 12.5,
+              lineHeight: 1.35,
               color: '#a1a1aa',
               textAlign: 'right',
               overflow: 'hidden',
@@ -116,10 +116,10 @@ export function CapsuleCard({
         <h2
           data-card-title
           style={{
-            fontSize: 26,
-            lineHeight: 1.2,
+            fontSize: 30,
+            lineHeight: 1.18,
             fontWeight: 700,
-            letterSpacing: '-0.015em',
+            letterSpacing: '-0.02em',
             color: '#f4f4f5',
             margin: 0,
             wordBreak: 'break-word',
@@ -133,7 +133,7 @@ export function CapsuleCard({
           style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            columnGap: 20,
+            columnGap: 18,
             alignItems: 'start',
           }}
         >
@@ -159,9 +159,9 @@ export function CapsuleCard({
         >
           <span
             style={{
-              fontSize: 10.5,
+              fontSize: 12.5,
               fontWeight: 600,
-              letterSpacing: '0.09em',
+              letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: '#a1a1aa',
             }}
@@ -170,10 +170,10 @@ export function CapsuleCard({
           </span>
           <span
             style={{
-              fontSize: 30,
-              lineHeight: 1.15,
+              fontSize: 38,
+              lineHeight: 1.12,
               fontWeight: 700,
-              letterSpacing: '-0.02em',
+              letterSpacing: '-0.025em',
               color: '#F06848',
               fontVariantNumeric: 'tabular-nums',
             }}
@@ -196,12 +196,12 @@ function CardColumn({ heading, items }: CardColumnProps) {
     <div style={{ minWidth: 0 }}>
       <div
         style={{
-          fontSize: 10.5,
+          fontSize: 12.5,
           fontWeight: 600,
-          letterSpacing: '0.09em',
+          letterSpacing: '0.08em',
           textTransform: 'uppercase',
           color: '#a1a1aa',
-          marginBottom: 9,
+          marginBottom: 10,
         }}
       >
         {heading}
@@ -213,17 +213,17 @@ function CardColumn({ heading, items }: CardColumnProps) {
             style={{
               display: 'flex',
               alignItems: 'baseline',
-              gap: 7,
+              gap: 8,
               minWidth: 0,
-              marginBottom: 7,
+              marginBottom: 8,
             }}
           >
             <span
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: 10.5,
+                fontSize: 12.5,
                 color: '#a1a1aa',
-                width: 13,
+                width: 16,
                 flexShrink: 0,
                 fontVariantNumeric: 'tabular-nums',
               }}
@@ -235,7 +235,7 @@ function CardColumn({ heading, items }: CardColumnProps) {
               style={{
                 flex: 1,
                 minWidth: 0,
-                fontSize: 13.5,
+                fontSize: 16,
                 fontWeight: 500,
                 lineHeight: 1.35,
                 color: '#f4f4f5',
@@ -252,3 +252,4 @@ function CardColumn({ heading, items }: CardColumnProps) {
     </div>
   );
 }
+
