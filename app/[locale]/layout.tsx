@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from 'next';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Geist, Geist_Mono, Noto_Sans_JP, Noto_Sans_KR, Noto_Sans_SC } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
@@ -151,6 +153,8 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  // The /_vercel/* endpoints only exist on Vercel; keep local dev free of 404s.
+  const observabilityEnabled = process.env.VERCEL === '1';
 
   return (
     <html
@@ -159,6 +163,12 @@ export default async function LocaleLayout({
     >
       <body className="min-h-dvh bg-ink font-sans text-fg antialiased">
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+        {observabilityEnabled && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
       </body>
     </html>
   );
