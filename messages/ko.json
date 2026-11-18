@@ -114,6 +114,7 @@
   "Footer": {
     "note": "Last.fm 공개 데이터 · Deezer 이미지 · 언어와 테마만 이 브라우저에 저장됩니다.",
     "disclaimer": "Sound Capsule은 Last.fm과 제휴 관계가 없습니다.",
-    "poweredBy": "powered by Last.fm"
+    "poweredBy": "powered by Last.fm",
+    "creditPrefix": "제작:"
   }
 }

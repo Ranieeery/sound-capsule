@@ -114,6 +114,7 @@
   "Footer": {
     "note": "Last.fm 公开数据 · Deezer 图片 · 仅在本浏览器保存语言和主题。",
     "disclaimer": "Sound Capsule 与 Last.fm 无关联。",
-    "poweredBy": "powered by Last.fm"
+    "poweredBy": "powered by Last.fm",
+    "creditPrefix": "作者："
   }
 }

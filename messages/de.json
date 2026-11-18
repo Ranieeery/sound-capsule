@@ -114,6 +114,7 @@
   "Footer": {
     "note": "Öffentliche Last.fm-Daten · Deezer-Bilder · nur Sprache und Theme werden in diesem Browser gespeichert.",
     "disclaimer": "Sound Capsule ist nicht mit Last.fm verbunden.",
-    "poweredBy": "powered by Last.fm"
+    "poweredBy": "powered by Last.fm",
+    "creditPrefix": "Erstellt von"
   }
 }

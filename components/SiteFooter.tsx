@@ -8,6 +8,17 @@ export async function SiteFooter() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-5 py-6 text-[13px] leading-relaxed text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <p>{t('note')}</p>
         <div className="flex flex-col gap-1 sm:items-end">
+          <p>
+            {t('creditPrefix')}{' '}
+            <a
+              href="https://github.com/Ranieeery"
+              target="_blank"
+              rel="noreferrer"
+              className="text-muted underline-offset-2 transition-colors hover:text-fg hover:underline"
+            >
+              Ranieeery
+            </a>
+          </p>
           <a
             href="https://www.last.fm"
             target="_blank"
