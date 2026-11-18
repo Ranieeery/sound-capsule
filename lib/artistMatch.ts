@@ -11,6 +11,9 @@ export interface DeezerArtistLike {
   picture_big?: string;
   picture_medium?: string;
   link?: string;
+  /** Deezer popularity; used to disambiguate artists that share a name. */
+  nb_fan?: number;
+  nb_album?: number;
 }
 
 export function normalizeArtistName(value: string | null | undefined): string {
@@ -82,7 +85,7 @@ function similarity(query: string, candidate: string): number {
 export function pickBestArtistMatch<T extends DeezerArtistLike>(
   query: string,
   candidates: readonly T[],
-  minimumScore = 0.6,
+  minimumScore = 0.7,
 ): { artist: T; score: number } | null {
   const normalizedQuery = normalizeArtistName(query);
   if (!normalizedQuery) return null;
@@ -97,8 +100,21 @@ export function pickBestArtistMatch<T extends DeezerArtistLike>(
     if (!normalizedCandidate) continue;
 
     const score = similarity(normalizedQuery, normalizedCandidate);
-    // Strictly greater keeps the first (most relevant) Deezer result on ties.
-    if (!best || score > best.score) {
+
+    // Exact-name matches are common for artists with the same name (for
+    // example several Deezer artists called "Twice"). Prefer the most popular
+    // exact match instead of trusting Deezer's result order, which can put an
+    // obscure namesake first.
+    const popularity = (candidate.nb_fan ?? 0) * 1_000 + (candidate.nb_album ?? 0);
+    const bestPopularity = best
+      ? (best.artist.nb_fan ?? 0) * 1_000 + (best.artist.nb_album ?? 0)
+      : -1;
+
+    if (
+      !best ||
+      score > best.score + 1e-9 ||
+      (Math.abs(score - best.score) < 1e-9 && popularity > bestPopularity)
+    ) {
       best = { artist: candidate, score };
     }
   }

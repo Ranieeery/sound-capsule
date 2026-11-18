@@ -5,8 +5,12 @@ import {
   type DeezerArtistLike,
 } from '@/lib/artistMatch';
 
-function artist(name: string, picture_xl = 'https://cdn-images.dzcdn.net/cover.jpg'): DeezerArtistLike {
-  return { name, picture_xl };
+function artist(
+  name: string,
+  picture_xl = 'https://cdn-images.dzcdn.net/cover.jpg',
+  nb_fan = 0,
+): DeezerArtistLike {
+  return { name, picture_xl, nb_fan };
 }
 
 describe('normalizeArtistName', () => {
@@ -31,6 +35,17 @@ describe('pickBestArtistMatch', () => {
 
     expect(match?.artist.name).toBe('Radiohead');
     expect(match?.score).toBe(1);
+  });
+
+  it('prefers the most popular exact namesake', () => {
+    const match = pickBestArtistMatch('TWICE', [
+      artist('Twice', 'https://cdn-images.dzcdn.net/twice-obscure.jpg', 13_249),
+      artist('Twice', 'https://cdn-images.dzcdn.net/twice-other.jpg', 1_170),
+      artist('TWICE', 'https://cdn-images.dzcdn.net/twice-kpop.jpg', 1_364_671),
+    ]);
+
+    expect(match?.artist.name).toBe('TWICE');
+    expect(match?.artist.picture_xl).toContain('twice-kpop');
   });
 
   it('matches diacritics-insensitively', () => {

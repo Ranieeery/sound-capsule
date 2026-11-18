@@ -48,7 +48,9 @@ export async function GET(request: Request): Promise<NextResponse> {
 
   const searchUrl = new URL('https://api.deezer.com/search/artist');
   searchUrl.searchParams.set('q', name);
-  searchUrl.searchParams.set('limit', '10');
+  // More candidates help disambiguate artists that share a name (e.g. "TWICE");
+  // popularity is used as the tie-breaker in pickBestArtistMatch.
+  searchUrl.searchParams.set('limit', '25');
 
   try {
     const upstream = await fetch(searchUrl, {
