@@ -1,4 +1,4 @@
-**English** · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [Русский](README.ru.md) · [Polski](README.pl.md)
+[English](../../README.md) · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · **简体中文** · [Русский](README.ru.md) · [Polski](README.pl.md)
 
 # Sound Capsule
 
@@ -6,11 +6,11 @@
 
 **部署：** <https://sound-capsule-lastfm.vercel.app>
 
-![生成的卡片](docs/screenshots/capsule-1080x1920.png)
+<img src="../screenshots/cards/card-zh.png" alt="简体中文 Sound Capsule 示例卡片" width="320" />
 
-> 截图使用模拟数据来展示界面状态。卡片的背景图片是一张合成的测试人像；在生产环境中，它来自 Deezer 或用户上传的照片。
+> 示例卡片使用演示数据（Aurora 照片来自 Deezer），隐藏用户名，Ember 主题，3,708 分钟。
 
-导出的 PNG 中渲染日文、韩文和中文姓名的示例：[CJK 卡片](docs/screenshots/cjk-1080x1920.png)。
+导出的 PNG 中渲染日文、韩文和中文姓名的示例：[CJK 卡片](../screenshots/cjk-1080x1920.png)。
 
 ## 功能
 
@@ -171,17 +171,17 @@ lib/
   exportCard.ts           # 字体嵌入 + html-to-image → 1080×1920 PNG
   initials.ts / locales.ts
 public/
-  og.png                  # Open Graph/Twitter 预览 1200×630
+  og/<locale>.png          # Open Graph/Twitter 预览 1200×630
   llms.txt                # 面向智能体/LLM 的项目摘要
 messages/                 # pt, en, es, fr, de, it, ja, ko, zh, ru, pl
 tests/                    # Vitest
-docs/screenshots/         # 参考截图
+../screenshots/         # 参考截图
 ```
 
 ## 链接预览、SEO 与可发现性
 
 - 全部 11 个路由都设置了 `metadataBase` + Open Graph/Twitter Card，并带有本地化的标题和描述。
-- `og:image` 和 `twitter:image` 使用 `public/og.png` 图片（1200×630）；这是把链接粘贴到 WhatsApp、Discord、Telegram、Twitter/X 等应用时显示的预览图。
+- `og:image` 和 `twitter:image` 使用 `public/og/<locale>.png` 图片（1200×630）；这是把链接粘贴到 WhatsApp、Discord、Telegram、Twitter/X 等应用时显示的预览图。
 - `/robots.txt` 由 `app/robots.ts` 生成，允许站点、阻止 `/api/`，并指向站点地图。
 - `/sitemap.xml` 由 `app/sitemap.ts` 生成，包含 11 个路由和 `hreflang` alternates。
 - `/llms.txt` 为 AI 智能体提供关于产品、数据来源和隐私政策的事实性摘要。
@@ -318,3 +318,8 @@ pnpm build
 ## 免责声明
 
 Sound Capsule 是一个独立项目，与 Last.fm 或任何流媒体服务无关。音乐数据是公开的，由 Last.fm API 提供；歌手照片来自 Deezer 或用户。Vercel Hobby 套餐的使用为个人非商业用途。
+
+## 致谢
+
+作者：[Ranieeery](https://github.com/Ranieeery)。
+

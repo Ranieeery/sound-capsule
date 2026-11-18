@@ -1,4 +1,4 @@
-**English** · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [Русский](README.ru.md) · [Polski](README.pl.md)
+[English](../../README.md) · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · **Русский** · [Polski](README.pl.md)
 
 # Sound Capsule
 
@@ -6,11 +6,11 @@
 
 **Деплой:** <https://sound-capsule-lastfm.vercel.app>
 
-![Сгенерированная карточка](docs/screenshots/capsule-1080x1920.png)
+<img src="../screenshots/cards/card-ru.png" alt="Пример карточки Sound Capsule на русском" width="320" />
 
-> На скриншотах используются смоделированные данные, чтобы показать состояния интерфейса. Фоновое изображение карточки — синтетический тестовый портрет; в рабочей версии оно берётся из Deezer или из фотографии, загруженной пользователем.
+> Пример карточки с демо-данными (фото Aurora из Deezer), скрытым именем пользователя, темой Ember и 3 708 минутами.
 
-Пример с японскими, корейскими и китайскими именами в экспортированном PNG: [карточка CJK](docs/screenshots/cjk-1080x1920.png).
+Пример с японскими, корейскими и китайскими именами в экспортированном PNG: [карточка CJK](../screenshots/cjk-1080x1920.png).
 
 ## Возможности
 
@@ -171,17 +171,17 @@ lib/
   exportCard.ts           # встраивание шрифтов + html-to-image → PNG 1080×1920
   initials.ts / locales.ts
 public/
-  og.png                  # превью Open Graph/Twitter 1200×630
+  og/<locale>.png          # превью Open Graph/Twitter 1200×630
   llms.txt                # краткое описание проекта для агентов/LLM
 messages/                 # pt, en, es, fr, de, it, ja, ko, zh, ru, pl
 tests/                    # Vitest
-docs/screenshots/         # эталонные скриншоты
+../screenshots/         # эталонные скриншоты
 ```
 
 ## Превью ссылок, SEO и обнаруживаемость
 
 - `metadataBase` + Open Graph/Twitter Card на всех 11 маршрутах, с локализованными заголовком и описанием.
-- Изображение `public/og.png` (1200×630) используется в `og:image` и `twitter:image`; это превью, которое показывается при вставке ссылки в WhatsApp, Discord, Telegram, Twitter/X и т. п.
+- Изображение `public/og/<locale>.png` (1200×630) используется в `og:image` и `twitter:image`; это превью, которое показывается при вставке ссылки в WhatsApp, Discord, Telegram, Twitter/X и т. п.
 - `/robots.txt` генерируется `app/robots.ts`: разрешает сайт, блокирует `/api/` и указывает на карту сайта.
 - `/sitemap.xml` генерируется `app/sitemap.ts` и содержит 11 маршрутов с альтернативами `hreflang`.
 - `/llms.txt` с фактологическим описанием продукта, источников данных и политики конфиденциальности для ИИ-агентов.
@@ -318,3 +318,8 @@ pnpm build
 ## Дисклеймер
 
 Sound Capsule — независимый проект, не связанный с Last.fm или каким-либо стриминговым сервисом. Музыкальные данные публичны и предоставляются API Last.fm; фото артистов берутся из Deezer или от пользователя. Использование плана Hobby в Vercel носит личный и некоммерческий характер.
+
+## Авторы
+
+Автор: [Ranieeery](https://github.com/Ranieeery).
+

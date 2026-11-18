@@ -1,4 +1,4 @@
-**English** · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [Русский](README.ru.md) · [Polski](README.pl.md)
+[English](../../README.md) · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [日本語](README.ja.md) · **한국어** · [简体中文](README.zh-CN.md) · [Русский](README.ru.md) · [Polski](README.pl.md)
 
 # Sound Capsule
 
@@ -6,11 +6,11 @@ Last.fm 스크로블을 다운로드하거나 바로 공유할 수 있는 **세�
 
 **배포:** <https://sound-capsule-lastfm.vercel.app>
 
-![생성된 카드](docs/screenshots/capsule-1080x1920.png)
+<img src="../screenshots/cards/card-ko.png" alt="한국어 Sound Capsule 예시 카드" width="320" />
 
-> 스크린샷은 인터페이스 상태를 보여 주기 위해 시뮬레이션한 데이터를 사용합니다. 카드의 배경 이미지는 테스트용 합성 인물 사진이며, 실제 서비스에서는 Deezer 또는 사용자가 업로드한 사진에서 가져옵니다.
+> 데모 데이터가 들어간 예시 카드(Aurora 사진은 Deezer 제공), 사용자 이름 숨김, Ember 테마, 3,708분.
 
-내보낸 PNG에 한국어·일본어·중국어 이름을 렌더링한 예: [CJK 카드](docs/screenshots/cjk-1080x1920.png).
+내보낸 PNG에 한국어·일본어·중국어 이름을 렌더링한 예: [CJK 카드](../screenshots/cjk-1080x1920.png).
 
 ## 기능
 
@@ -171,17 +171,17 @@ lib/
   exportCard.ts           # 폰트 임베드 + html-to-image → 1080×1920 PNG
   initials.ts / locales.ts
 public/
-  og.png                  # Open Graph/Twitter 미리보기 1200×630
+  og/<locale>.png          # Open Graph/Twitter 미리보기 1200×630
   llms.txt                # 에이전트/LLM용 프로젝트 요약
 messages/                 # pt, en, es, fr, de, it, ja, ko, zh, ru, pl
 tests/                    # Vitest
-docs/screenshots/         # 참고 스크린샷
+../screenshots/         # 참고 스크린샷
 ```
 
 ## 링크 미리보기, SEO, 검색 노출
 
 - 11개 라우트 모두에 `metadataBase` + Open Graph/Twitter Card를 설정하고 제목과 설명을 현지화했습니다.
-- `og:image`와 `twitter:image`에는 `public/og.png` 이미지(1200×630)를 사용합니다. 이는 링크를 WhatsApp, Discord, Telegram, Twitter/X 등에 붙여 넣을 때 표시되는 미리보기입니다.
+- `og:image`와 `twitter:image`에는 `public/og/<locale>.png` 이미지(1200×630)를 사용합니다. 이는 링크를 WhatsApp, Discord, Telegram, Twitter/X 등에 붙여 넣을 때 표시되는 미리보기입니다.
 - `/robots.txt`는 `app/robots.ts`가 생성하며, 사이트를 허용하고 `/api/`를 차단하며 사이트맵을 가리킵니다.
 - `/sitemap.xml`은 `app/sitemap.ts`가 생성하며, 11개 라우트와 `hreflang` alternates를 포함합니다.
 - `/llms.txt`에는 AI 에이전트를 위한 제품, 데이터 소스, 개인정보 처리방침의 사실 기반 요약이 담겨 있습니다.
@@ -318,3 +318,8 @@ pnpm build
 ## 면책 고지
 
 Sound Capsule은 독립적인 프로젝트이며 Last.fm이나 어떤 스트리밍 서비스와도 제휴하지 않습니다. 음악 데이터는 공개되어 있으며 Last.fm API에서 제공됩니다. 아티스트 사진은 Deezer 또는 사용자로부터 제공됩니다. Vercel Hobby 플랜의 사용은 개인적이고 비상업적입니다.
+
+## 제작
+
+제작: [Ranieeery](https://github.com/Ranieeery).
+

@@ -1,4 +1,4 @@
-**English** · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [Русский](README.ru.md) · [Polski](README.pl.md)
+[English](../../README.md) · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · **日本語** · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [Русский](README.ru.md) · [Polski](README.pl.md)
 
 # Sound Capsule
 
@@ -6,11 +6,11 @@ Last.fmのスクロブルを、ダウンロードや共有がすぐにできる*
 
 **デプロイ:** <https://sound-capsule-lastfm.vercel.app>
 
-![生成されたカード](docs/screenshots/capsule-1080x1920.png)
+<img src="../screenshots/cards/card-ja.png" alt="日本語のSound Capsuleサンプルカード" width="320" />
 
-> スクリーンショットは、インターフェースの各状態を示すためにシミュレーションしたデータを使用しています。カードの背景画像はテスト用の合成ポートレートであり、本番環境ではDeezerまたはユーザーがアップロードした写真から取得されます。
+> デモデータのサンプルカード（Auroraの写真はDeezerから）、ユーザー名非表示、Emberテーマ、3,708分。
 
-書き出したPNGで日本語・韓国語・中国語の名前を表示した例：[CJKカード](docs/screenshots/cjk-1080x1920.png)。
+書き出したPNGで日本語・韓国語・中国語の名前を表示した例：[CJKカード](../screenshots/cjk-1080x1920.png)。
 
 ## 機能
 
@@ -171,17 +171,17 @@ lib/
   exportCard.ts           # フォント埋め込み + html-to-image → 1080×1920 PNG
   initials.ts / locales.ts
 public/
-  og.png                  # Open Graph/Twitterプレビュー 1200×630
+  og/<locale>.png          # Open Graph/Twitterプレビュー 1200×630
   llms.txt                # エージェント/LLM向けのプロジェクト概要
 messages/                 # pt, en, es, fr, de, it, ja, ko, zh, ru, pl
 tests/                    # Vitest
-docs/screenshots/         # リファレンスのスクリーンショット
+../screenshots/         # リファレンスのスクリーンショット
 ```
 
 ## リンクプレビュー、SEO、発見性
 
 - 11ルートすべてに`metadataBase` + Open Graph/Twitter Cardを設定し、タイトルと説明をローカライズしています。
-- `og:image`と`twitter:image`には`public/og.png`の画像（1200×630）を使用します。これはWhatsApp、Discord、Telegram、Twitter/Xなどにリンクを貼り付けたときに表示されるプレビューです。
+- `og:image`と`twitter:image`には`public/og/<locale>.png`の画像（1200×630）を使用します。これはWhatsApp、Discord、Telegram、Twitter/Xなどにリンクを貼り付けたときに表示されるプレビューです。
 - `/robots.txt`は`app/robots.ts`が生成し、サイトを許可し、`/api/`をブロックし、サイトマップを指します。
 - `/sitemap.xml`は`app/sitemap.ts`が生成し、11ルートと`hreflang`のalternatesを含みます。
 - `/llms.txt`には、AIエージェント向けに製品・データソース・プライバシーポリシーの事実に基づく概要を掲載しています。
@@ -318,3 +318,8 @@ pnpm build
 ## 免責事項
 
 Sound Capsuleは独立したプロジェクトであり、Last.fmやいかなるストリーミングサービスとも提携していません。音楽データは公開されており、Last.fm APIによって提供されます。アーティスト写真はDeezerまたはユーザーから提供されます。VercelのHobbyプランの利用は個人的かつ非商用です。
+
+## クレジット
+
+制作: [Ranieeery](https://github.com/Ranieeery).
+

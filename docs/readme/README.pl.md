@@ -1,4 +1,4 @@
-**English** · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [Русский](README.ru.md) · [Polski](README.pl.md)
+[English](../../README.md) · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [Русский](README.ru.md) · **Polski**
 
 # Sound Capsule
 
@@ -6,11 +6,11 @@ Twoje scrobbles z Last.fm można zamienić w **pionową kapsułę dźwięku 1080
 
 **Wdrożenie:** <https://sound-capsule-lastfm.vercel.app>
 
-![Wygenerowana karta](docs/screenshots/capsule-1080x1920.png)
+<img src="../screenshots/cards/card-pl.png" alt="Przykładowa karta Sound Capsule po polsku" width="320" />
 
-> Zrzuty ekranu wykorzystują symulowane dane, aby pokazać stany interfejsu. Obrazem tła karty jest syntetyczny portret testowy; w produkcji pochodzi z Deezer lub ze zdjęcia przesłanego przez użytkownika.
+> Przykładowa karta z danymi demonstracyjnymi (zdjęcie Aurory z Deezer), ukrytą nazwą użytkownika, motywem Ember i 3708 minutami.
 
-Przykład z japońskimi, koreańskimi i chińskimi nazwami w wyeksportowanym PNG: [karta CJK](docs/screenshots/cjk-1080x1920.png).
+Przykład z japońskimi, koreańskimi i chińskimi nazwami w wyeksportowanym PNG: [karta CJK](../screenshots/cjk-1080x1920.png).
 
 ## Funkcje
 
@@ -171,17 +171,17 @@ lib/
   exportCard.ts           # osadzanie czcionek + html-to-image → PNG 1080×1920
   initials.ts / locales.ts
 public/
-  og.png                  # podgląd Open Graph/Twitter 1200×630
+  og/<locale>.png          # podgląd Open Graph/Twitter 1200×630
   llms.txt                # podsumowanie projektu dla agentów/LLM
 messages/                 # pt, en, es, fr, de, it, ja, ko, zh, ru, pl
 tests/                    # Vitest
-docs/screenshots/         # referencyjne zrzuty ekranu
+../screenshots/         # referencyjne zrzuty ekranu
 ```
 
 ## Podgląd linku, SEO i wykrywalność
 
 - `metadataBase` + Open Graph/Twitter Card na wszystkich 11 trasach, ze zlokalizowanym tytułem i opisem.
-- Obraz `public/og.png` (1200×630) używany w `og:image` i `twitter:image`; to podgląd wyświetlany po wklejeniu linku w WhatsApp, Discord, Telegram, Twitter/X itp.
+- Obraz `public/og/<locale>.png` (1200×630) używany w `og:image` i `twitter:image`; to podgląd wyświetlany po wklejeniu linku w WhatsApp, Discord, Telegram, Twitter/X itp.
 - `/robots.txt` generowany przez `app/robots.ts`: zezwala na witrynę, blokuje `/api/` i wskazuje mapę witryny.
 - `/sitemap.xml` generowany przez `app/sitemap.ts`, z 11 trasami i alternatywami `hreflang`.
 - `/llms.txt` z rzeczowym podsumowaniem produktu, źródeł danych i polityki prywatności dla agentów AI.
@@ -318,3 +318,8 @@ Ponadto przepływ zweryfikowano w Chromium z symulowanym Last.fm/Deezer: motyw, 
 ## Zastrzeżenie
 
 Sound Capsule to niezależny projekt, niezwiązany z Last.fm ani żadnym serwisem streamingowym. Dane muzyczne są publiczne i pochodzą z API Last.fm; zdjęcia artystów pochodzą z Deezer lub od użytkownika. Korzystanie z planu Hobby Vercel ma charakter osobisty i niekomercyjny.
+
+## Autor
+
+Autor: [Ranieeery](https://github.com/Ranieeery).
+

@@ -57,3 +57,7 @@ Uploaded photos never leave the browser.
 - sitemap: https://sound-capsule-lastfm.vercel.app/sitemap.xml
 - API routes under /api/ are intended for the site itself and are disallowed
   to crawlers.
+
+## Credits
+
+Created by [Ranieeery](https://github.com/Ranieeery).
