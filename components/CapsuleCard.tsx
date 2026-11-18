@@ -91,7 +91,7 @@ export function CapsuleCard({
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <BrandMark size={28} surface="#171719" border="#343438" accent={theme.accent} />
+            <BrandMark size={34} surface="#171719" border="#343438" accent={theme.accent} />
             <span
               style={{
                 fontSize: 19,
@@ -195,12 +195,12 @@ export function CapsuleCard({
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: 3,
+              gap: 4,
               marginTop: 10,
               fontFamily: 'var(--font-mono)',
-              fontSize: 9.5,
-              lineHeight: 1.35,
-              color: '#71717a',
+              fontSize: 11,
+              lineHeight: 1.4,
+              color: '#a1a1aa',
             }}
           >
             <div

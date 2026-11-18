@@ -5,7 +5,7 @@ export async function SiteFooter() {
 
   return (
     <footer className="mt-4 border-t border-line/80">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-5 py-6 text-xs leading-relaxed text-subtle sm:flex-row sm:items-center sm:justify-between sm:px-8">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-5 py-6 text-[13px] leading-relaxed text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <p>{t('note')}</p>
         <div className="flex flex-col gap-1 sm:items-end">
           <a

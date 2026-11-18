@@ -993,19 +993,19 @@ export function CapsuleStudio() {
           ref={estimateRef}
           open={estimateOpen}
           onToggle={(event) => setEstimateOpen(event.currentTarget.open)}
-          className="group relative w-full max-w-[320px] text-xs text-muted"
+          className="group relative w-full max-w-[320px] text-[13px] text-muted"
         >
           <summary className="flex cursor-pointer list-none items-start gap-2 rounded-md text-left transition-colors hover:text-fg [&::-webkit-details-marker]:hidden">
-            <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-line-strong font-mono text-[10px] leading-none text-muted">
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-line-strong font-mono text-[11px] leading-none text-muted">
               i
             </span>
             <span>{t('estimate.short')}</span>
           </summary>
-          <div className="absolute bottom-full left-0 z-20 mb-2 w-full rounded-lg border border-line-strong bg-field p-3 text-[11px] leading-relaxed text-muted">
+          <div className="absolute bottom-full left-0 z-20 mb-2 w-full rounded-lg border border-line-strong bg-field p-3 text-xs leading-relaxed text-muted">
             <p className="font-medium text-fg">{t('estimate.label')}</p>
             <p className="mt-1">{t('estimate.tooltip')}</p>
             {result && (
-              <p className="mt-2 font-mono text-[10px] text-subtle">
+              <p className="mt-2 font-mono text-[11px] text-subtle">
                 {t('estimate.details', {
                   known: result.data.estimate.knownTracks,
                   fallback: result.data.estimate.fallbackTracks,
@@ -1015,7 +1015,7 @@ export function CapsuleStudio() {
           </div>
         </details>
 
-        <p className="w-full max-w-[320px] font-mono text-[10px] text-subtle">
+        <p className="w-full max-w-[320px] font-mono text-[11px] text-subtle">
           {CARD_EXPORT_WIDTH}×{CARD_EXPORT_HEIGHT} px PNG
         </p>
       </aside>
@@ -1089,9 +1089,9 @@ function EmptyPreview({
           textAlign: 'center',
         }}
       >
-        <BrandMark size={52} surface="#212121" border="#343438" />
-        <p style={{ fontSize: 20, fontWeight: 600, color: '#f4f4f5', margin: 0 }}>{title}</p>
-        <p style={{ fontSize: 13, lineHeight: 1.5, color: '#a1a1aa', margin: 0, maxWidth: 260 }}>
+        <BrandMark size={76} surface="#212121" border="#343438" />
+        <p style={{ fontSize: 22, fontWeight: 600, color: '#f4f4f5', margin: 0 }}>{title}</p>
+        <p style={{ fontSize: 14, lineHeight: 1.5, color: '#a1a1aa', margin: 0, maxWidth: 260 }}>
           {hint}
         </p>
       </div>
