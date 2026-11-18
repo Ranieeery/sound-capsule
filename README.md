@@ -10,7 +10,7 @@ Exemplo com nomes em japonês, coreano e chinês renderizados no PNG exportado: 
 
 ## Recursos
 
-- **Tela inicial** com input de usuário, período (última semana, mês atual ou intervalo personalizado), prévia 9:16 e ações de download/compartilhamento.
+- **Tela inicial** com input de usuário (aceita o username ou a URL do perfil), período (última semana, mês atual ou intervalo personalizado), prévia 9:16 e ações de download/compartilhamento.
 - **Card 9:16** (432×768 CSS, exportado a 1080×1920 PNG) com topo de 30% em foto do artista e corpo sólido `#212121`.
 - **Duas colunas numeradas** (Top artistas e Top músicas, 1–5) com truncamento por reticências e suporte a CJK (japonês, coreano e chinês).
 - **Minutagem estimada** com destaque sólido `#F06848`, tooltip explicando o cálculo e formatação via `Intl`.
@@ -166,7 +166,7 @@ A UI sempre mostra o valor como aproximado (`≈ 66 minutos`) e o tooltip explic
 
 ### Foto do artista
 
-O Last.fm não retorna mais fotos reais (placeholder). O app chama o Deezer, escolhe o resultado com melhor similaridade de nome normalizada (sem acentos/pontuação, case-insensitive) e serve a imagem pelo próprio domínio via `/api/image-proxy`. Isso evita canvas "tainted" por CORS no export. Se nada for encontrado, o card usa o fallback procedural em canvas.
+O Last.fm não retorna mais fotos reais (placeholder). O app chama o Deezer, escolhe o resultado com melhor similaridade de nome normalizada (sem acentos/pontuação, case-insensitive) e serve a imagem pelo próprio domínio via `/api/image-proxy`. Em nomes repetidos, a busca pede 25 candidatos e prioriza o **match exato mais popular** do Deezer — sem isso, um "Twice" obscuro podia aparecer no lugar do TWICE. Se a confiança for baixa ou nada for encontrado, o card usa o fallback procedural em canvas (melhor do que exibir a foto de outra pessoa).
 
 ### Export 1080×1920
 
@@ -211,17 +211,18 @@ Tipografia: Geist (sans) + Geist Mono (números/detalhes) + Noto Sans JP/KR/SC p
 ## Testes
 
 ```bash
-pnpm test        # 66 testes unitários
+pnpm test        # 74 testes unitários
 pnpm typecheck
 pnpm build
 ```
 
 Cobertura atual dos testes:
 
+- normalização de URLs de perfil do Last.fm coladas no campo de usuário;
 - agregação de scrobbles, desempates, CJK e cálculo de minutagem;
 - intervalos de período, validação de datas (registro, futuro, 365 dias), `Intl`;
 - cliente Last.fm com `fetch` mockado: paginação, now playing, retry 29/rede, abort, top 50 durações, erros 6/17;
-- matching de artistas no Deezer;
+- matching de artistas no Deezer (incluindo desempate por popularidade em nomes repetidos);
 - rotas de API: whitelist de métodos/params, key do servidor, cache headers, proxy de imagem e whitelist de domínio.
 
 Além disso, o fluxo real foi verificado em Chromium com Last.fm/Deezer simulados: estados da tela, progresso real, cancelamento, validação de período personalizado, preview, download **1080×1920**, fallback de compartilhamento, mobile e erros traduzidos (23 verificações, todas passando).
@@ -229,7 +230,7 @@ Além disso, o fluxo real foi verificado em Chromium com Last.fm/Deezer simulado
 ## Limitações conhecidas
 
 - **Minutagem é estimativa**: depende de durações do `track.getInfo` e do fallback de 210 s; faixas ao vivo/remixes podem divergir.
-- **Fotos vêm do Deezer**: matching por nome pode errar em artistas homônimos ou não encontrar nada (usa fallback canvas). Não há fotos vindas do Last.fm.
+- **Fotos vêm do Deezer**: matching por nome pode errar em artistas homônimos ou não encontrar nada (usa fallback canvas). Nomes escritos em outro alfabeto (ex.: 南翔子, que o Deezer indexa como "Shoko Minami") podem não ter correspondência e cair no fallback. Não há fotos vindas do Last.fm.
 - **Períodos longos** (até 365 dias) fazem muitas requisições e podem esbarrar no rate limit do Last.fm. A UI mostra progresso e permite cancelar; erros 29 persistentes geram mensagem clara.
 - **Perfis privados** ("hide recent listening") retornam erro 17; o app explica como liberar.
 - **Export client-side** depende do navegador (testado em Chromium). Em dispositivos muito antigos/Safari com pouca memória o PNG pode falhar; há mensagem de erro.
@@ -252,3 +253,4 @@ Além disso, o fluxo real foi verificado em Chromium com Last.fm/Deezer simulado
 ## Aviso
 
 Sound Capsule é um projeto independente, sem afiliação com o Last.fm ou qualquer serviço de streaming. Os dados musicais são públicos e fornecidos pela API do Last.fm; as fotos de artistas vêm do Deezer.
+
