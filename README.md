@@ -1,312 +1,320 @@
-# Sound Capsule for Last.fm
+**English** · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [简体中文](README.zh-CN.md) · [Русский](README.ru.md) · [Polski](README.pl.md)
 
-Transforme seus scrobbles do Last.fm em uma **cápsula de som vertical 1080×1920** (formato story) pronta para baixar ou compartilhar. A agregação acontece inteiramente no navegador, sem login e sem banco de dados.
+# Sound Capsule
+
+Turn your Last.fm scrobbles into a **vertical 1080×1920 sound capsule** (story format) ready to download or share. Aggregation happens entirely in the browser, with no login and no database.
 
 **Deploy:** <https://sound-capsule-lastfm.vercel.app>
 
-![Card gerado](docs/screenshots/capsule-1080x1920.png)
+![Generated card](docs/screenshots/capsule-1080x1920.png)
 
-> As capturas usam dados simulados para demonstrar os estados da interface. A imagem de fundo do card é um retrato sintético de teste; em produção vem do Deezer ou de uma foto enviada pelo usuário.
+> The screenshots use simulated data to demonstrate the interface states. The card's background image is a synthetic test portrait; in production it comes from Deezer or from a photo uploaded by the user.
 
-Exemplo com nomes em japonês, coreano e chinês renderizados no PNG exportado: [card CJK](docs/screenshots/cjk-1080x1920.png).
+Example with Japanese, Korean and Chinese names rendered in the exported PNG: [card CJK](docs/screenshots/cjk-1080x1920.png).
 
-## Recursos
+## Features
 
-- **Tela inicial** com input de usuário (aceita o username ou a URL do perfil), período (última semana, mês atual ou intervalo personalizado), prévia 9:16 e ações de download/compartilhamento.
-- **Período personalizado com duração máxima de 3 meses de calendário** — sem janela fixa de 90 dias e sem restringir as datas escolhidas (desde o registro no Last.fm até hoje).
-- **Card 9:16** (432×768 CSS, exportado a 1080×1920 PNG) com topo de 30% em foto do artista e corpo sólido `#212121`.
-- **Cinco temas de cor fixos** (Ember, Tide, Moss, Plum, Sand) que mudam só o accent do card — sem color picker livre.
-- **Foto do artista** em três camadas: match automático no Deezer → upload local opcional (nunca enviado ao servidor) → fallback canvas com iniciais.
-- **Duas colunas numeradas** (Top artistas e Top músicas, 1–5) com truncamento por reticências e suporte a CJK (japonês, coreano e chinês).
-- **Minutagem estimada** com destaque sólido na cor do tema, tooltip explicando o cálculo e formatação via `Intl`.
-- **Embed autocontido**: o botão “Copiar embed” gera um bloco HTML `<a><img></a>` com a PNG em base64 — sem upload, sem storage e sem depender de URL de imagem hospedada (~0,5–0,8 MB). Funciona onde HTML bruto é permitido.
-- **Preview de link**: ao colar a URL do site no WhatsApp, Discord, Twitter/X, Telegram etc., aparecem título, descrição localizados e uma imagem Open Graph 1200×630 da marca.
-- **Progresso real** de paginação ("Página 12 de 40"), skeleton na prévia e cancelamento com `AbortController`.
-- **i18n** em `pt`, `en`, `es`, `fr`, `de`, `it`, `ja`, `ko`, `zh`, `ru` e `pl`, com detecção por `Accept-Language`, rotas prefixadas, textos/datas/números formatados com `Intl` e dropdown de idioma customizado e acessível.
-- **Créditos no card** (“Data from Last.fm”, link do perfil e URL do site), com opção de ocultar o username do card.
-- **Fundo em `<canvas>`** com linhas de onda discretas que reagem ao mouse, pausam com a aba oculta e desligam com `prefers-reduced-motion`.
-- **Acessível**: navegação por teclado, labels, `role="progressbar"`, alerts, contraste AA e respeito a movimento reduzido.
+- **Home screen** with a user input (accepts the username or the profile URL), period (last week, current month, or custom range), a 9:16 preview, and download/share actions.
+- **Custom period with a maximum length of 3 calendar months** — no fixed 90-day window, and the chosen dates are not restricted (from the Last.fm sign-up date to today).
+- **9:16 card** (432×768 CSS, exported as a 1080×1920 PNG) with the top 30% as the artist photo and a solid `#212121` body.
+- **Five fixed color themes** (Ember, Tide, Moss, Plum, Sand) that change only the card's accent — no free color picker.
+- **Artist photo** in three layers: automatic match on Deezer → optional local upload (never sent to the server) → canvas fallback with initials.
+- **Two numbered columns** (Top artists and Top tracks, 1–5) with ellipsis truncation and CJK support (Japanese, Korean and Chinese).
+- **Estimated listening time** highlighted in solid theme color, a tooltip explaining the calculation, and formatting via `Intl`.
+- **Self-contained embed**: the "Copy embed code" button generates an HTML `<a><img></a>` block with the PNG in base64 — no upload, no storage, and no dependency on a hosted image URL (~0.5–0.8 MB). Works where raw HTML is allowed.
+- **Link preview**: when you paste the site URL into WhatsApp, Discord, Twitter/X, Telegram, etc., a localized title and description and a branded 1200×630 Open Graph image appear.
+- **Real pagination progress** ("Page 12 of 40"), a skeleton in the preview, and cancellation with `AbortController`.
+- **i18n** in `pt`, `en`, `es`, `fr`, `de`, `it`, `ja`, `ko`, `zh`, `ru` and `pl`, with `Accept-Language` detection, prefixed routes, texts/dates/numbers formatted with `Intl`, and a custom, accessible language dropdown.
+- **Card credits** ("Data from Last.fm", profile link and site URL), with an option to hide the username from the card.
+- **`<canvas>` background** with subtle wave lines that react to the mouse, pause when the tab is hidden, and switch off with `prefers-reduced-motion`.
+- **Accessible**: keyboard navigation, labels, `role="progressbar"`, alerts, AA contrast, and respect for reduced motion.
+- **Observability**: Vercel Web Analytics and Speed Insights, cookieless, to track visits and Core Web Vitals.
 
-## Persistência: só idioma e tema
+## Persistence: language and theme only
 
-| Dado | Onde fica | Detalhe |
+| Data | Where it is stored | Detail |
 | --- | --- | --- |
-| Idioma | cookie `NEXT_LOCALE` | apenas `pt`, `en`, … |
-| Cor do card | `localStorage` (`sound-capsule:theme`) | apenas o id do accent |
-| Username, datas, resultado da API, foto enviada | **memória** | somem no F5 |
+| Language | `NEXT_LOCALE` cookie | only `pt`, `en`, … |
+| Card color | `localStorage` (`sound-capsule:theme`) | only the accent id |
+| Username, dates, API result, uploaded photo | **memory** | gone on F5 |
 
-A troca de idioma preserva username e card em memória (sem novas requisições ao Last.fm), mas um reload limpa esses dados. Nenhum dado de scrobbles, histórico ou foto é persistido.
+Switching languages preserves the username and the card in memory (without new requests to Last.fm), but a reload clears that data. No scrobble, history, or photo data is persisted.
 
 ## Stack
 
-| Camada | Escolha |
+| Layer | Choice |
 | --- | --- |
 | Framework | Next.js 15 (App Router) + TypeScript |
-| Estilo | Tailwind CSS 4 |
+| Styling | Tailwind CSS 4 |
 | i18n | `next-intl` 4 |
-| Export da imagem | `html-to-image` (client-side) |
-| Testes | Vitest |
-| Deploy | Vercel (serverless, estático + route handlers) |
+| Image export | `html-to-image` (client-side) |
+| Tests | Vitest |
+| Deployment | Vercel (serverless, static + route handlers) |
 
-## Como funciona
+## How it works
 
 ```text
-Navegador
-  ├─ valida usuário/período (máx. 3 meses de calendário)
-  ├─ /api/lastfm  ──────────►  Last.fm API (key injetada no servidor)
+Browser
+  ├─ validates the user/period (max. 3 calendar months)
+  ├─ /api/lastfm  ──────────►  Last.fm API (key injected on the server)
   │     └─ user.getInfo, user.getRecentTracks, track.getInfo
-  ├─ pagina TODAS as páginas de scrobbles (concorrência 3 + pacer de 150 ms)
-  ├─ agrega em memória: top artistas, top músicas, minutagem
-  ├─ /api/artist-image ─────►  Deezer search (melhor match normalizado)
-  ├─ /api/image-proxy  ─────►  CDN do Deezer (whitelist *.dzcdn.net)
-  ├─ foto opcional do usuário ─►  canvas local (nunca sai do navegador)
-  └─ renderiza o card no DOM e exporta PNG 1080×1920
+  ├─ pages through ALL scrobble pages (concurrency 3 + 150 ms pacer)
+  ├─ aggregates in memory: top artists, top tracks, listening time
+  ├─ /api/artist-image ─────►  Deezer search (best normalized match)
+  ├─ /api/image-proxy  ─────►  Deezer CDN (allowlist *.dzcdn.net)
+  ├─ optional user photo ───►  local canvas (never leaves the browser)
+  └─ renders the card in the DOM and exports a 1080×1920 PNG
 ```
 
-O app não busca dados no carregamento da página; só quando o usuário clica em Gerar. As respostas públicas usam cache de CDN com `Vercel-CDN-Cache-Control`; cache hit não invoca a function.
+The app does not fetch data on page load; only when the user clicks Generate. Public responses use CDN caching with `Vercel-CDN-Cache-Control`; a cache hit does not invoke the function.
 
-## Rodando localmente
+## Running locally
 
-### Requisitos
+### Requirements
 
 - Node.js **20.9+**
-- pnpm **9+** (o repositório foi desenvolvido com pnpm 11)
+- pnpm **9+** (the repository was developed with pnpm 11)
 
-### 1. Obtenha uma API key do Last.fm
+### 1. Get a Last.fm API key
 
-1. Acesse <https://www.last.fm/api/account/create>.
-2. Preencha o nome do app (ex.: *Sound Capsule*), a URL `https://sound-capsule-lastfm.vercel.app` e a descrição.
-3. Copie a **API key** gerada (não é necessário o *shared secret*, pois não há autenticação de usuário).
+1. Go to <https://www.last.fm/api/account/create>.
+2. Fill in the app name (e.g. *Sound Capsule*), the URL `https://sound-capsule-lastfm.vercel.app`, and the description.
+3. Copy the generated **API key** (the *shared secret* is not needed, since there is no user authentication).
 
-### 2. Configure o ambiente
+### 2. Configure the environment
 
 ```bash
 cp .env.example .env.local
-# edite .env.local e preencha:
-LASTFM_API_KEY=sua_chave_aqui
+# edit .env.local and fill in:
+LASTFM_API_KEY=your_key_here
 ```
 
-A variável é **somente do servidor**. Nunca use o prefixo `NEXT_PUBLIC_` e ela não vai para o bundle do cliente.
+The variable is **server-only**. Never use the `NEXT_PUBLIC_` prefix, and it does not go into the client bundle.
 
-### 3. Instale e rode
+### 3. Install and run
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Abra <http://localhost:3000> — o middleware redireciona para o locale detectado pelo `Accept-Language` (ou pelo cookie `NEXT_LOCALE`).
+Open <http://localhost:3000> — the middleware redirects to the locale detected from `Accept-Language` (or from the `NEXT_LOCALE` cookie).
 
 ### Scripts
 
-| Comando | Descrição |
+| Command | Description |
 | --- | --- |
-| `pnpm dev` | servidor de desenvolvimento |
-| `pnpm build` | build de produção |
-| `pnpm start` | serve o build de produção |
-| `pnpm test` | testes unitários (Vitest) |
-| `pnpm test:watch` | testes em watch mode |
-| `pnpm typecheck` | checagem de tipos com `tsc --noEmit` |
+| `pnpm dev` | development server |
+| `pnpm build` | production build |
+| `pnpm start` | serves the production build |
+| `pnpm test` | unit tests (Vitest) |
+| `pnpm test:watch` | tests in watch mode |
+| `pnpm typecheck` | type check with `tsc --noEmit` |
 
-## Deploy na Vercel
+## Deploying to Vercel
 
-O deploy atual está em <https://sound-capsule-lastfm.vercel.app>.
+The current deployment is at <https://sound-capsule-lastfm.vercel.app>.
 
-1. Suba o projeto para um repositório no GitHub/GitLab/Bitbucket.
-2. Na Vercel, clique em **Add New → Project** e importe o repositório.
-3. O preset **Next.js** é detectado automaticamente. Confirme:
+1. Push the project to a repository on GitHub/GitLab/Bitbucket.
+2. In Vercel, click **Add New → Project** and import the repository.
+3. The **Next.js** preset is detected automatically. Confirm:
    - Install Command: `pnpm install`
    - Build Command: `pnpm build`
-   - Output: padrão do Next.js
-4. Em **Settings → Environment Variables**, adicione `LASTFM_API_KEY` em Production (e, se quiser testar previews, também Preview/Development).
-5. Faça o deploy. Não há banco de dados, migrations, cron jobs ou storage para configurar.
-6. Opcional: configure domínio customizado em **Settings → Domains**.
+   - Output: Next.js default
+4. Under **Settings → Environment Variables**, add `LASTFM_API_KEY` in Production (and, if you want to test previews, in Preview/Development as well).
+5. Deploy. There is no database, migrations, cron jobs, or storage to configure.
+6. Optional: configure a custom domain under **Settings → Domains**.
 
-O projeto foi pensado para o plano **Hobby** (pessoal/não comercial): cada cápsula típica faz ~60–176 invocations de function, e o cache de CDN evita repetir chamadas estáveis. O upload de foto é 100% local, então não consome função, banda nem o limite de 4,5 MB de corpo da Vercel.
+The project was designed for the **Hobby** plan (personal/non-commercial): each typical capsule makes ~60–176 function invocations, and CDN caching avoids repeating stable calls. The photo upload is 100% local, so it consumes no function, bandwidth, or the Vercel 4.5 MB body limit.
 
-Observações de produção:
+Production notes:
 
-- Os route handlers usam `AbortSignal.timeout(10s)` para o upstream; cada chamada é curta e independente.
-- `track.getInfo` e imagens ficam 24 h no CDN; dados de usuário ficam 1–5 min. Erros nunca são cacheados.
-- O proxy de imagem responde em streaming para não esbarrar no limite de resposta não-streamed de 4,5 MB.
-- As fontes CJK são self-hosted pelo `next/font` durante o build; o ambiente precisa acessar o Google Fonts.
+- The route handlers use `AbortSignal.timeout(10s)` for the upstream; each call is short and independent.
+- `track.getInfo` and images stay in the CDN for 24 h; user data stays for 1–5 min. Errors are never cached.
+- The image proxy responds in streaming mode so it does not hit the 4.5 MB non-streamed response limit.
+- The CJK fonts are self-hosted by `next/font` during the build; the environment needs access to Google Fonts.
 
-## Estrutura
+## Structure
 
 ```text
 app/
   [locale]/
-    layout.tsx            # layout raiz: fontes, provider i18n, metadata/SEO
-    page.tsx              # tela inicial (server) + CapsuleStudio (client)
-    [...rest]/page.tsx    # rotas desconhecidas → notFound()
+    layout.tsx            # root layout: fonts, i18n provider, metadata/SEO
+    page.tsx              # home screen (server) + CapsuleStudio (client)
+    [...rest]/page.tsx    # unknown routes → notFound()
   api/
-    lastfm/route.ts       # proxy com whitelist de métodos e params
-    artist-image/route.ts # busca no Deezer + matching normalizado
-    image-proxy/route.ts  # proxy de imagem (whitelist + streaming)
-  robots.ts               # robots.txt (bloqueia /api/, aponta o sitemap)
-  sitemap.ts              # sitemap das 11 rotas com alternates
-  globals.css             # tokens de design (Tailwind 4)
-  icon.svg                # marca/favicon
+    lastfm/route.ts       # proxy with an allowlist of methods and params
+    artist-image/route.ts # Deezer search + normalized matching
+    image-proxy/route.ts  # image proxy (allowlist + streaming)
+  robots.ts               # robots.txt (blocks /api/, points to the sitemap)
+  sitemap.ts              # sitemap of the 11 routes with alternates
+  globals.css             # design tokens (Tailwind 4)
+  icon.svg                # brand/favicon
 components/
-  CapsuleStudio.tsx       # formulário, tema, upload, progresso, export/share/embed
-  CapsuleCard.tsx         # card 432×768 com créditos e tema
-  CardHero.tsx            # foto do artista/upload ou fallback canvas
-  BackgroundCanvas.tsx    # ondas de fundo (mouse, reduced motion, hidden)
+  CapsuleStudio.tsx       # form, theme, upload, progress, export/share/embed
+  CapsuleCard.tsx         # 432×768 card with credits and theme
+  CardHero.tsx            # artist photo/upload or canvas fallback
+  BackgroundCanvas.tsx    # background waves (mouse, reduced motion, hidden)
   SiteHeader.tsx / SiteFooter.tsx / BrandMark.tsx
-  LocaleSwitcher.tsx      # dropdown customizado e acessível de idioma
-i18n/                     # routing/request/navigation do next-intl
+  LocaleSwitcher.tsx      # custom, accessible language dropdown
+i18n/                     # next-intl routing/request/navigation
 lib/
-  lastfmClient.ts         # paginação, concorrência, pacer, retry/backoff, abort
-  aggregate.ts            # agregação e estimativa de minutos (testado)
-  periods.ts              # intervalos, limite de 3 meses, Intl
-  artistMatch.ts          # matching normalizado do Deezer
-  artistImage.ts          # resolução/pré-carregamento da foto hero
-  localPhoto.ts           # validação/resize local da foto enviada
-  cardThemes.ts           # accents fixos e persistência só do id
-  studioSession.ts        # estado em memória para trocar de idioma
-  site.ts / httpCache.ts  # URL/User-Agent e headers de cache
-  exportCard.ts           # embed de fontes + html-to-image → PNG 1080×1920
+  lastfmClient.ts         # pagination, concurrency, pacer, retry/backoff, abort
+  aggregate.ts            # aggregation and minutes estimate (tested)
+  periods.ts              # intervals, 3-month limit, Intl
+  artistMatch.ts          # normalized Deezer matching
+  artistImage.ts          # hero photo resolution/preloading
+  localPhoto.ts           # local validation/resize of the uploaded photo
+  cardThemes.ts           # fixed accents and persisting only the id
+  studioSession.ts        # in-memory state for switching languages
+  site.ts / httpCache.ts  # URL/User-Agent and cache headers
+  exportCard.ts           # font embed + html-to-image → 1080×1920 PNG
   initials.ts / locales.ts
 public/
-  og.png                  # preview Open Graph/Twitter 1200×630
-  llms.txt                # resumo do projeto para agentes/LLMs
+  og.png                  # Open Graph/Twitter preview 1200×630
+  llms.txt                # project summary for agents/LLMs
 messages/                 # pt, en, es, fr, de, it, ja, ko, zh, ru, pl
 tests/                    # Vitest
-docs/screenshots/         # capturas de referência
+docs/screenshots/         # reference screenshots
 ```
 
-## Preview de link, SEO e descoberta
+## Link preview, SEO and discovery
 
-- `metadataBase` + Open Graph/Twitter Card em todas as 11 rotas, com título e descrição localizados.
-- Imagem `public/og.png` (1200×630) usada em `og:image` e `twitter:image`; é o preview exibido ao colar o link no WhatsApp, Discord, Telegram, Twitter/X etc.
-- `/robots.txt` gerado por `app/robots.ts`, liberando o site, bloqueando `/api/` e apontando para o sitemap.
-- `/sitemap.xml` gerado por `app/sitemap.ts`, com as 11 rotas e `hreflang` alternates.
-- `/llms.txt` com um resumo factual do produto, fontes de dados e política de privacidade para agentes de IA.
+- `metadataBase` + Open Graph/Twitter Card on all 11 routes, with localized title and description.
+- `public/og.png` image (1200×630) used in `og:image` and `twitter:image`; it is the preview shown when the link is pasted into WhatsApp, Discord, Telegram, Twitter/X, etc.
+- `/robots.txt` generated by `app/robots.ts`, allowing the site, blocking `/api/`, and pointing to the sitemap.
+- `/sitemap.xml` generated by `app/sitemap.ts`, with the 11 routes and `hreflang` alternates.
+- `/llms.txt` with a factual summary of the product, data sources, and privacy policy for AI agents.
 
-## Decisões técnicas
+## Technical decisions
 
-### Por que `user.getRecentTracks` em vez de `user.getTopTracks`?
+### Why `user.getRecentTracks` instead of `user.getTopTracks`?
 
-`getTopTracks`/`getTopArtists` só aceitam janelas fixas (`7day`, `1month`…), e o "mês" do Last.fm não é o mês corrente. O app pagina `user.getRecentTracks` com `from`/`to` (unix) e agrega localmente, garantindo que **"mês atual"** seja exatamente do dia 1 até agora no fuso do visitante.
+`getTopTracks`/`getTopArtists` only accept fixed windows (`7day`, `1month`…), and Last.fm's "month" is not the current calendar month. The app paginates `user.getRecentTracks` with `from`/`to` (unix) and aggregates locally, guaranteeing that **"current month"** is exactly from day 1 until now in the visitor's time zone.
 
-- `limit=200` por página; a primeira página descobre `totalPages`.
-- As demais páginas rodam em paralelo com **concorrência 3**, com um pacer de **150 ms entre chamadas** para não estourar a orientação de uso do Last.fm.
-- Retry com **backoff exponencial** para erro 29 (rate limit), 5xx e falhas de rede.
-- A faixa "now playing" (`@attr.nowplaying`) é ignorada.
-- O botão **Cancelar** aborta todas as requisições em andamento (`AbortController`).
+- `limit=200` per page; the first page discovers `totalPages`.
+- The remaining pages run in parallel with **concurrency 3**, with a **150 ms pacer between calls** to stay within Last.fm's usage guidance.
+- Retry with **exponential backoff** for error 29 (rate limit), 5xx, and network failures.
+- The "now playing" track (`@attr.nowplaying`) is ignored.
+- The **Cancel** button aborts all in-flight requests (`AbortController`).
 
-### Minutagem
+### Listening time
 
-O Last.fm não expõe tempo ouvido. A estimativa:
+Last.fm does not expose listening time. The estimate:
 
-1. Busca a duração real (`track.getInfo` → `duration` em ms) para as **50 faixas mais tocadas** (concorrência 3).
-2. Faixas sem duração, com duração 0 ou fora do top 50 usam **3,5 min (210 s)**.
-3. `minutos = arredondar(Σ duração × scrobbles / 60.000)`.
+1. Fetches the real duration (`track.getInfo` → `duration` in ms) for the **50 most-played tracks** (concurrency 3).
+2. Tracks without a duration, with a duration of 0, or outside the top 50 use **3.5 min (210 s)**.
+3. `minutes = round(Σ duration × scrobbles / 60,000)`.
 
-A UI mostra o valor como aproximado (`≈ 66 minutos`) e o tooltip explica o cálculo. O fallback e o limite do top 50 são configuráveis em `lib/periods.ts`.
+The UI shows the value as approximate (`≈ 66 minutes`) and the tooltip explains the calculation. The fallback and the top-50 limit are configurable in `lib/periods.ts`.
 
-### Foto do artista
+### Artist photo
 
-O Last.fm não retorna mais fotos reais (placeholder). O app chama o Deezer, escolhe o resultado com melhor similaridade normalizada e prioriza o **match exato mais popular** em nomes repetidos — sem isso, um "Twice" obscuro podia aparecer no lugar do TWICE. O usuário também pode enviar uma foto local (JPEG/PNG/WebP, até 10 MB): ela é redimensionada no canvas e usada só na memória do navegador. Se nada for encontrado, o card usa o fallback procedural em canvas.
+Last.fm no longer returns real photos (placeholder). The app calls Deezer, picks the result with the best normalized similarity, and prioritizes the **most popular exact match** among duplicate names — without that, an obscure "Twice" could show up instead of TWICE. The user can also upload a local photo (JPEG/PNG/WebP, up to 10 MB): it is resized on the canvas and used only in the browser's memory. If nothing is found, the card uses the procedural canvas fallback.
 
-### Temas
+### Themes
 
-Cinco accents fixos em `lib/cardThemes.ts`; só a cor de destaque do card muda (marca e minutagem). O id escolhido é o único dado de tema salvo, em `localStorage`. O site continua neutro.
+Five fixed accents in `lib/cardThemes.ts`; only the card's accent color changes (brand and listening time). The chosen id is the only theme data saved, in `localStorage`. The site itself stays neutral.
 
-### Estado entre idiomas
+### State across languages
 
-O `CapsuleStudio` mantém os dados não localizados em um store em memória (`lib/studioSession.ts`). Ao trocar de idioma o componente remonta, hidrata do store e apenas recalcula os textos com o novo locale — **zero requisições ao Last.fm**. O idioma em si é persistido no cookie `NEXT_LOCALE`.
+`CapsuleStudio` keeps the non-localized data in an in-memory store (`lib/studioSession.ts`). When switching languages, the component remounts, hydrates from the store, and only recomputes the texts with the new locale — **zero requests to Last.fm**. The language itself is persisted in the `NEXT_LOCALE` cookie.
 
 ### Export 1080×1920
 
-`html-to-image` renderiza o card (432×768) com `pixelRatio: 2.5`. Antes do export:
+`html-to-image` renders the card (432×768) with `pixelRatio: 2.5`. Before exporting:
 
-- `document.fonts.ready` + dois frames de layout;
-- todas as `<img>` do card são decodificadas;
-- um embed de fontes sob medida inclui **somente os subsetos cujo `unicode-range` intersecta os caracteres do card**, evitando baixar megabytes de slices CJK desnecessários.
+- `document.fonts.ready` + two layout frames;
+- every `<img>` in the card is decoded;
+- a tailor-made font embed includes **only the subsets whose `unicode-range` intersects the card's characters**, avoiding downloading megabytes of unnecessary CJK slices.
 
-O PNG final é exatamente **1080×1920** (verificado em navegador, inclusive com foto enviada pelo usuário).
+The final PNG is exactly **1080×1920** (verified in a browser, including with a user-uploaded photo).
 
 ### Design
 
-Paleta neutra, uma única cor de destaque sólida por card, sem neon/gradiente/glassmorphism:
+Neutral palette, a single solid accent color per card, no neon/gradient/glassmorphism:
 
-| Token | Valor |
+| Token | Value |
 | --- | --- |
-| Fundo | `#0f0f10` |
-| Superfície do formulário | `#171719` |
+| Background | `#0f0f10` |
+| Form surface | `#171719` |
 | Inputs | `#111113` |
-| Corpo do card | `#212121` |
+| Card body | `#212121` |
 | Accents | Ember `#F06848`, Tide `#5B9DFF`, Moss `#7ED08A`, Plum `#C084FC`, Sand `#E7C27A` |
-| Texto | `#f4f4f5` / muted `#a1a1aa` |
+| Text | `#f4f4f5` / muted `#a1a1aa` |
 
-Tipografia: Geist (sans) + Geist Mono (números/detalhes) + Noto Sans JP/KR/SC para CJK.
+Typography: Geist (sans) + Geist Mono (numbers/details) + Noto Sans JP/KR/SC for CJK.
 
-## Privacidade, segurança e TOS
+## Privacy, security and TOS
 
-- `LASTFM_API_KEY` existe apenas no servidor; o cliente nunca a recebe.
-- `/api/lastfm` aceita apenas `user.getInfo`, `user.getRecentTracks` e `track.getInfo`; rejeita `api_key`/`format` enviados pelo cliente, valida inteiros (faixas e limites), username e caracteres de controle.
-- `/api/image-proxy` aceita somente URLs `https` em `*.dzcdn.net`, revalida o host após redirects, exige `Content-Type: image/*` e responde em streaming.
-- O app envia User-Agent identificável ao Last.fm/Deezer.
-- Atribuição conforme a [TOS do Last.fm](https://www.last.fm/api/tos): link “powered by Last.fm” no rodapé e créditos “Data from Last.fm”, perfil e URL do site no card exportado.
-- **Único dado persistido**: idioma (cookie) e accent do card (`localStorage`). Não há banco, storage de scrobbles, login nem cookies de sessão.
-- Nada do histórico do usuário é registrado em logs do app. O projeto é pessoal e não comercial.
+- `LASTFM_API_KEY` exists only on the server; the client never receives it.
+- `/api/lastfm` accepts only `user.getInfo`, `user.getRecentTracks` and `track.getInfo`; it rejects `api_key`/`format` sent by the client, validates integers (ranges and limits), the username, and control characters.
+- `/api/image-proxy` accepts only `https` URLs on `*.dzcdn.net`, revalidates the host after redirects, requires `Content-Type: image/*`, and responds in streaming mode.
+- The app sends an identifiable User-Agent to Last.fm/Deezer.
+- Attribution per the [Last.fm TOS](https://www.last.fm/api/tos): a "powered by Last.fm" link in the footer and "Data from Last.fm", profile, and site URL credits on the exported card.
+- **Only persisted data**: language (cookie) and card accent (`localStorage`). There is no database, scrobble storage, login, or session cookies.
+- Nothing from the user's history is recorded in the app logs. The project is personal and non-commercial.
+
+### Observability
+
+- Vercel Web Analytics (`@vercel/analytics`) and Speed Insights (`@vercel/speed-insights`) are installed in the locale layout.
+- Both are cookieless: they do not collect usernames, card data, or scrobble data.
+- On Hobby, Web Analytics includes 50,000 events/month and Speed Insights includes 10,000 events over the last 30 days; both are free within those limits, and collection pauses instead of billing for overage.
 
 ## i18n
 
-- Locales: `pt` (padrão, conteúdo pt-BR), `en`, `es`, `fr`, `de`, `it`, `ja`, `ko`, `zh` (chinês simplificado), `ru` e `pl`.
-- Detecção por `Accept-Language` no middleware (o cookie `NEXT_LOCALE` tem prioridade); troca manual no header preserva a rota e o card em memória. O seletor é um dropdown customizado, não o `<select>` nativo.
-- Datas e números usam `Intl` com o locale regional correto (`pt-BR`, `en-US`, `es-ES`, `fr-FR`, `de-DE`, `it-IT`, `ja-JP`, `ko-KR`, `zh-CN`, `ru-RU`, `pl-PL`).
-- O texto do card é traduzido junto com a interface; a imagem exportada já usa o idioma ativo.
-- Fontes: Geist carrega latin/latin-ext/cirílico; Noto Sans JP/KR/SC cobre os caracteres CJK no card.
+- Locales: `pt` (default, pt-BR content), `en`, `es`, `fr`, `de`, `it`, `ja`, `ko`, `zh` (Simplified Chinese), `ru` and `pl`.
+- Detection via `Accept-Language` in the middleware (the `NEXT_LOCALE` cookie takes priority); manual switching in the header preserves the route and the card in memory. The selector is a custom dropdown, not the native `<select>`.
+- Dates and numbers use `Intl` with the correct regional locale (`pt-BR`, `en-US`, `es-ES`, `fr-FR`, `de-DE`, `it-IT`, `ja-JP`, `ko-KR`, `zh-CN`, `ru-RU`, `pl-PL`).
+- The card text is translated along with the interface; the exported image already uses the active language.
+- Fonts: Geist loads latin/latin-ext/Cyrillic; Noto Sans JP/KR/SC covers the CJK characters in the card.
 
-## Testes
+## Tests
 
 ```bash
-pnpm test        # 108 testes unitários
+pnpm test        # 108 unit tests
 pnpm typecheck
 pnpm build
 ```
 
-Cobertura atual:
+Current coverage:
 
-- normalização de URLs de perfil coladas no campo de usuário;
-- agregação de scrobbles, desempates, CJK e cálculo de minutagem;
-- intervalos de período, limite de **3 meses de calendário**, fevereiro/meses de 31 dias, registro, futuro e `Intl`;
-- cliente Last.fm com `fetch` mockado: paginação, now playing, retry 29/rede, abort, top 50 durações, erros 6/17, data de registro (`unixtime`);
-- matching de artistas no Deezer (incluindo desempate por popularidade em nomes repetidos);
-- rotas de API: whitelist, key do servidor, User-Agent, cache headers, streaming do proxy de imagem;
-- temas e store de sessão;
-- validação do upload local (tipo/tamanho).
+- normalization of profile URLs pasted into the user field;
+- scrobble aggregation, tie-breakers, CJK, and listening-time calculation;
+- period intervals, the **3-calendar-month** limit, February/31-day months, registration, future, and `Intl`;
+- Last.fm client with mocked `fetch`: pagination, now playing, retry 29/network, abort, top-50 durations, errors 6/17, sign-up date (`unixtime`);
+- Deezer artist matching (including popularity tie-breaking among duplicate names);
+- API routes: allowlist, server key, User-Agent, cache headers, image proxy streaming;
+- themes and session store;
+- local upload validation (type/size).
 
-Além disso, o fluxo foi verificado em Chromium com Last.fm/Deezer simulados: tema, upload, créditos, username oculto, embed autocontido (clipboard), troca de idioma sem novas requisições, dropdown customizado (mouse, teclado e clique fora), rotas `ko`/`ru`/`zh`/`pl`, scroll automático para a prévia no mobile, apenas cookie/localStorage permitidos, F5, validação de 3 meses e export **1080×1920**. O fluxo real também foi executado contra a API do Last.fm/Deezer com um perfil ativo.
+In addition, the flow was verified in Chromium with simulated Last.fm/Deezer: theme, upload, credits, hidden username, self-contained embed (clipboard), language switching without new requests, custom dropdown (mouse, keyboard and click outside), `ko`/`ru`/`zh`/`pl` routes, automatic scroll to the preview on mobile, only cookie/localStorage allowed, F5, 3-month validation, and **1080×1920** export. The real flow was also run against the Last.fm/Deezer API with an active profile.
 
-## Limitações conhecidas
+## Known limitations
 
-- **Período máximo de 3 meses de calendário**: pensado para caber no uso razoável do Last.fm e no plano Hobby. Recaps anuais exigiriam outra arquitetura/limite.
-- **Minutagem é estimativa**: depende de durações do `track.getInfo` e do fallback de 210 s; faixas ao vivo/remixes podem divergir.
-- **Fotos vêm do Deezer**: matching por nome pode errar em artistas homônimos ou não encontrar nada (usa fallback canvas). Nomes em outro alfabeto (ex.: 南翔子, indexado como "Shoko Minami") podem não ter correspondência. O upload local cobre esses casos.
-- **Upload não é persistido**: a foto existe só na memória e some no F5, como o resultado e o username.
-- **Perfis privados** ("hide recent listening") retornam erro 17; o app explica como liberar.
-- **Export client-side** depende do navegador (testado em Chromium). Em dispositivos antigos/Safari com pouca memória o PNG pode falhar; há mensagem de erro.
-- **Web Share API** não existe em todos os navegadores; nesses casos o app baixa o PNG.
-- O card renderiza fotos e fontes apenas quando carregadas; a prévia aguarda o carregamento antes de habilitar o PNG.
+- **Maximum period of 3 calendar months**: designed to fit within Last.fm's reasonable use and the Hobby plan. Yearly recaps would require a different architecture/limit.
+- **Listening time is an estimate**: it depends on `track.getInfo` durations and the 210 s fallback; live tracks/remixes may diverge.
+- **Photos come from Deezer**: name matching can fail for artists with the same name or find nothing (it uses the canvas fallback). Names in another script (e.g. 南翔子, indexed as "Shoko Minami") may have no match. The local upload covers those cases.
+- **Uploads are not persisted**: the photo exists only in memory and is gone on F5, like the result and the username.
+- **Private profiles** ("hide recent listening") return error 17; the app explains how to enable it.
+- **Client-side export** depends on the browser (tested in Chromium). On old devices/Safari with little memory the PNG may fail; there is an error message.
+- **Web Share API** is not available in every browser; in those cases the app downloads the PNG.
+- The card renders photos and fonts only once loaded; the preview waits for loading before enabling the PNG.
 
-## Solução de problemas
+## Troubleshooting
 
-| Sintoma | Causa provável / solução |
+| Symptom | Likely cause / solution |
 | --- | --- |
-| "Servidor está sem a chave da API" | `LASTFM_API_KEY` ausente em `.env.local` (ou na Vercel) e reinicie o servidor. |
-| "Usuário não encontrado" | username inválido ou inexistente; confira em `last.fm/user/<nome>`. |
-| "Scrobbles privados" | habilite "Mostrar audição recente" nas configurações de privacidade do Last.fm. |
-| "Nenhum scrobble no período" | o período escolhido não tem histórico público. |
-| "Rate limit" | aguarde e tente de novo; o app já aplica pacer e backoff. |
-| Preview sem foto | Deezer não encontrou o artista; envie uma foto ou use o fallback geométrico. |
-| "Use JPEG, PNG ou WebP" / "máximo 10 MB" | formato/tamanho da foto local fora do permitido. |
-| Fontes CJK não aparecem | verifique se o build conseguiu baixar Noto Sans JP/KR/SC do Google Fonts. |
-| Build falha no `prerender /404` | sintoma de `node_modules` corrompido; remova `node_modules` e rode `pnpm install` novamente. |
+| "The server is missing the API key" | `LASTFM_API_KEY` missing from `.env.local` (or on Vercel); restart the server. |
+| "User not found" | invalid or non-existent username; check it at `last.fm/user/<name>`. |
+| "Private scrobbles" | enable "Show recent listening" in Last.fm's privacy settings. |
+| "No scrobbles in the period" | the chosen period has no public history. |
+| "Rate limit" | wait and try again; the app already applies a pacer and backoff. |
+| Preview without a photo | Deezer did not find the artist; upload a photo or use the geometric fallback. |
+| "Use JPEG, PNG or WebP" / "maximum 10 MB" | local photo format/size outside the allowed range. |
+| CJK fonts do not appear | check that the build could download Noto Sans JP/KR/SC from Google Fonts. |
+| Build fails at `prerender /404` | symptom of corrupted `node_modules`; remove `node_modules` and run `pnpm install` again. |
 
-## Aviso
+## Disclaimer
 
-Sound Capsule é um projeto independente, sem afiliação com o Last.fm ou qualquer serviço de streaming. Os dados musicais são públicos e fornecidos pela API do Last.fm; as fotos de artistas vêm do Deezer ou do usuário. O uso do plano Hobby da Vercel é pessoal e não comercial.
-
+Sound Capsule is an independent project, not affiliated with Last.fm or any streaming service. Music data is public and provided by the Last.fm API; artist photos come from Deezer or the user. Use of the Vercel Hobby plan is personal and non-commercial.
